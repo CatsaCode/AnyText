@@ -32,8 +32,8 @@ on:
     branches: master
 
 env:
-    module_id: flair
-    qmod_name: Flair
+    module_id: anytext
+    qmod_name: AnyText
 
 jobs:
   build:
