@@ -5,7 +5,6 @@ Change any text in the game
 
 ## Todo
 
-- Add menu button
 - Add tabs to menu
 - Add list of text
 - Save list of text to config

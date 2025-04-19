@@ -2,6 +2,10 @@
 
 #include "scotland2/shared/modloader.h"
 
+#include "bsml/shared/BSML.hpp"
+
+#include "ui.hpp"
+
 // #include "GlobalNamespace/StandardLevelDetailView.hpp"
 // #include "GlobalNamespace/StandardLevelDetailViewController.hpp"
 // #include "UnityEngine/UI/Button.hpp"
@@ -30,7 +34,7 @@ TMPro::TextMeshPro* self) {
     
     // Used for hit scores
     self->set_richText(true);
-    self->set_text("<color=#00ff00>AnyText");
+    // self->set_text("<color=#00ff00>AnyText");
 
     TextMeshProHook(self);
 }
@@ -40,7 +44,7 @@ TMPro::TextMeshProUGUI* self) {
     
     // Used for everything else
     self->set_richText(true);
-    self->set_text("<size=0>Hehe secret text :3</size>AnyText");
+    // self->set_text("<size=0>Hehe secret text :3</size>AnyText");
 
     TextMeshProUGUIHook(self);
 }
@@ -62,6 +66,8 @@ MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
 // Called later on in the game loading - a good time to install function hooks
 MOD_EXTERN_FUNC void late_load() noexcept {
     il2cpp_functions::Init();
+    BSML::Init();
+    BSML::Register::RegisterMainMenuViewControllerMethod("AnyText", "AnyText", "Change any text in the game", AnyText::DidActivate);
 
     PaperLogger.info("Installing hooks...");
 
