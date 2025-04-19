@@ -5,10 +5,11 @@ Change any text in the game
 
 ## Todo
 
-- Add tabs to menu
-- Add list of text
-- Save list of text to config
-- Add a tab for main menu text
+- Replace text based off of map
+- Make it possible to add and remove things from the menu
+- Update the map from the menu
+- Save map to config
+- Load map from config
 - Show this link for rich text hints: https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichText.html
 
 
