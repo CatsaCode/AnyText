@@ -14,6 +14,7 @@
 
 #include "TMPro/TextMeshPro.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+#include <map>
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 // Stores the ID and version of our mod, and is sent to
@@ -29,11 +30,16 @@ Configuration &getConfig() {
 
 
 
+std::map<std::string_view, std::string_view> findReplaceStrings = {
+    {"play", "Yeet!"},
+    {"practice", "Cheat"}
+};
+
 MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
 TMPro::TextMeshPro* self) {
     
     // Used for hit scores
-    self->set_richText(true);
+    // self->set_richText(true);
     // self->set_text("<color=#00ff00>AnyText");
 
     TextMeshProHook(self);
@@ -43,8 +49,16 @@ MAKE_HOOK_MATCH(TextMeshProUGUIHook, &TMPro::TextMeshProUGUI::SetVerticesDirty, 
 TMPro::TextMeshProUGUI* self) {
     
     // Used for everything else
-    self->set_richText(true);
+    // self->set_richText(true);
     // self->set_text("<size=0>Hehe secret text :3</size>AnyText");
+
+    if(self->text) PaperLogger.info("Parsed: {}", self->GetParsedText());
+    if(self->text) self->text = self->text->ToLower();
+    
+    int32_t style = static_cast<int32_t>(self->get_fontStyle());
+    int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
+    style &= ~upper;
+    self->set_fontStyle(style);
 
     TextMeshProUGUIHook(self);
 }
