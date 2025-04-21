@@ -32,7 +32,8 @@ Configuration &getConfig() {
 
 std::map<std::string_view, std::string_view> findReplaceStrings = {
     {"play", "Yeet!"},
-    {"practice", "Cheat"}
+    {"practice", "Cheat"},
+    {"solo", "Alone"}
 };
 
 MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
@@ -52,13 +53,20 @@ TMPro::TextMeshProUGUI* self) {
     // self->set_richText(true);
     // self->set_text("<size=0>Hehe secret text :3</size>AnyText");
 
-    if(self->text) PaperLogger.info("Parsed: {}", self->GetParsedText());
-    if(self->text) self->text = self->text->ToLower();
-    
-    int32_t style = static_cast<int32_t>(self->get_fontStyle());
-    int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
-    style &= ~upper;
-    self->set_fontStyle(style);
+    // if(self->text) PaperLogger.info("Parsed: {}", self->GetParsedText());
+    // if(self->text) self->text = self->text->ToLower();
+
+    // int32_t style = static_cast<int32_t>(self->get_fontStyle());
+    // int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
+    // style &= ~upper;
+    // self->set_fontStyle(style);
+
+    if(self->m_text) {
+        std::string textKey = self->m_text->ToLower();
+        // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
+
+        if(findReplaceStrings.contains(textKey)) self->m_text = findReplaceStrings[textKey];
+    }
 
     TextMeshProUGUIHook(self);
 }
