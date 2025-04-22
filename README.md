@@ -5,8 +5,7 @@ Change any text in the game
 
 ## Todo
 
-- Replace text based off of map
-- Make it possible to add and remove things from the menu
+- Make it possible to edit, add, and remove things from the menu
 - Update the map from the menu
 - Save map to config
 - Load map from config

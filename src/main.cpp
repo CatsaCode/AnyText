@@ -5,6 +5,7 @@
 #include "bsml/shared/BSML.hpp"
 
 #include "ui.hpp"
+#include "stringReplacer.hpp"
 
 // #include "GlobalNamespace/StandardLevelDetailView.hpp"
 // #include "GlobalNamespace/StandardLevelDetailViewController.hpp"
@@ -14,6 +15,7 @@
 
 #include "TMPro/TextMeshPro.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+
 #include <map>
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
@@ -29,12 +31,6 @@ Configuration &getConfig() {
 }
 
 
-
-std::map<std::string_view, std::string_view> findReplaceStrings = {
-    {"play", "Yeet!"},
-    {"practice", "Cheat"},
-    {"solo", "Alone"}
-};
 
 MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
 TMPro::TextMeshPro* self) {
@@ -65,7 +61,7 @@ TMPro::TextMeshProUGUI* self) {
         std::string textKey = self->m_text->ToLower();
         // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
 
-        if(findReplaceStrings.contains(textKey)) self->m_text = findReplaceStrings[textKey];
+        if(AnyText::findReplaceStrings.contains(textKey)) self->m_text = AnyText::findReplaceStrings[textKey];
     }
 
     TextMeshProUGUIHook(self);
