@@ -5,8 +5,10 @@ Change any text in the game
 
 ## Todo
 
-- Make it possible to edit, add, and remove things from the menu
-- Update the map from the menu
+- Make it possible to remove things from the menu
+- Stop text in menu from being replaced too
+- Replace text based on its original value and not the replaced value
+- Set text back to normal when they are removed from the menu
 - Save map to config
 - Load map from config
 - Show this link for rich text hints: https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichText.html

@@ -3,7 +3,7 @@
 
 namespace AnyText {
 
-    std::map<std::string_view, std::string_view> findReplaceStrings = {
+    std::map<std::string, std::string> findReplaceStrings = {
         {"play", "Yeet!"},
         {"practice", "Cheat"},
         {"solo", "Alone"}

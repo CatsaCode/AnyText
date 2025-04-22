@@ -4,6 +4,6 @@
 
 namespace AnyText {
 
-    extern std::map<std::string_view, std::string_view> findReplaceStrings;
+    extern std::map<std::string, std::string> findReplaceStrings;
 
 }
