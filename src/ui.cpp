@@ -76,8 +76,15 @@ namespace AnyText {
     void RegenerateFindReplaceSettings() {
         if(!mainColumnTransform) return;
 
-        for(int i = mainColumnTransform->get_childCount() - 2; i >= 0; i--) Object::DestroyImmediate(mainColumnTransform->GetChild(i)->get_gameObject());
-        for(auto pair : findReplaceStrings) CreateFindReplaceSetting(mainColumnTransform, pair.first, pair.second);
+        for(int i = mainColumnTransform->get_childCount() - 2; i >= 0; i--) {
+            Object::DestroyImmediate(mainColumnTransform->GetChild(i)->get_gameObject());
+        }
+
+        std::vector<std::string> findStrings = getModConfig().findStrings.GetValue();
+        std::vector<std::string> replaceStrings = getModConfig().replaceStrings.GetValue();
+        for(int i = 0; i < std::min(findStrings.size(), replaceStrings.size()); i++) {
+            CreateFindReplaceSetting(mainColumnTransform, findStrings[i], replaceStrings[i]);
+        }
     }
 
     void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
