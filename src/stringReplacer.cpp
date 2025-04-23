@@ -17,19 +17,8 @@ namespace AnyText {
     };
 
     void ReplaceText(TMPro::TMP_Text* text) {
-        // Used for everything else
-        // self->set_richText(true);
-        // self->set_text("<size=0>Hehe secret text :3</size>AnyText");
-    
-        // if(self->text) PaperLogger.info("Parsed: {}", self->GetParsedText());
-        // if(self->text) self->text = self->text->ToLower();
-    
-        // int32_t style = static_cast<int32_t>(self->get_fontStyle());
-        // int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
-        // style &= ~upper;
-        // self->set_fontStyle(style);
-    
         if(!text->m_text) return;
+        // if(text->m_text->get_Length() == 0) return;
     
         Transform* menuTransform = text->get_transform();
         for(int i = 0; i < 3; i++) {
@@ -37,12 +26,23 @@ namespace AnyText {
             else {menuTransform = nullptr; break;}
         }
         if(menuTransform && menuTransform->get_name() == "AnyTextMenu") return;
-    
 
         std::string textKey = text->m_text->ToLower();
         // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
-    
-        if(findReplaceStrings.contains(textKey)) text->m_text = AnyText::findReplaceStrings[textKey];
+        if(!findReplaceStrings.contains(textKey)) return;
+        
+
+        text->set_richText(true);
+
+        // To-do save the uppercase bit in here as well
+        text->m_text = "<size=0>" + text->m_text + "</size>" + AnyText::findReplaceStrings[textKey]; // Setting m_text directly because text has a potentially recursive setter
+
+        // Remove the uppercase bit from the fontStyle
+        // To-do if the text "practice" is replaced, all of the buttons that use the practice button as a template will have this bit removed and it won't get put back.. ex: the Mods section in the main menu
+        int32_t style = static_cast<int32_t>(text->get_fontStyle());
+        int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
+        style &= ~upper;
+        text->set_fontStyle(style);
     }
 
 
