@@ -7,17 +7,6 @@
 #include "ui.hpp"
 #include "stringReplacer.hpp"
 
-// #include "GlobalNamespace/StandardLevelDetailView.hpp"
-// #include "GlobalNamespace/StandardLevelDetailViewController.hpp"
-// #include "UnityEngine/UI/Button.hpp"
-// #include "UnityEngine/GameObject.hpp"
-// #include "HMUI/CurvedTextMeshPro.hpp"
-
-#include "TMPro/TextMeshPro.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
-
-#include <map>
-
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 // Stores the ID and version of our mod, and is sent to
 // the modloader upon startup
@@ -28,56 +17,6 @@ static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 Configuration &getConfig() {
     static Configuration config(modInfo);
     return config;
-}
-
-
-
-MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
-TMPro::TextMeshPro* self) {
-    
-    // Used for hit scores
-    // self->set_richText(true);
-    // self->set_text("<color=#00ff00>AnyText");
-
-    TextMeshProHook(self);
-}
-
-MAKE_HOOK_MATCH(TextMeshProUGUIHook, &TMPro::TextMeshProUGUI::SetVerticesDirty, void, 
-TMPro::TextMeshProUGUI* self) {
-    
-    // Used for everything else
-    // self->set_richText(true);
-    // self->set_text("<size=0>Hehe secret text :3</size>AnyText");
-
-    // if(self->text) PaperLogger.info("Parsed: {}", self->GetParsedText());
-    // if(self->text) self->text = self->text->ToLower();
-
-    // int32_t style = static_cast<int32_t>(self->get_fontStyle());
-    // int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
-    // style &= ~upper;
-    // self->set_fontStyle(style);
-
-    if(!self->m_text) {
-        TextMeshProUGUIHook(self);
-        return;
-    }
-
-    UnityEngine::Transform* menuTransform = self->get_transform();
-    for(int i = 0; i < 3; i++) {
-        if(menuTransform->get_parent()) menuTransform = menuTransform->get_parent();
-        else {menuTransform = nullptr; break;}
-    }
-    if(menuTransform && menuTransform->get_name() == "AnyTextMenu") {
-        TextMeshProUGUIHook(self);
-        return;
-    }
-
-    std::string textKey = self->m_text->ToLower();
-    // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
-
-    if(AnyText::findReplaceStrings.contains(textKey)) self->m_text = AnyText::findReplaceStrings[textKey];
-
-    TextMeshProUGUIHook(self);
 }
 
 
@@ -102,8 +41,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     PaperLogger.info("Installing hooks...");
 
-    INSTALL_HOOK(PaperLogger, TextMeshProHook);
-    INSTALL_HOOK(PaperLogger, TextMeshProUGUIHook)
+    AnyText::InstallStringReplacerHooks();
 
     PaperLogger.info("Installed all hooks!");
 }

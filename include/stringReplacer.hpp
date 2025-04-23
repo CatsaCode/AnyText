@@ -6,4 +6,6 @@ namespace AnyText {
 
     extern std::map<std::string, std::string> findReplaceStrings;
 
+    void InstallStringReplacerHooks();
+
 }
