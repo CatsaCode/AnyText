@@ -18,18 +18,24 @@ namespace AnyText {
 
     UnityW<RectTransform> mainColumnTransform;
 
-    void RegenerateFindReplaceStrings() {
+    void UpdateMapConfigAndAllText() {
         if(!mainColumnTransform) return;
 
+        std::vector<std::string> findStrings = {};
+        std::vector<std::string> replaceStrings = {};
         findReplaceStrings.clear();
         for(int i = 0; i < mainColumnTransform->get_childCount() - 1; i++) {
-            std::string findString = mainColumnTransform->GetChild(i)->GetChild(0)->GetComponent<InputFieldView*>()->get_text()->ToLower();
-            std::string replaceString = mainColumnTransform->GetChild(i)->GetChild(1)->GetComponent<InputFieldView*>()->get_text();
+            StringW findString = mainColumnTransform->GetChild(i)->GetChild(0)->GetComponent<InputFieldView*>()->get_text();
+            StringW replaceString = mainColumnTransform->GetChild(i)->GetChild(1)->GetComponent<InputFieldView*>()->get_text();
 
-            if(findString.size() == 0) continue;
+            if(findString->get_Length() == 0) continue;
 
-            findReplaceStrings[findString] = replaceString;
+            findStrings.push_back(findString);
+            replaceStrings.push_back(replaceString);
+            findReplaceStrings[findString->ToLower()] = std::string(replaceString);
         }
+        getModConfig().findStrings.SetValue(findStrings);
+        getModConfig().replaceStrings.SetValue(replaceStrings);
 
         for(TMPro::TMP_Text* text : Resources::FindObjectsOfTypeAll<TMPro::TMP_Text*>()) {
             RevertText(text);
@@ -90,7 +96,7 @@ namespace AnyText {
     void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(firstActivation) {
             std::function<void(bool, bool)> ModConfigMenuDidDeactivate = [](bool removedFromHierarchy, bool screenSystemDisabling){
-                RegenerateFindReplaceStrings();
+                UpdateMapConfigAndAllText();
             };
             self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
