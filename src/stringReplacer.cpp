@@ -1,27 +1,31 @@
 #include "stringReplacer.hpp"
 #include "main.hpp"
+#include "modConfig.hpp"
+
+#include "bsml/shared/BSML/MainThreadScheduler.hpp"
+
+#include "GlobalNamespace/MainMenuViewController.hpp"
 
 #include "UnityEngine/Transform.hpp"
+#include "UnityEngine/Resources.hpp"
 
 #include "TMPro/TMP_Text.hpp"
 #include "TMPro/TextMeshPro.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+
 #include <string>
 
+using namespace GlobalNamespace;
 using namespace UnityEngine;
 
 namespace AnyText {
 
-    std::map<std::string, std::string> findReplaceStrings = {
-        // {"play", "Yeet!"},
-        // {"practice", "Cheat"},
-        // {"solo", "Alone"}
-    };
+    std::map<std::string, std::string> findReplaceStrings = {};
 
-    void RevertText(TMPro::TMP_Text* text) {
-        if(!text->m_text) return;
+    bool RevertText(TMPro::TMP_Text* text) {
+        if(!text->m_text) return false;
 
-        if(!text->m_text->StartsWith("<size=0>AnyText_")) return;
+        if(!text->m_text->StartsWith("<size=0>AnyText_")) return false;
 
 
         int underscore1 = 15;
@@ -35,28 +39,29 @@ namespace AnyText {
 
         text->m_fontStyle = originalStyle;
         text->m_text = originalText;
+
+        return true;
     }
 
-    void ReplaceText(TMPro::TMP_Text* text) {
-        if(!text->m_text) return;
+    bool ReplaceText(TMPro::TMP_Text* text) {
+        if(!text->m_text) return false;
     
         Transform* menuTransform = text->get_transform();
         for(int i = 0; i < 3; i++) {
             if(menuTransform->get_parent()) menuTransform = menuTransform->get_parent();
             else {menuTransform = nullptr; break;}
         }
-        if(menuTransform && menuTransform->get_name() == "AnyTextMenu") return;
+        if(menuTransform && menuTransform->get_name() == "AnyTextMenu") return false;
 
         std::string textKey = text->m_text->ToLower();
         // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
-        if(!findReplaceStrings.contains(textKey)) return;
+        if(!findReplaceStrings.contains(textKey)) return false;
         
 
         // Private variables are set directly because the public setters will call SetVerticesDirty(), creating an infinite loop
         text->m_isRichText = true;
 
         // Remove the uppercase bit from the fontStyle
-        // To-do if the text "practice" is replaced, all of the buttons that use the practice button as a template will have this bit removed and it won't get put back.. ex: the Mods section in the main menu
         int32_t oldStyle = static_cast<int32_t>(text->get_fontStyle());
         int32_t newStyle = oldStyle;
         int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
@@ -64,9 +69,33 @@ namespace AnyText {
         text->m_fontStyle = newStyle;
 
         text->m_text = fmt::format("<size=0>AnyText_{}_{}_AnyText</size>{}", oldStyle, text->m_text, findReplaceStrings[textKey]);
+
+        return true;
     }
 
 
+
+    MAKE_HOOK_MATCH(InitialReplaceHook, &MainMenuViewController::DidActivate, void,
+    MainMenuViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+        InitialReplaceHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+        if(!firstActivation) return;
+
+        // Very small delay so the BSML's practice button template isn't decapitalized if "practice" is overwritten
+        BSML::MainThreadScheduler::ScheduleAfterTime(0.1, [](){
+            std::vector<std::string> findStrings = getModConfig().findStrings.GetValue();
+            std::vector<std::string> replaceStrings = getModConfig().replaceStrings.GetValue();
+            for(int i = 0; i < std::min(findStrings.size(), replaceStrings.size()); i++) {
+                StringW key = findStrings[i];
+                key = key->ToLower();
+                findReplaceStrings[key] = replaceStrings[i];
+            }
+
+            for(TMPro::TMP_Text* text : Resources::FindObjectsOfTypeAll<TMPro::TMP_Text*>()) {
+                if(ReplaceText(text)) text->SetAllDirty();
+            }
+        });
+    }
 
     MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
     TMPro::TextMeshPro* self) {
@@ -81,6 +110,7 @@ namespace AnyText {
     }
 
     void InstallStringReplacerHooks() {
+        INSTALL_HOOK(PaperLogger, InitialReplaceHook);
         INSTALL_HOOK(PaperLogger, TextMeshProHook);
         INSTALL_HOOK(PaperLogger, TextMeshProUGUIHook);
     }

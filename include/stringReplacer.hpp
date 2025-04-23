@@ -8,8 +8,8 @@ namespace AnyText {
 
     extern std::map<std::string, std::string> findReplaceStrings;
 
-    void RevertText(TMPro::TMP_Text* text);
-    void ReplaceText(TMPro::TMP_Text* text);
+    bool RevertText(TMPro::TMP_Text* text);
+    bool ReplaceText(TMPro::TMP_Text* text);
 
     void InstallStringReplacerHooks();
 
