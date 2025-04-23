@@ -57,12 +57,25 @@ TMPro::TextMeshProUGUI* self) {
     // style &= ~upper;
     // self->set_fontStyle(style);
 
-    if(self->m_text) {
-        std::string textKey = self->m_text->ToLower();
-        // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
-
-        if(AnyText::findReplaceStrings.contains(textKey)) self->m_text = AnyText::findReplaceStrings[textKey];
+    if(!self->m_text) {
+        TextMeshProUGUIHook(self);
+        return;
     }
+
+    UnityEngine::Transform* menuTransform = self->get_transform();
+    for(int i = 0; i < 3; i++) {
+        if(menuTransform->get_parent()) menuTransform = menuTransform->get_parent();
+        else {menuTransform = nullptr; break;}
+    }
+    if(menuTransform && menuTransform->get_name()->Equals("AnyTextMenu")) {
+        TextMeshProUGUIHook(self);
+        return;
+    }
+
+    std::string textKey = self->m_text->ToLower();
+    // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
+
+    if(AnyText::findReplaceStrings.contains(textKey)) self->m_text = AnyText::findReplaceStrings[textKey];
 
     TextMeshProUGUIHook(self);
 }

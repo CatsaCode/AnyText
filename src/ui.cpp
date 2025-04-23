@@ -42,11 +42,17 @@ namespace AnyText {
 
         InputFieldView* findStringSetting = BSML::Lite::CreateStringSetting(rowTransform, "Find", findStartValue, nullptr);
         LayoutElement* findStringSettingLayoutE = findStringSetting->GetComponent<LayoutElement*>();
-        findStringSettingLayoutE->set_preferredWidth(50);
+        findStringSettingLayoutE->set_preferredWidth(40);
+        for(CurvedTextMeshPro* findStringSettingText : findStringSetting->GetComponentsInChildren<CurvedTextMeshPro*>(true)) {
+            findStringSettingText->set_richText(false);
+        }
         
         InputFieldView* replaceStringSetting = BSML::Lite::CreateStringSetting(rowTransform, "Replace", replaceStartValue, nullptr);
         LayoutElement* replaceStringSettingLayoutE = replaceStringSetting->GetComponent<LayoutElement*>();
-        replaceStringSettingLayoutE->set_preferredWidth(50);
+        replaceStringSettingLayoutE->set_preferredWidth(70);
+        for(CurvedTextMeshPro* replaceStringSettingText : replaceStringSetting->GetComponentsInChildren<CurvedTextMeshPro*>(true)) {
+            replaceStringSettingText->set_richText(false);
+        }
 
         Button* removeButton = BSML::Lite::CreateUIButton(rowTransform, "X", [](){});
         LayoutElement* removeButtonLayoutE = removeButton->GetComponent<LayoutElement*>();
