@@ -7,7 +7,7 @@ Change any text in the game
 
 - Save map to config
 - Load map from config
-- Show this link for rich text hints: https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichText.html
+- Show this link for rich text hints: https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichTextSupportedTags.html
 
 
 ## Build Instructions

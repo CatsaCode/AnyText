@@ -1,5 +1,6 @@
 #include "ui.hpp"
 #include "main.hpp"
+#include "modConfig.hpp"
 
 #include "stringReplacer.hpp"
 

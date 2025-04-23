@@ -13,9 +13,9 @@ using namespace UnityEngine;
 namespace AnyText {
 
     std::map<std::string, std::string> findReplaceStrings = {
-        {"play", "Yeet!"},
-        {"practice", "Cheat"},
-        {"solo", "Alone"}
+        // {"play", "Yeet!"},
+        // {"practice", "Cheat"},
+        // {"solo", "Alone"}
     };
 
     void RevertText(TMPro::TMP_Text* text) {
