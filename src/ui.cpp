@@ -54,7 +54,9 @@ namespace AnyText {
             replaceStringSettingText->set_richText(false);
         }
 
-        Button* removeButton = BSML::Lite::CreateUIButton(rowTransform, "X", [](){});
+        Button* removeButton = BSML::Lite::CreateUIButton(rowTransform, "X", [rowGO](){
+            Object::Destroy(rowGO);
+        });
         LayoutElement* removeButtonLayoutE = removeButton->GetComponent<LayoutElement*>();
         removeButtonLayoutE->set_preferredWidth(6);
 
