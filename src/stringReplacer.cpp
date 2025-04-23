@@ -2,9 +2,11 @@
 #include "main.hpp"
 
 #include "UnityEngine/Transform.hpp"
+
 #include "TMPro/TMP_Text.hpp"
 #include "TMPro/TextMeshPro.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+#include <string>
 
 using namespace UnityEngine;
 
@@ -16,9 +18,27 @@ namespace AnyText {
         {"solo", "Alone"}
     };
 
+    void RevertText(TMPro::TMP_Text* text) {
+        if(!text->m_text) return;
+
+        if(!text->m_text->StartsWith("<size=0>AnyText_")) return;
+
+
+        int underscore1 = 15;
+        int underscore2 = text->m_text->IndexOf('_', underscore1 + 1);
+        int underscore3 = text->m_text->IndexOf('_', underscore2 + 1);
+        
+        std::string originalStyleString = text->m_text->Substring(underscore1 + 1, underscore2 - underscore1 - 1);
+        int32_t originalStyle = std::stoi(originalStyleString);
+        std::string originalText = text->m_text->Substring(underscore2 + 1, underscore3 - underscore2 - 1);
+
+
+        text->m_fontStyle = originalStyle;
+        text->m_text = originalText;
+    }
+
     void ReplaceText(TMPro::TMP_Text* text) {
         if(!text->m_text) return;
-        // if(text->m_text->get_Length() == 0) return;
     
         Transform* menuTransform = text->get_transform();
         for(int i = 0; i < 3; i++) {
@@ -32,17 +52,18 @@ namespace AnyText {
         if(!findReplaceStrings.contains(textKey)) return;
         
 
-        text->set_richText(true);
-
-        // To-do save the uppercase bit in here as well
-        text->m_text = "<size=0>" + text->m_text + "</size>" + AnyText::findReplaceStrings[textKey]; // Setting m_text directly because text has a potentially recursive setter
+        // Private variables are set directly because the public setters will call SetVerticesDirty(), creating an infinite loop
+        text->m_isRichText = true;
 
         // Remove the uppercase bit from the fontStyle
         // To-do if the text "practice" is replaced, all of the buttons that use the practice button as a template will have this bit removed and it won't get put back.. ex: the Mods section in the main menu
-        int32_t style = static_cast<int32_t>(text->get_fontStyle());
+        int32_t oldStyle = static_cast<int32_t>(text->get_fontStyle());
+        int32_t newStyle = oldStyle;
         int32_t upper = static_cast<int32_t>(TMPro::FontStyles::UpperCase);
-        style &= ~upper;
-        text->set_fontStyle(style);
+        newStyle &= ~upper;
+        text->m_fontStyle = newStyle;
+
+        text->m_text = fmt::format("<size=0>AnyText_{}_{}_AnyText</size>{}", oldStyle, text->m_text, findReplaceStrings[textKey]);
     }
 
 

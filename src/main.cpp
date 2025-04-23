@@ -19,8 +19,6 @@ Configuration &getConfig() {
     return config;
 }
 
-
-
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
     *info = modInfo.to_c();

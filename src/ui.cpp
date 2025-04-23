@@ -5,6 +5,7 @@
 
 #include "bsml/shared/BSML.hpp"
 
+#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
@@ -27,6 +28,11 @@ namespace AnyText {
             if(findString.size() == 0) continue;
 
             findReplaceStrings[findString] = replaceString;
+        }
+
+        for(TMPro::TMP_Text* text : Resources::FindObjectsOfTypeAll<TMPro::TMP_Text*>()) {
+            RevertText(text);
+            ReplaceText(text);
         }
     }
 
