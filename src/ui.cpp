@@ -21,8 +21,7 @@ namespace AnyText {
     void UpdateMapConfigAndAllText() {
         if(!mainColumnTransform) return;
 
-        std::vector<std::string> findStrings = {};
-        std::vector<std::string> replaceStrings = {};
+        std::vector<std::pair<std::string, std::string>> configPairs = {};
         findReplaceStrings.clear();
         for(int i = 0; i < mainColumnTransform->get_childCount() - 1; i++) {
             StringW findString = mainColumnTransform->GetChild(i)->GetChild(0)->GetComponent<InputFieldView*>()->get_text();
@@ -30,9 +29,28 @@ namespace AnyText {
 
             if(findString->get_Length() == 0) continue;
 
-            findStrings.push_back(findString);
-            replaceStrings.push_back(replaceString);
+            configPairs.push_back({findString, replaceString});
             findReplaceStrings[findString->ToLower()] = std::string(replaceString);
+        }
+        std::sort(configPairs.begin(), configPairs.end(), [](std::pair<std::string, std::string> a, std::pair<std::string, std::string> b){
+            StringW aFirst = a.first;
+            StringW bFirst = b.first;
+            aFirst = aFirst->ToLower();
+            bFirst = bFirst->ToLower();
+            return aFirst->CompareTo(bFirst) <= 0;
+        });
+        auto uniqueIt = std::unique(configPairs.begin(), configPairs.end(), [](std::pair<std::string, std::string> a, std::pair<std::string, std::string> b){
+            StringW aFirst = a.first;
+            StringW bFirst = b.first;
+            aFirst = aFirst->ToLower();
+            bFirst = bFirst->ToLower();
+            return aFirst->Equals(bFirst);
+        });
+        std::vector<std::string> findStrings = {};
+        std::vector<std::string> replaceStrings = {};
+        for(auto it = configPairs.begin(); it < uniqueIt; it++) {
+            findStrings.push_back(it->first);
+            replaceStrings.push_back(it->second);
         }
         getModConfig().findStrings.SetValue(findStrings);
         getModConfig().replaceStrings.SetValue(replaceStrings);
