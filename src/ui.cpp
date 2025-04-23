@@ -23,6 +23,9 @@ namespace AnyText {
         for(int i = 0; i < mainColumnTransform->get_childCount() - 1; i++) {
             std::string findString = mainColumnTransform->GetChild(i)->GetChild(0)->GetComponent<InputFieldView*>()->get_text()->ToLower();
             std::string replaceString = mainColumnTransform->GetChild(i)->GetChild(1)->GetComponent<InputFieldView*>()->get_text();
+
+            if(findString.size() == 0) continue;
+
             findReplaceStrings[findString] = replaceString;
         }
     }

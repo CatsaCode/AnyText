@@ -67,7 +67,7 @@ TMPro::TextMeshProUGUI* self) {
         if(menuTransform->get_parent()) menuTransform = menuTransform->get_parent();
         else {menuTransform = nullptr; break;}
     }
-    if(menuTransform && menuTransform->get_name()->Equals("AnyTextMenu")) {
+    if(menuTransform && menuTransform->get_name() == "AnyTextMenu") {
         TextMeshProUGUIHook(self);
         return;
     }
