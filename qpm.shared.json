@@ -6,7 +6,7 @@
     "info": {
       "name": "AnyText",
       "id": "anytext",
-      "version": "0.1.0",
+      "version": "1.0.0",
       "url": null,
       "additionalData": {
         "overrideSoName": "libanytext.so",
