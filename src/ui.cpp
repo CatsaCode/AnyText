@@ -174,11 +174,11 @@ namespace AnyText {
             infoTextTransform->set_anchorMax({0, 0});
             infoTextTransform->set_pivot({0, 0});
             infoTextTransform->set_anchoredPosition({0, 0});
-            infoTextTransform->set_sizeDelta({56, 0});
+            infoTextTransform->set_sizeDelta({54, 0});
             TMPro::TextMeshProUGUI* infoText = infoTextGO->AddComponent<TMPro::TextMeshProUGUI*>();
             infoText->set_font(BSML::Helpers::GetMainTextFont());
             infoText->set_fontSharedMaterial(BSML::Helpers::GetMainUIFontMaterial());
-            infoText->set_fontSize(2.45);
+            infoText->set_fontSize(2.35);
             infoText->set_color({1, 1, 1, 1});
             infoText->set_verticalAlignment(TMPro::VerticalAlignmentOptions::Bottom);
             infoText->set_text("\
@@ -187,8 +187,9 @@ namespace AnyText {
     \"a\" -> \"@\" will not replace every letter, just the key on the keyboard.<br>\
 - Search term is <u>not case sensitive</u>.<br>\
 - Search term is <u>indiscriminate</u>.<br>\
-  Even song titles can be replaced if they happen to match.<br>\
+   Even song titles can be replaced if they happen to match.<br>\
 - Emojis can be added from the config file.<br>\
+- The Beat Saber logo can not be replaced; it is an image.<br>\
 <br>\
 Rich text is mostly supported. The MoreButtons mod is recommended.<br>\
 Examples<br>\
@@ -222,8 +223,8 @@ Have fun customizing! =D"\
             richTextLinkButtonTransform->set_anchorMin({0, 0});
             richTextLinkButtonTransform->set_anchorMax({0, 0});
             richTextLinkButtonTransform->set_pivot({0, 0});
-            richTextLinkButtonTransform->set_anchoredPosition({-1, 13.2});
-            richTextLinkButtonTransform->set_sizeDelta({57, 9});
+            richTextLinkButtonTransform->set_anchoredPosition({-1, 12.5});
+            richTextLinkButtonTransform->set_sizeDelta({55, 9});
 
         }
 
