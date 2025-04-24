@@ -1,6 +1,6 @@
 # AnyText
 
-Change any text in the game
+Change any text in the game through a list of find and replace instructions.
 
 
 ## Known Bugs
