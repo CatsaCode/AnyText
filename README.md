@@ -3,9 +3,17 @@
 Change any text in the game
 
 
+## To-do
+
+- Add animation to information panel
+
+
 ## Known Bugs
 
 - Replacing "practice" will decapitalize many buttons
+- Replacing a menu banner will decapitalize all menu banners
+- Creating many rows will make the buttons lag
+- Add example to default config
 
 
 ## Build Instructions
