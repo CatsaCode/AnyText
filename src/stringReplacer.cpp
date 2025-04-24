@@ -2,8 +2,6 @@
 #include "main.hpp"
 #include "modConfig.hpp"
 
-#include "bsml/shared/BSML/MainThreadScheduler.hpp"
-
 #include "GlobalNamespace/MainMenuViewController.hpp"
 
 #include "UnityEngine/Transform.hpp"
@@ -81,20 +79,17 @@ namespace AnyText {
 
         if(!firstActivation) return;
 
-        // Very small delay so the BSML's practice button template isn't decapitalized if "practice" is overwritten
-        BSML::MainThreadScheduler::ScheduleAfterTime(0.1, [](){
-            std::vector<std::string> findStrings = getModConfig().findStrings.GetValue();
-            std::vector<std::string> replaceStrings = getModConfig().replaceStrings.GetValue();
-            for(int i = 0; i < std::min(findStrings.size(), replaceStrings.size()); i++) {
-                StringW key = findStrings[i];
-                key = key->ToLower();
-                findReplaceStrings[key] = replaceStrings[i];
-            }
+        std::vector<std::string> findStrings = getModConfig().findStrings.GetValue();
+        std::vector<std::string> replaceStrings = getModConfig().replaceStrings.GetValue();
+        for(int i = 0; i < std::min(findStrings.size(), replaceStrings.size()); i++) {
+            StringW key = findStrings[i];
+            key = key->ToLower();
+            findReplaceStrings[key] = replaceStrings[i];
+        }
 
-            for(TMPro::TMP_Text* text : Resources::FindObjectsOfTypeAll<TMPro::TMP_Text*>()) {
-                if(ReplaceText(text)) text->SetAllDirty();
-            }
-        });
+        for(TMPro::TMP_Text* text : Resources::FindObjectsOfTypeAll<TMPro::TMP_Text*>()) {
+            if(ReplaceText(text)) text->SetAllDirty();
+        }
     }
 
     MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
