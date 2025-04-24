@@ -122,6 +122,9 @@ namespace AnyText {
             mainColumn->set_name("AnyTextMenu");
             mainColumn->set_spacing(-1.5);
             mainColumnTransform = mainColumn->get_rectTransform();
+            // Move container upwards so the keyboard doesn't clip into the ground
+            RectTransform* scrollableSettingsContainerTransform = mainColumnTransform->get_parent()->get_parent()->get_parent()->GetComponent<RectTransform*>();
+            scrollableSettingsContainerTransform->set_anchoredPosition(Vector2::op_Addition(scrollableSettingsContainerTransform->get_anchoredPosition(), Vector2(0, 7)));
             
             Button* addButton = BSML::Lite::CreateUIButton(mainColumnTransform, "+", [](){CreateFindReplaceSetting(mainColumnTransform);});
             LayoutElement* addButtonLayoutE = addButton->GetComponent<LayoutElement*>();
