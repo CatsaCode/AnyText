@@ -3,11 +3,6 @@
 Change any text in the game
 
 
-## To-do
-
-- Add animation to information panel
-
-
 ## Known Bugs
 
 - Replacing "practice" will decapitalize many buttons

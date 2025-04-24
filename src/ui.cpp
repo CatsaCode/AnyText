@@ -7,6 +7,9 @@
 #include "bsml/shared/BSML.hpp"
 #include "bsml/shared/Helpers/getters.hpp"
 
+#include "UnityEngine/Animation.hpp"
+#include "UnityEngine/AnimationClip.hpp"
+#include "UnityEngine/AnimationCurve.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
@@ -22,6 +25,7 @@ using namespace HMUI;
 namespace AnyText {
 
     UnityW<RectTransform> mainColumnTransform;
+    UnityW<Animation> infoCanvasAnimation;
 
     void UpdateMapConfigAndAllText() {
         if(!mainColumnTransform) return;
@@ -120,6 +124,7 @@ namespace AnyText {
         if(firstActivation) {
             std::function<void(bool, bool)> ModConfigMenuDidDeactivate = [](bool removedFromHierarchy, bool screenSystemDisabling){
                 UpdateMapConfigAndAllText();
+                if(infoCanvasAnimation) infoCanvasAnimation->Play("InfoCanvasClose");
             };
             self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
@@ -142,9 +147,25 @@ namespace AnyText {
             infoCanvasTransform->set_anchorMax({0, 0});
             infoCanvasTransform->set_pivot({0, 0});
             infoCanvasTransform->set_anchoredPosition({0, 0});
-            infoCanvasTransform->set_sizeDelta({100, 100});
+            infoCanvasTransform->set_sizeDelta({0, 0});
             infoCanvasTransform->set_position({-3.2, 0.1, 2.3});
             infoCanvasTransform->set_rotation(Quaternion::Euler({10, -45, 0}));
+
+            infoCanvasAnimation = infoCanvasGO->AddComponent<Animation*>();
+            AnimationClip* infoCanvasOpenClip = AnimationClip::New_ctor();
+            infoCanvasOpenClip->set_name("InfoCanvasOpen");
+            infoCanvasOpenClip->set_legacy(true);
+            infoCanvasOpenClip->SetCurve("", csTypeOf(Transform*), "localScale.x", AnimationCurve::Linear(0, 0.03, 0.25, 0.03));
+            infoCanvasOpenClip->SetCurve("", csTypeOf(Transform*), "localScale.y", AnimationCurve::EaseInOut(0, 0, 0.25, 0.03));
+            infoCanvasOpenClip->SetCurve("", csTypeOf(Transform*), "localScale.z", AnimationCurve::Linear(0, 0.03, 0.25, 0.03));
+            infoCanvasAnimation->AddClip(infoCanvasOpenClip, infoCanvasOpenClip->get_name());
+            AnimationClip* infoCanvasCloseClip = AnimationClip::New_ctor();
+            infoCanvasCloseClip->set_name("InfoCanvasClose");
+            infoCanvasCloseClip->set_legacy(true);
+            infoCanvasCloseClip->SetCurve("", csTypeOf(Transform*), "localScale.x", AnimationCurve::Linear(0, 0.03, 0.25, 0.03));
+            infoCanvasCloseClip->SetCurve("", csTypeOf(Transform*), "localScale.y", AnimationCurve::EaseInOut(0, 0.03, 0.25, 0));
+            infoCanvasCloseClip->SetCurve("", csTypeOf(Transform*), "localScale.z", AnimationCurve::Linear(0, 0.03, 0.25, 0.03));
+            infoCanvasAnimation->AddClip(infoCanvasCloseClip, infoCanvasCloseClip->get_name());
 
             GameObject* infoTextGO = GameObject::New_ctor("AnyTextInfo");
             RectTransform* infoTextTransform = infoTextGO->AddComponent<RectTransform*>();
@@ -207,6 +228,7 @@ Have fun customizing! =D"\
         }
 
         RegenerateFindReplaceSettings();
+        if(infoCanvasAnimation) infoCanvasAnimation->Play("InfoCanvasOpen");
     }
 
 }
