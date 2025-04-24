@@ -5,10 +5,13 @@
 #include "stringReplacer.hpp"
 
 #include "bsml/shared/BSML.hpp"
+#include "bsml/shared/Helpers/getters.hpp"
 
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+
+#include "TMPro/TextMeshPro.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -129,6 +132,47 @@ namespace AnyText {
             Button* addButton = BSML::Lite::CreateUIButton(mainColumnTransform, "+", [](){CreateFindReplaceSetting(mainColumnTransform);});
             LayoutElement* addButtonLayoutE = addButton->GetComponent<LayoutElement*>();
             addButtonLayoutE->set_preferredWidth(6);
+
+            GameObject* infoTextGO = GameObject::New_ctor("AnyTextInfo");
+            RectTransform* infoTextTransform = infoTextGO->AddComponent<RectTransform*>();
+            infoTextTransform->SetParent(scrollableSettingsContainerTransform->get_parent(), true);
+            infoTextTransform->set_anchorMin({0, 0});
+            infoTextTransform->set_anchorMax({0, 0});
+            infoTextTransform->set_pivot({0, 0});
+            infoTextTransform->set_anchoredPosition({0, 0});
+            infoTextTransform->set_sizeDelta({1.6, 2});
+            infoTextTransform->set_position({-3.2, 0.1, 2.3});
+            infoTextTransform->set_rotation(Quaternion::Euler({10, -45, 0}));
+            TMPro::TextMeshPro* infoText = infoTextGO->AddComponent<TMPro::TextMeshPro*>();
+            infoText->set_font(BSML::Helpers::GetMainTextFont());
+            infoText->set_fontSharedMaterial(BSML::Helpers::GetMainUIFontMaterial());
+            infoText->set_fontSize(0.7);
+            infoText->set_color({1, 1, 1, 1});
+            infoText->set_verticalAlignment(TMPro::VerticalAlignmentOptions::Bottom);
+            infoText->set_text("\
+<size=200%><b>Information</b></size><br>\
+- Search term must match <u>fully</u>.<br>\
+    \"a\" -> \"@\" will not replace every letter, just the key on the keyboard.<br>\
+- Search term is <u>not case sensitive</u>.<br>\
+- Search term is <u>indiscriminate</u>.<br>\
+  Even song titles can be replaced if they happen to match.<br>\
+- Emojis can be added from the config file.<br>\
+<br>\
+Rich text is mostly supported. The MoreButtons mod is recommended.<br>\
+Examples<br>\
+- <noparse><i></noparse><i>Italics</i><noparse></i></noparse> and normal<br>\
+- <noparse><b></noparse><b>Bold</b><br>\
+- <noparse><u></noparse><u>Underline</u><br>\
+- <noparse><size=75%></noparse><size=75%>Font size</size><br>\
+- <noparse><color=red></noparse><color=red>Color</color><br>\
+- <noparse><color=#3beb8a></noparse><color=#3beb8a>Hex color</color><br>\
+- <noparse><rotate=20></noparse><rotate=20>Rotate</rotate><br>\
+- <noparse><nobr></noparse> Stops line breaks, which is useful for hit scores<br>\
+For more info, visit https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichTextSupportedTags.html<br>\
+Unsupported tags include font, font-weight, gradient, link, page, sprite, and style.<br>\
+<br>\
+Have fun customizing! =D"\
+            );
         }
 
         RegenerateFindReplaceSettings();
