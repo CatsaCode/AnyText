@@ -202,7 +202,9 @@ Examples<br>\
 - <noparse><color=#3beb8a></noparse><color=#3beb8a>Hex color</color><br>\
 - <noparse><rotate=20></noparse><rotate=20>Rotate</rotate><br>\
 - <noparse><nobr></noparse> Stops line breaks, which is useful for hit scores<br>\
-For more info, visit <color=#3366cc>https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/RichText.html</color><br>\
+For more info, visit<br>\
+<color=#3366cc>https://docs.unity3d.com/Packages/com.unity.<br>\
+ugui@2.0/manual/TextMeshPro/RichText.html</color><br>\
 Unsupported tags include font, font-weight, gradient, link, page, sprite, and style.<br>\
 <br>\
 Have fun customizing! =D"\
@@ -225,7 +227,7 @@ Have fun customizing! =D"\
             richTextLinkButtonTransform->set_anchorMax({0, 0});
             richTextLinkButtonTransform->set_pivot({0, 0});
             richTextLinkButtonTransform->set_anchoredPosition({-1, 12.5});
-            richTextLinkButtonTransform->set_sizeDelta({55, 9});
+            richTextLinkButtonTransform->set_sizeDelta({38, 9});
 
         }
 
