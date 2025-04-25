@@ -113,6 +113,7 @@ namespace AnyText {
             Object::DestroyImmediate(mainColumnTransform->GetChild(i)->get_gameObject());
         }
 
+        getModConfig().Init(modInfo);
         std::vector<std::string> findStrings = getModConfig().findStrings.GetValue();
         std::vector<std::string> replaceStrings = getModConfig().replaceStrings.GetValue();
         for(int i = 0; i < std::min(findStrings.size(), replaceStrings.size()); i++) {

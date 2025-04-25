@@ -8,8 +8,6 @@
 #include "ui.hpp"
 #include "stringReplacer.hpp"
 
-static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
-
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
     *info = modInfo.to_c();

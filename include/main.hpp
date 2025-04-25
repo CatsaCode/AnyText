@@ -17,8 +17,6 @@
 
 #include "_config.hpp"
 
-// Define these functions here so that we can easily read configuration and
-// log information from other files
-Configuration &getConfig();
+static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 
 constexpr auto PaperLogger = Paper::ConstLoggerContext("anytext");
