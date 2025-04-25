@@ -2,6 +2,8 @@
 
 Change any text in the game through a list of find and replace instructions.
 
+<img src="cover.png" width="500" />
+
 
 ## Known Bugs
 
