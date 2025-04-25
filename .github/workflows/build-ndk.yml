@@ -59,7 +59,8 @@ jobs:
       id: version
       run: |
         echo "TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_OUTPUT}
-        echo "VERSION=${GITHUB_REF#refs/tags/v}" >> ${GITHUB_OUTPUT}
+        trimEnd="${GITHUB_REF%-bs-*.*.*}"
+        echo "VERSION=${trimEnd#refs/tags/v}" >> ${GITHUB_OUTPUT}
 
     # if we don't have a tag, don't do anything special
     - name: Setup qpm
