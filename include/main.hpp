@@ -13,8 +13,6 @@
 #include "beatsaber-hook/shared/utils/logging.hpp"
 
 
-#include "paper/shared/logger.hpp"
-
 #include "_config.hpp"
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};

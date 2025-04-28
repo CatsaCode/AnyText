@@ -58,8 +58,8 @@
         }
       },
       {
-        "id": "paper",
-        "versionRange": "^3.7.0",
+        "id": "paper2_scotland2",
+        "versionRange": "^4.6.1",
         "additionalData": {}
       },
       {
@@ -107,14 +107,13 @@
     },
     {
       "dependency": {
-        "id": "paper",
-        "versionRange": "=3.7.0",
+        "id": "paper2_scotland2",
+        "versionRange": "=4.6.1",
         "additionalData": {
-          "soLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.7.0/libpaperlog.so",
-          "debugSoLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.7.0/debug_libpaperlog.so",
-          "overrideSoName": "libpaperlog.so",
-          "modLink": "https://github.com/Fernthedev/paperlog/releases/download/v3.7.0/paperlog.qmod",
-          "branchName": "version/v3_7_0",
+          "soLink": "https://github.com/Fernthedev/paperlog/releases/download/v4.6.1/libpaper2_scotland2.so",
+          "overrideSoName": "libpaper2_scotland2.so",
+          "modLink": "https://github.com/Fernthedev/paperlog/releases/download/v4.6.1/paper2_scotland2.qmod",
+          "branchName": "version/v4_6_1",
           "compileOptions": {
             "systemIncludes": [
               "shared/utfcpp/source"
@@ -123,7 +122,7 @@
           "cmake": false
         }
       },
-      "version": "3.7.0"
+      "version": "4.6.1"
     },
     {
       "dependency": {
@@ -174,25 +173,6 @@
         }
       },
       "version": "0.18.2"
-    },
-    {
-      "dependency": {
-        "id": "paper2_scotland2",
-        "versionRange": "=4.6.1",
-        "additionalData": {
-          "soLink": "https://github.com/Fernthedev/paperlog/releases/download/v4.6.1/libpaper2_scotland2.so",
-          "overrideSoName": "libpaper2_scotland2.so",
-          "modLink": "https://github.com/Fernthedev/paperlog/releases/download/v4.6.1/paper2_scotland2.qmod",
-          "branchName": "version/v4_6_1",
-          "compileOptions": {
-            "systemIncludes": [
-              "shared/utfcpp/source"
-            ]
-          },
-          "cmake": false
-        }
-      },
-      "version": "4.6.1"
     },
     {
       "dependency": {
