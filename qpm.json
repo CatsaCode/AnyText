@@ -58,32 +58,32 @@
     },
     {
       "id": "paper",
-      "versionRange": "^3.0.0",
+      "versionRange": "^3.7.0",
       "additionalData": {}
     },
     {
       "id": "bs-cordl",
-      "versionRange": "^3701.0.0",
+      "versionRange": "^4004.0.0",
       "additionalData": {}
     },
     {
       "id": "beatsaber-hook",
-      "versionRange": "^5.1.9",
+      "versionRange": "^6.4.1",
       "additionalData": {}
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.43",
+      "versionRange": "^0.4.51",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.17.10",
+      "versionRange": "^0.18.2",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^1.4.2",
+      "versionRange": "^2.0.2",
       "additionalData": {}
     }
   ]
