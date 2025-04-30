@@ -3,7 +3,6 @@
 #include "modConfig.hpp"
 
 #include "stringReplacer.hpp"
-#include "floatingLog.hpp"
 
 #include "bsml/shared/BSML.hpp"
 #include "bsml/shared/Helpers/getters.hpp"
@@ -230,8 +229,6 @@ Have fun customizing! =D"\
             richTextLinkButtonTransform->set_anchoredPosition({-1, 12.5});
             richTextLinkButtonTransform->set_sizeDelta({38, 9});
 
-
-            FloatingLog::InitUI();
         }
 
         RegenerateFindReplaceSettings();
