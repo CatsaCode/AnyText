@@ -2,6 +2,8 @@
 #include "main.hpp"
 #include "modConfig.hpp"
 
+#include "floatingLog.hpp"
+
 #include "GlobalNamespace/MainMenuViewController.hpp"
 
 #include "UnityEngine/Transform.hpp"
@@ -50,6 +52,8 @@ namespace AnyText {
             else {menuTransform = nullptr; break;}
         }
         if(menuTransform && menuTransform->get_name() == "AnyTextMenu") return false;
+
+        FloatingLog::AddLine(text->m_text);
 
         std::string textKey = text->m_text->ToLower();
         // To-do Create algorithm to extract the rich text tags. GetParsedText() can not be relied upon because it uses m_textInfo which has not yet been created at this stage of making the text
