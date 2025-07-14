@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
@@ -64,7 +63,7 @@
     },
     {
       "id": "bs-cordl",
-      "versionRange": "4007.*",
+      "versionRange": "4006.*",
       "additionalData": {}
     },
     {
@@ -74,7 +73,7 @@
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.54",
+      "versionRange": "^0.4.53",
       "additionalData": {}
     },
     {
