@@ -1,5 +1,3 @@
-# Borrowed from SongChartVisualizer
-
 name: NDK build
 
 on:
@@ -30,7 +28,10 @@ on:
       - '**.md'
       - '.gitignore'
   pull_request:
-    branches: master
+    branches:
+      - 'master'
+      - 'main'
+      - 'bs-*'
 
 env:
     module_id: anytext
