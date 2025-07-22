@@ -30,10 +30,12 @@ namespace AnyText {
     // }
 
     bool RevertText(TMPro::TMP_Text* text) {
-        if(!text->m_text) return false;
-
-        if(!text->m_text->StartsWith("<size=0>AnyText_")) return false;
-
+        if(!text ||
+            !text->m_text ||
+            !text->m_text->StartsWith("<size=0>AnyText_")
+        ) {
+            return false;
+        }
 
         int underscore1 = 15;
         int underscore2 = text->m_text->IndexOf('_', underscore1 + 1);
@@ -51,14 +53,14 @@ namespace AnyText {
     }
 
     bool ReplaceText(TMPro::TMP_Text* text) {
-        if(!text->m_text) return false;
-    
+        if(!text || !text->m_text) return false;
+
         Transform* menuTransform = text->get_transform();
-        for(int i = 0; i < 3; i++) {
-            if(menuTransform->get_parent()) menuTransform = menuTransform->get_parent();
-            else {menuTransform = nullptr; break;}
+        for(int i = 0; i < 4; i++) {
+            if(!menuTransform) break;
+            if(menuTransform->get_name() == "AnyTextMenu") return false;
+            menuTransform = menuTransform->get_parent();
         }
-        if(menuTransform && menuTransform->get_name() == "AnyTextMenu") return false;
 
         // LogUniqueText(text->m_text);
 
