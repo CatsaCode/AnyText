@@ -15,6 +15,9 @@
     },
     "workspace": {
       "scripts": {
+        "a2l": [
+          "pwsh ./scripts/addr2line.ps1 libanytext.so $0"
+        ],
         "build": [
           "pwsh ./scripts/build.ps1"
         ],
