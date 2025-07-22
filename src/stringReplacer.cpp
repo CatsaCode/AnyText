@@ -8,8 +8,6 @@
 #include "UnityEngine/Resources.hpp"
 
 #include "TMPro/TMP_Text.hpp"
-#include "TMPro/TextMeshPro.hpp"
-#include "TMPro/TextMeshProUGUI.hpp"
 
 #include <string>
 
@@ -105,22 +103,15 @@ namespace AnyText {
         }
     }
 
-    MAKE_HOOK_MATCH(TextMeshProHook, &TMPro::TextMeshPro::SetVerticesDirty, void, 
-    TMPro::TextMeshPro* self) {
+    MAKE_HOOK_MATCH(ReplaceOnParseHook, &TMPro::TMP_Text::ParseInputText, void,
+    TMPro::TMP_Text* self) {
         ReplaceText(self);
-        TextMeshProHook(self);
-    }
-    
-    MAKE_HOOK_MATCH(TextMeshProUGUIHook, &TMPro::TextMeshProUGUI::SetVerticesDirty, void, 
-    TMPro::TextMeshProUGUI* self) {
-        ReplaceText(self);
-        TextMeshProUGUIHook(self);
+        ReplaceOnParseHook(self);
     }
 
     void InstallStringReplacerHooks() {
         INSTALL_HOOK(PaperLogger, InitialReplaceHook);
-        INSTALL_HOOK(PaperLogger, TextMeshProHook);
-        INSTALL_HOOK(PaperLogger, TextMeshProUGUIHook);
+        INSTALL_HOOK(PaperLogger, ReplaceOnParseHook);
     }
 
 }
