@@ -32,4 +32,4 @@ ForEach ($branch in $branches) {
 
 git checkout main
 
-Write-Output "Reminder: git push --all"
+Write-Host "REMINDER: git push --all" -ForegroundColor Yellow
