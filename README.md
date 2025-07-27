@@ -10,7 +10,6 @@ Change any text in the game through a list of find and replace instructions.
 - Replacing "practice" will decapitalize many buttons
 - Replacing a menu banner will decapitalize all menu banners
 - Creating many rows will make the buttons lag
-- Add example to default config
 
 
 ## Build Instructions
