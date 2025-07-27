@@ -13,7 +13,8 @@ If ($commit.Length -eq 0) {
 $branches = @(
     "bs-1.37.0",
     "bs-1.40.4",
-    "bs-1.40.6"
+    "bs-1.40.6",
+    "bs-1.40.7"
 )
 
 ForEach ($branch in $branches) {
