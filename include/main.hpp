@@ -13,7 +13,8 @@
 #include "beatsaber-hook/shared/utils/logging.hpp"
 
 
-#include "_config.hpp"
+#define MOD_EXPORT __attribute__((visibility("default")))
+#define MOD_EXTERN_FUNC extern "C" MOD_EXPORT
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 
