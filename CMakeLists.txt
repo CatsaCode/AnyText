@@ -45,7 +45,7 @@ project( anytext
 
 add_compile_definitions(MOD_ID="${CMAKE_PROJECT_NAME}")
 add_compile_definitions(VERSION="${CMAKE_PROJECT_VERSION}")
-add_compile_definitions("BS_1_40_8")
+add_compile_definitions("BS_1_40_6")
 
 # Set COMPILE_ID for qpm purposes
 set(COMPILE_ID ${CMAKE_PROJECT_NAME})
