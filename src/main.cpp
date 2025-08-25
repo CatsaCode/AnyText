@@ -9,10 +9,13 @@
 #include "ui.hpp"
 #include "stringReplacer.hpp"
 
+#include <filesystem>
+
 modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 
 std::string_view getAnyTextDir() {
     static std::string anyTextDir = getDataDir("AnyText");
+    if(!std::filesystem::exists(anyTextDir)) std::filesystem::create_directory(anyTextDir);
     return anyTextDir;
 };
 
