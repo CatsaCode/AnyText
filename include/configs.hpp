@@ -41,4 +41,12 @@ namespace AnyText {
         // Overflow
     };
 
+    DECLARE_JSON_STRUCT(Config) {
+        VALUE_DEFAULT(int, version, 0);
+        VALUE_DEFAULT(std::vector<FindReplaceEntry>, entries, {});
+    };
+
+    extern std::vector<Config> configs;
+    void loadConfigs();
+
 }

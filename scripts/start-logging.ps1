@@ -65,7 +65,7 @@ if ($all -eq $false) {
     if ($pattern -eq "(") {
         $pattern = "( INFO| DEBUG| WARN| ERROR| CRITICAL|"
     }
-    $pattern += "AndroidRuntime|CRASH|scotland2|Unity  )"
+    $pattern += "AndroidRuntime|CRASH)"
     $command += " | Select-String -pattern `"$pattern`""
 }
 

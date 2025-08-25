@@ -5,17 +5,26 @@
 
 #include "bsml/shared/BSML.hpp"
 
+#include "configs.hpp"
 #include "ui.hpp"
 #include "stringReplacer.hpp"
+
+modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
+
+std::string_view getAnyTextDir() {
+    static std::string anyTextDir = getDataDir("AnyText");
+    return anyTextDir;
+};
 
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
     *info = modInfo.to_c();
 
+    Paper::Logger::RegisterFileContextId(PaperLogger.tag);
+
     getModConfig().Init(modInfo);
 
-    // File logging
-    Paper::Logger::RegisterFileContextId(PaperLogger.tag);
+    AnyText::loadConfigs();
 
     PaperLogger.info("Completed setup!");
 }
