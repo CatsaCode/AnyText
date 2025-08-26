@@ -13,10 +13,13 @@ namespace AnyText {
 
     void TextManager::OnEnable() {
         PaperLogger.info("TextManager::OnEnable");
+        SaveText();
+        ReplaceText();
     }
 
     void TextManager::OnDisale() {
         PaperLogger.info("TextManager::OnDisable");
+        RestoreText();
     }
 
     void TextManager::SaveText() {
