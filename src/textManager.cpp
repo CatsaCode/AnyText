@@ -24,7 +24,7 @@ namespace AnyText {
 
     void TextManager::SaveText() {
         PaperLogger.info("TextManager::SaveText");
-        if(!text) return;
+        if(!text || !text->get_text()) return;
         prevTextStr = text->get_text();
         prevFontStyle = text->get_fontStyle();
         prevRichText = text->get_richText();
@@ -32,7 +32,7 @@ namespace AnyText {
 
     void TextManager::RestoreText() {
         PaperLogger.info("TextManager::RestoreText");
-        if(!text) return;
+        if(!text || !text->get_text()) return;
         text->set_text(prevTextStr);
         text->set_fontStyle(prevFontStyle);
         text->set_richText(prevRichText);
@@ -40,7 +40,7 @@ namespace AnyText {
 
     void TextManager::ReplaceText() {
         PaperLogger.info("TextManager::ReplaceText");
-        if(!text) return;
+        if(!text || !text->get_text()) return;
         
         Transform* menuTransform = text->get_transform();
         for(int i = 0; i < 4; i++) {
@@ -49,9 +49,18 @@ namespace AnyText {
             menuTransform = menuTransform->get_parent();
         }
 
+        bool hasBeenReplaced = false;
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                
+                if(hasBeenReplaced && !entry.accumulate) continue;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
+
+                // Assuming whole replacement
+                text->set_text(entry.replaceString);
+                text->set_richText(true);
+
+                hasBeenReplaced = true;
             }
         }
     }

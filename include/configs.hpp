@@ -20,7 +20,7 @@ namespace AnyText {
         VALUE(std::string, replaceString);
 
         VALUE_DEFAULT(int, findAlgorithm, (int)FindAlgorithm::PartialMatch);
-        // VALUE_DEFAULT(bool, accumulate, false);
+        VALUE_DEFAULT(bool, accumulate, false);
         // VALUE_OPTIONAL(FindLocation, findLocation);
 
         // VALUE_OPTIONAL(bool, replaceAll);
