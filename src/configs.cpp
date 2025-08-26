@@ -21,17 +21,29 @@ namespace AnyText {
             try {
                 ReadFromFile(filePath, config);
             } catch(const std::exception& err) {
-                PaperLogger.error("Failed to load config '{}', Error: {}", filePath, err.what());
+                PaperLogger.error("Failed to load config from path: '{}', Error: {}", filePath, err.what());
                 continue;
             }
 
-            configs.push_back(config);
+            config.name = file.path().stem(); // TODO Sanitize
 
-            // DEBUG
-            PaperLogger.info("Version: {}", config.version);
-            for(FindReplaceEntry& entry : config.entries) {
-                PaperLogger.info("Find: '{}', Replace: '{}'", entry.findString, entry.replaceString);
-            }
+            configs.push_back(config);
+        }
+    }
+
+    void saveConfig(Config& config) {
+        std::string filePath = std::string(getAnyTextDir()) + config.name + ".json"; // TODO Sanitize
+        PaperLogger.info("Saving config to path: '{}'", filePath);
+        try {
+            WriteToFile(filePath, config, true);
+        } catch(const std::exception& err) {
+            PaperLogger.error("Failed to save config: '{}', Path: '{}', Error: '{}'", config.name, filePath, err.what());
+        }
+    }
+
+    void saveConfigs() {
+        for(Config& config : configs) {
+            saveConfig(config);
         }
     }
 

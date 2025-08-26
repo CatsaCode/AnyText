@@ -4,11 +4,11 @@
 
 namespace AnyText {
 
-    // enum class FindAlgorithm {
-    //     ExactMatch,
-    //     PartialMatch,
-    //     Regex
-    // };
+    enum class FindAlgorithm {
+        ExactMatch,
+        PartialMatch
+        // Regex
+    };
 
     // enum class FindLocation {
     //     MenuScene,
@@ -19,7 +19,7 @@ namespace AnyText {
         VALUE(std::string, findString);
         VALUE(std::string, replaceString);
 
-        // VALUE_DEFAULT(FindAlgorithm, findAlgorithm, FindAlgorithm::PartialMatch);
+        VALUE_DEFAULT(int, findAlgorithm, (int)FindAlgorithm::PartialMatch);
         // VALUE_DEFAULT(bool, accumulate, false);
         // VALUE_OPTIONAL(FindLocation, findLocation);
 
@@ -44,9 +44,12 @@ namespace AnyText {
     DECLARE_JSON_STRUCT(Config) {
         VALUE_DEFAULT(int, version, 0);
         VALUE_DEFAULT(std::vector<FindReplaceEntry>, entries, {});
+
+        std::string name;
     };
 
     extern std::vector<Config> configs;
     void loadConfigs();
-
+    void saveConfig(const Config& config);
+    void saveConfigs();
 }
