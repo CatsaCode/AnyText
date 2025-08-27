@@ -13,6 +13,12 @@ namespace AnyText {
 
     void TextManager::OnEnable() {
         PaperLogger.info("TextManager::OnEnable");
+        text = GetComponent<TMPro::TMP_Text*>();
+        if(!text) {
+            PaperLogger.error("Couldn't find TMP_Text component");
+            Object::Destroy(this);
+            return;
+        }
         SaveText();
         ReplaceText();
     }
@@ -40,7 +46,7 @@ namespace AnyText {
 
     void TextManager::ReplaceText() {
         PaperLogger.info("TextManager::ReplaceText");
-        if(!text || !text->get_text()) return;
+        if(!text || !text->get_text() || !text->get_transform()) return;
         
         Transform* menuTransform = text->get_transform();
         for(int i = 0; i < 4; i++) {
@@ -57,6 +63,7 @@ namespace AnyText {
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
 
+                PaperLogger.info("Replacing '{}' to '{}'", text->get_text(), entry.replaceString);
                 // Assuming whole replacement
                 text->set_text(entry.replaceString);
                 text->set_richText(true);
