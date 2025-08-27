@@ -19,33 +19,51 @@ namespace AnyText {
             Object::Destroy(this);
             return;
         }
-        SaveText();
-        ReplaceText();
+
+        updateOriginalStateWithDifferences();
+        generateReplacementState();
+        applyState(replacementState);
     }
 
-    void TextManager::OnDisale() {
+    void TextManager::OnDisable() {
         PaperLogger.info("TextManager::OnDisable");
-        RestoreText();
-    }
-
-    void TextManager::SaveText() {
-        PaperLogger.info("TextManager::SaveText");
         if(!text || !text->get_text()) return;
-        prevTextStr = text->get_text();
-        prevFontStyle = text->get_fontStyle();
-        prevRichText = text->get_richText();
+
+        updateOriginalStateWithDifferences();
+        applyState(originalState);
     }
 
-    void TextManager::RestoreText() {
-        PaperLogger.info("TextManager::RestoreText");
+    void TextManager::OnTextChange() {
+        PaperLogger.info("TextManager::OnTextChange");
         if(!text || !text->get_text()) return;
-        text->set_text(prevTextStr);
-        text->set_fontStyle(prevFontStyle);
-        text->set_richText(prevRichText);
+
+        updateOriginalStateWithDifferences();
+        generateReplacementState();
+        applyState(replacementState);
     }
 
-    void TextManager::ReplaceText() {
-        PaperLogger.info("TextManager::ReplaceText");
+    void TextManager::updateOriginalStateWithDifferences() {
+        PaperLogger.info("TextManager::updateOriginalStateWithDifferences");
+        if(!text || !text->get_text()) return;
+
+        if(text->get_text() != replacementState.text) originalState.text = std::string(text->get_text());
+        if(text->get_fontStyle() != replacementState.fontStyle) originalState.fontStyle = text->get_fontStyle();
+        if(text->get_richText() != replacementState.richText) originalState.richText = text->get_richText();
+    }
+
+    void TextManager::applyState(const TextState& state) {
+        PaperLogger.info("TextManager::applyState ({})", &state == &originalState ? "Original" : (&state == &replacementState ? "Replacement" : "Unknown"));
+        if(!text || !text->get_text()) return;
+
+        isApplyingState = true;
+        text->set_text(state.text);
+        text->set_fontStyle(state.fontStyle);
+        text->set_richText(state.richText);
+        isApplyingState = false;
+    }
+
+    void TextManager::generateReplacementState() {
+        PaperLogger.info("TextManager::generateReplacementState");
         if(!text || !text->get_text() || !text->get_transform()) return;
         
         Transform* menuTransform = text->get_transform();
@@ -55,23 +73,24 @@ namespace AnyText {
             menuTransform = menuTransform->get_parent();
         }
 
-        isReplacingText = true;
+        replacementState = originalState;
+
         bool hasReplacedText = false;
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
                 if(hasReplacedText && !entry.accumulate) continue;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
+                bool tmpFound = replacementState.text.find(entry.findString) != std::string::npos;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && (!tmpFound || replacementState.text.size() != entry.findString.size())) continue;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !tmpFound) continue;
 
-                PaperLogger.info("Replacing '{}' to '{}'", text->get_text(), entry.replaceString);
                 // Assuming whole replacement
-                text->set_text(entry.replaceString);
-                text->set_richText(true);
+                PaperLogger.info("Replacing '{}' to '{}'", text->get_text(), entry.replaceString);
+                replacementState.text = entry.replaceString;
+                replacementState.richText = true;
 
                 hasReplacedText = true;
             }
         }
-        isReplacingText = false;
     }
 
 }
