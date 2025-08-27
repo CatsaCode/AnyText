@@ -12,6 +12,7 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
 #endif
 
     DECLARE_INSTANCE_FIELD(UnityW<TMPro::TMP_Text>, text);
+    DECLARE_INSTANCE_FIELD(bool, isReplacingText);
 
     DECLARE_INSTANCE_FIELD(StringW, prevTextStr);
     DECLARE_INSTANCE_FIELD(TMPro::FontStyles, prevFontStyle);

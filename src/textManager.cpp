@@ -49,10 +49,11 @@ namespace AnyText {
             menuTransform = menuTransform->get_parent();
         }
 
-        bool hasBeenReplaced = false;
+        isReplacingText = true;
+        bool hasReplacedText = false;
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                if(hasBeenReplaced && !entry.accumulate) continue;
+                if(hasReplacedText && !entry.accumulate) continue;
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
 
@@ -60,9 +61,10 @@ namespace AnyText {
                 text->set_text(entry.replaceString);
                 text->set_richText(true);
 
-                hasBeenReplaced = true;
+                hasReplacedText = true;
             }
         }
+        isReplacingText = false;
     }
 
 }
