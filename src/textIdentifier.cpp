@@ -17,6 +17,13 @@ namespace AnyText {
 
         if(!self || !self->get_text() || !self->get_gameObject()) return;
 
+        Transform* menuTransform = self->get_transform();
+        for(int i = 0; i < 4; i++) {
+            if(!menuTransform) break;
+            if(menuTransform->get_name() == "AnyTextMenu") return;
+            menuTransform = menuTransform->get_parent();
+        }
+
         PaperLogger.info("ParseInputText_IdentifyText has valid TMP_Text: '{}'", self->get_text());
         
         TextManager* textManager = self->GetComponent<TextManager*>();

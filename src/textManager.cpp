@@ -65,13 +65,6 @@ namespace AnyText {
     void TextManager::generateReplacementState() {
         PaperLogger.info("TextManager::generateReplacementState");
         if(!text || !text->get_text() || !text->get_transform()) return;
-        
-        Transform* menuTransform = text->get_transform();
-        for(int i = 0; i < 4; i++) {
-            if(!menuTransform) break;
-            if(menuTransform->get_name() == "AnyTextMenu") return;
-            menuTransform = menuTransform->get_parent();
-        }
 
         replacementState = originalState;
 
