@@ -30,7 +30,7 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
         AnyText::TextState originalState;
         AnyText::TextState replacementState;
 
-        void updateOriginalStateWithDifferences();
+        bool updateOriginalStateWithDifferences();
         void applyState(const AnyText::TextState& state);
         void generateReplacementState();
 

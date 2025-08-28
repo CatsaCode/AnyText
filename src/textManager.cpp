@@ -37,18 +37,21 @@ namespace AnyText {
         PaperLogger.info("TextManager::OnTextChange");
         if(!text || !text->get_text()) return;
 
-        updateOriginalStateWithDifferences();
-        generateReplacementState();
-        applyState(replacementState);
+        if(updateOriginalStateWithDifferences()) {
+            generateReplacementState();
+            applyState(replacementState);
+        }
     }
 
-    void TextManager::updateOriginalStateWithDifferences() {
+    bool TextManager::updateOriginalStateWithDifferences() {
         PaperLogger.info("TextManager::updateOriginalStateWithDifferences");
-        if(!text || !text->get_text()) return;
+        if(!text || !text->get_text()) return false;
 
-        if(text->get_text() != replacementState.text) originalState.text = std::string(text->get_text());
-        if(text->get_fontStyle() != replacementState.fontStyle) originalState.fontStyle = text->get_fontStyle();
-        if(text->get_richText() != replacementState.richText) originalState.richText = text->get_richText();
+        bool didChange = false;
+        if(text->get_text() != replacementState.text) { originalState.text = std::string(text->get_text()); didChange = true; }
+        if(text->get_fontStyle() != replacementState.fontStyle) { originalState.fontStyle = text->get_fontStyle(); didChange = true; }
+        if(text->get_richText() != replacementState.richText) { originalState.richText = text->get_richText(); didChange = true; }
+        return didChange;
     }
 
     void TextManager::applyState(const TextState& state) {
