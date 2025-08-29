@@ -3,6 +3,8 @@
 
 #include "configs.hpp"
 
+#include "bsml/shared/BSML/MainThreadScheduler.hpp"
+
 #include "UnityEngine/Transform.hpp"
 
 using namespace UnityEngine;
@@ -40,6 +42,8 @@ namespace AnyText {
         if(updateOriginalStateWithDifferences()) {
             generateReplacementState();
             applyState(replacementState);
+        } else {
+            PaperLogger.info("Nothing changed, returning...");
         }
     }
 
