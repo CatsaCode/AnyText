@@ -20,7 +20,6 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
 #endif
 
     DECLARE_INSTANCE_FIELD(UnityW<TMPro::TMP_Text>, text);
-    DECLARE_INSTANCE_FIELD(bool, isApplyingState);
 
     DECLARE_INSTANCE_METHOD(void, OnEnable);
     DECLARE_INSTANCE_METHOD(void, OnDisable);

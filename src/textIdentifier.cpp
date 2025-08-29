@@ -23,7 +23,6 @@ namespace AnyText {
         PaperLogger.info("identifyText has valid TMP_Text: '{}'", text->get_text());
         
         TextManager* textManager = text->GetComponent<TextManager*>();
-        if(textManager && textManager->isApplyingState) {PaperLogger.info("TextManager is already replacing text, aborting"); return;}
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {

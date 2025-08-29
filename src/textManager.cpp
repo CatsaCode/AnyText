@@ -58,11 +58,9 @@ namespace AnyText {
         PaperLogger.info("TextManager::applyState ({})", &state == &originalState ? "Original" : (&state == &replacementState ? "Replacement" : "Unknown"));
         if(!text || !text->get_text()) return;
 
-        isApplyingState = true;
         text->set_text(state.text);
         text->set_fontStyle(state.fontStyle);
         text->set_richText(state.richText);
-        isApplyingState = false;
     }
 
     void TextManager::generateReplacementState() {
