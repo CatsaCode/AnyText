@@ -80,8 +80,8 @@ namespace AnyText {
             for(FindReplaceEntry& entry : config.entries) {
                 if(hasReplacedText && !entry.accumulate) continue;
                 bool tmpFound = replacementState.text.find(entry.findString) != std::string::npos;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && (!tmpFound || replacementState.text.size() != entry.findString.size())) continue;
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !tmpFound) continue;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && (!tmpFound || replacementState.text.size() != entry.findString.size())) continue;
 
                 // Assuming whole replacement
                 PaperLogger.info("Replacing '{}' to '{}'", text->get_text(), entry.replaceString);
