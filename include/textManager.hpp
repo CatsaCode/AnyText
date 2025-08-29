@@ -27,14 +27,12 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_METHOD(void, OnTextChange);
 
     private:
-        bool updateOriginalStateWithDifferences();
-        void applyState(const AnyText::TextState& state);
-        void generateReplacementState();
-    
-    public:
         AnyText::TextState originalState;
         AnyText::TextState replacementState;
 
+        bool updateOriginalStateWithDifferences();
+        void applyState(const AnyText::TextState& state);
+        void generateReplacementState();
 
 #ifdef BS_1_37_0
 )

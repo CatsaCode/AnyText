@@ -25,14 +25,11 @@ namespace AnyText {
         TextManager* textManager = text->GetComponent<TextManager*>();
         if(textManager && textManager->isApplyingState) {PaperLogger.info("TextManager is already replacing text, aborting"); return;}
 
-        std::string originalText = textManager ? textManager->originalState.text : std::string(text->get_text());
-
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                bool tmpFound = originalText.find(entry.findString) != std::string::npos;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !tmpFound) continue;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && (!tmpFound || originalText.size() != entry.findString.size())) continue;
-                PaperLogger.info("Original text '{}' matched entry with findAlgorithm: {}, findString: '{}'", originalText, entry.findAlgorithm, entry.findString);
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
+                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
+                PaperLogger.info("Matched entry with findAlgorithm: {}, findString: '{}'", entry.findAlgorithm, entry.findString);
 
                 if(!textManager) {PaperLogger.info("TextManager does not exist, adding component"); text->get_gameObject()->AddComponent<TextManager*>();}
                 else {

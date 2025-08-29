@@ -3,8 +3,6 @@
 
 #include "configs.hpp"
 
-#include "bsml/shared/BSML/MainThreadScheduler.hpp"
-
 #include "UnityEngine/Transform.hpp"
 
 using namespace UnityEngine;
