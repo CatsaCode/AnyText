@@ -12,7 +12,7 @@ namespace AnyText {
     void loadConfigs() {
         configs.clear();
 
-        for(auto& file : std::filesystem::recursive_directory_iterator(getAnyTextDir())) {
+        for(auto& file : std::filesystem::directory_iterator(getAnyTextDir())) {
             if(file.path().extension() != ".json") continue;
 
             std::string filePath = file.path();
