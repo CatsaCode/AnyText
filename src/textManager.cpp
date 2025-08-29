@@ -3,8 +3,6 @@
 
 #include "configs.hpp"
 
-#include "UnityEngine/Transform.hpp"
-
 using namespace UnityEngine;
 
 DEFINE_TYPE(AnyText, TextManager);
