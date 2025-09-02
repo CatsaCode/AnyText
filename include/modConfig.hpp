@@ -11,6 +11,8 @@ DECLARE_CONFIG(ModConfig) {
     CONFIG_VALUE(findStrings, std::vector<std::string>, "findStrings", {"ANYTEXT"});
     CONFIG_VALUE(replaceStrings, std::vector<std::string>, "replaceStrings", {"<color=green>ANYTEXT"});
     // KEEP_EXTRA_FIELDS;
+
+    CONFIG_VALUE(configOrder, std::vector<std::string>, "configOrder", {});
     
 #ifdef BS_1_37_0
 );

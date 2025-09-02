@@ -1,6 +1,8 @@
 #include "configs.hpp"
 #include "main.hpp"
+#include "modConfig.hpp"
 
+#include <algorithm>
 #include <filesystem>
 
 using namespace AnyText;
@@ -8,6 +10,25 @@ using namespace AnyText;
 namespace AnyText {
 
     std::vector<Config> configs;
+
+    void loadConfigOrder() {
+        std::vector<std::string> configOrder = getModConfig().configOrder.GetValue();
+        PaperLogger.info("Config order: {}", configOrder);
+
+        static auto comp = [&configOrder](const Config& a, const Config& b){
+            int indexA = std::distance(configOrder.begin(), std::find(configOrder.begin(), configOrder.end(), a.name));
+            int indexB = std::distance(configOrder.begin(), std::find(configOrder.begin(), configOrder.end(), b.name));
+            return indexA < indexB;
+        };
+
+        std::sort(configs.begin(), configs.end(), comp);
+    }
+
+    void saveConfigOrder() {
+        std::vector<std::string> configOrder;
+        for(Config& config : configs) configOrder.push_back(config.name);
+        getModConfig().configOrder.SetValue(configOrder);
+    }
     
     void loadConfigs() {
         configs.clear();
@@ -29,6 +50,8 @@ namespace AnyText {
 
             configs.push_back(config);
         }
+
+        loadConfigOrder();
     }
 
     void saveConfig(Config& config) {
@@ -45,6 +68,8 @@ namespace AnyText {
         for(Config& config : configs) {
             saveConfig(config);
         }
+
+        saveConfigOrder();
     }
 
 }
