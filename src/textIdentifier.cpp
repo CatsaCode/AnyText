@@ -19,8 +19,6 @@ namespace AnyText {
             if(menuTransform->get_name() == "AnyTextMenu") return;
             menuTransform = menuTransform->get_parent();
         }
-
-        PaperLogger.info("identifyText has valid TMP_Text: '{}'", text->get_text());
         
         TextManager* textManager = text->GetComponent<TextManager*>();
 
@@ -28,13 +26,9 @@ namespace AnyText {
             for(FindReplaceEntry& entry : config.entries) {
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
-                PaperLogger.info("Matched entry with findAlgorithm: {}, findString: '{}'", entry.findAlgorithm, entry.findString);
 
-                if(!textManager) {PaperLogger.info("TextManager does not exist, adding component"); text->get_gameObject()->AddComponent<TextManager*>();}
-                else {
-                    PaperLogger.info("TextManager already exists, calling OnChangeText");
-                    textManager->OnTextChange();
-                }
+                if(!textManager) text->get_gameObject()->AddComponent<TextManager*>();
+                else textManager->OnTextChange();
 
                 return;
             }

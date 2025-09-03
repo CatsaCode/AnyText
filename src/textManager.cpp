@@ -10,7 +10,6 @@ DEFINE_TYPE(AnyText, TextManager);
 namespace AnyText {
 
     void TextManager::OnEnable() {
-        PaperLogger.info("TextManager::OnEnable");
         text = GetComponent<TMPro::TMP_Text*>();
         if(!text) {
             PaperLogger.error("Couldn't find TMP_Text component");
@@ -24,7 +23,6 @@ namespace AnyText {
     }
 
     void TextManager::OnDisable() {
-        PaperLogger.info("TextManager::OnDisable");
         if(!text || !text->get_text()) return;
 
         updateOriginalStateWithDifferences();
@@ -32,19 +30,15 @@ namespace AnyText {
     }
 
     void TextManager::OnTextChange() {
-        PaperLogger.info("TextManager::OnTextChange");
         if(!text || !text->get_text()) return;
 
         if(updateOriginalStateWithDifferences()) {
             generateReplacementState();
             applyState(replacementState);
-        } else {
-            PaperLogger.info("Nothing changed, returning...");
         }
     }
 
     bool TextManager::updateOriginalStateWithDifferences() {
-        PaperLogger.info("TextManager::updateOriginalStateWithDifferences");
         if(!text || !text->get_text()) return false;
 
         bool didChange = false;
@@ -55,7 +49,6 @@ namespace AnyText {
     }
 
     void TextManager::applyState(const TextState& state) {
-        PaperLogger.info("TextManager::applyState ({})", &state == &originalState ? "Original" : (&state == &replacementState ? "Replacement" : "Unknown"));
         if(!text || !text->get_text()) return;
 
         text->set_text(state.text);
@@ -64,7 +57,6 @@ namespace AnyText {
     }
 
     void TextManager::generateReplacementState() {
-        PaperLogger.info("TextManager::generateReplacementState");
         if(!text || !text->get_text() || !text->get_transform()) return;
 
         replacementState = originalState;
@@ -78,7 +70,6 @@ namespace AnyText {
                 if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && (!tmpFound || replacementState.text.size() != entry.findString.size())) continue;
 
                 // Assuming whole replacement
-                PaperLogger.info("Replacing '{}' to '{}'", text->get_text(), entry.replaceString);
                 replacementState.text = entry.replaceString;
                 replacementState.richText = true;
 
