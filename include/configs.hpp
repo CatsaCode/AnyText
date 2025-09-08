@@ -50,6 +50,8 @@ namespace AnyText {
     };
 
     extern std::vector<Config> configs;
+    void loadConfigOrder();
+    void saveConfigOrder();
     void loadConfigs();
     void saveConfig(const Config& config);
     void saveConfigs();
