@@ -3,10 +3,13 @@
 
 #include "configs.hpp"
 
+#include "HMUI/InputFieldView.hpp"
+
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+
 #include <functional>
 
 using namespace UnityEngine;
@@ -44,6 +47,7 @@ namespace AnyText::UI {
         configTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(10);
         
         configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell));
+        configTableCell->nameInput->_clearSearchButton->get_gameObject()->SetActive(false);
         configTableCell->nameInput->GetComponent<LayoutElement*>()->set_preferredWidth(70);
         
         configTableCell->editButton = BSML::Lite::CreateUIButton(configTableCellTransform, "Edit", std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
