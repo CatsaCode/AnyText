@@ -8,9 +8,13 @@
 
 #include "custom-types/shared/delegate.hpp"
 
+#include "GlobalNamespace/EulaDisplayViewController.hpp"
+
+#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/UI/VerticalLayoutGroup.hpp"
-#include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+
+#include "HMUI/ScrollView.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -25,10 +29,26 @@ namespace AnyText::UI {
     void ConfigsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) return;
 
-        configTableView = BSML::Lite::CreateScrollableCustomSourceList<ConfigTableView*>(transform);
-        if(configTableView->tableView) configTableView->tableView->ReloadData();
+        // configTableView = BSML::Lite::CreateScrollableCustomSourceList<ConfigTableView*>(transform);
+        configTableView = BSML::Lite::CreateCustomSourceList<ConfigTableView*>(transform, {0, 15}, {120, 45});
 
-        // BSML::Lite::CreateScrollView(transform);
+        // BSML fails to use the scrollbar I want
+        // Mostly copied from https://github.com/bsq-ports/Quest-BSML/blob/4987a88698becce955e44301fd4d573fc9180c2f/src/BSML/TypeHandlers/CustomCellListTableDataHandler.cpp#L82-L100
+        ScrollView* scrollView = configTableView->GetComponentInChildren<ScrollView*>();
+        UnityW<TextPageScrollView> textPageScrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::EulaDisplayViewController*>()->First()->_textPageScrollView;
+        UnityW<TextPageScrollView> textPageScrollView = Object::Instantiate(textPageScrollViewTemplate, scrollView->get_transform(), false);
+        scrollView->_pageUpButton = textPageScrollView->_pageUpButton;
+        scrollView->_pageDownButton = textPageScrollView->_pageDownButton;
+        scrollView->_verticalScrollIndicator = textPageScrollView->_verticalScrollIndicator;
+        RectTransform* scrollBarTransform = textPageScrollView->_verticalScrollIndicator->get_transform()->get_parent().cast<RectTransform>();
+        scrollBarTransform->SetParent(configTableView->get_transform(), false);
+        scrollBarTransform->set_anchorMin({1, 0});
+        scrollBarTransform->set_anchorMax({1, 1});
+        scrollBarTransform->set_offsetMin({0, 0});
+        scrollBarTransform->set_offsetMax({8, 0});
+        Object::DestroyImmediate(textPageScrollView->get_gameObject());
+
+        if(configTableView->tableView) configTableView->tableView->ReloadData();
     }
 
 }
