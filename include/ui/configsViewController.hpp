@@ -4,7 +4,6 @@
 
 #include "custom-types/shared/macros.hpp"
 
-#include "UnityEngine/RectTransform.hpp"
 #include "HMUI/ViewController.hpp"
 
 DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigsViewController, HMUI::ViewController) {

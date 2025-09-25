@@ -24,12 +24,9 @@ DEFINE_TYPE(AnyText::UI, ConfigsViewController);
 
 namespace AnyText::UI {
 
-    static UnityW<VerticalLayoutGroup> configsVertical;
-
     void ConfigsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) return;
 
-        // configTableView = BSML::Lite::CreateScrollableCustomSourceList<ConfigTableView*>(transform);
         configTableView = BSML::Lite::CreateCustomSourceList<ConfigTableView*>(transform, {0, 15}, {120, 45});
 
         // BSML fails to use the scrollbar I want
