@@ -38,7 +38,9 @@ namespace AnyText::UI {
         UnityW<TextPageScrollView> textPageScrollViewTemplate = UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::EulaDisplayViewController*>()->First()->_textPageScrollView;
         UnityW<TextPageScrollView> textPageScrollView = Object::Instantiate(textPageScrollViewTemplate, scrollView->get_transform(), false);
         scrollView->_pageUpButton = textPageScrollView->_pageUpButton;
+        scrollView->_pageUpButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(static_cast<std::function<void()>>(std::bind(&ScrollView::PageUpButtonPressed, scrollView))));
         scrollView->_pageDownButton = textPageScrollView->_pageDownButton;
+        scrollView->_pageDownButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(static_cast<std::function<void()>>(std::bind(&ScrollView::PageDownButtonPressed, scrollView))));
         scrollView->_verticalScrollIndicator = textPageScrollView->_verticalScrollIndicator;
         RectTransform* scrollBarTransform = textPageScrollView->_verticalScrollIndicator->get_transform()->get_parent().cast<RectTransform>();
         scrollBarTransform->SetParent(configTableView->get_transform(), false);
