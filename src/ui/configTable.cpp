@@ -59,20 +59,22 @@ namespace AnyText::UI {
         return configTableCell;
     }
     
+    void ConfigTableCell::updateData(Config* config) {
+        this->config = config;
+
+        nameInput->set_text(config->name);
+    }
+
+
     void ConfigTableCell::HandleNameInputOnChange() {
-        PaperLogger.info("HandleNameInputOnChange");
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+
+        config->name = std::string(nameInput->get_text());
+        config->unsaved = true;
     }
 
     void ConfigTableCell::HandleEditButtonOnClick() {
         PaperLogger.info("HandleEditButtonOnClick");
-    }
-
-    void ConfigTableCell::updateData(Config* config) {
-        PaperLogger.info("UpdateData with config: '{}'", config->name);
-
-        this->config = config;
-
-        nameInput->set_text(config->name);
     }
 
     void ConfigTableCell::WasPreparedForReuse() {

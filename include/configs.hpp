@@ -2,6 +2,8 @@
 
 #include "config-utils/shared/config-utils.hpp"
 
+#include <filesystem>
+
 namespace AnyText {
 
     enum class FindAlgorithm {
@@ -46,7 +48,10 @@ namespace AnyText {
         VALUE_DEFAULT(int, version, 0);
         VALUE_DEFAULT(std::vector<FindReplaceEntry>, entries, {});
 
+        std::filesystem::path filePath;
         std::string name;
+
+        bool unsaved = false;
     };
 
     extern std::vector<Config> configs;

@@ -36,16 +36,16 @@ namespace AnyText {
         for(auto& file : std::filesystem::directory_iterator(getAnyTextDir())) {
             if(file.path().extension() != ".json") continue;
 
-            std::string filePath = file.path();
-            PaperLogger.info("Loading config from path: '{}'", filePath);
+            PaperLogger.info("Loading config from path: '{}'", file.path().string());
             Config config;
             try {
-                ReadFromFile(filePath, config);
+                ReadFromFile(file.path().string(), config);
             } catch(const std::exception& err) {
-                PaperLogger.error("Failed to load config from path: '{}', Error: {}", filePath, err.what());
+                PaperLogger.error("Failed to load config from path: '{}', Error: {}", file.path().string(), err.what());
                 continue;
             }
 
+            config.filePath = file.path();
             config.name = file.path().stem(); // TODO Sanitize
 
             configs.push_back(config);
@@ -55,13 +55,24 @@ namespace AnyText {
     }
 
     void saveConfig(Config& config) {
-        std::string filePath = std::string(getAnyTextDir()) + config.name + ".json"; // TODO Sanitize
-        PaperLogger.info("Saving config to path: '{}'", filePath);
+        if(!config.unsaved) return;
+
+        std::filesystem::path filePath (std::string(getAnyTextDir()) + config.name + ".json"); // TODO Sanitize
+        PaperLogger.info("Saving config '{}' to path: '{}'", config.name, filePath.string());
+        
         try {
-            WriteToFile(filePath, config, true);
+            WriteToFile(filePath.string(), config, true);
         } catch(const std::exception& err) {
-            PaperLogger.error("Failed to save config: '{}', Path: '{}', Error: '{}'", config.name, filePath, err.what());
+            PaperLogger.error("Failed to save config: '{}', Path: '{}', Error: '{}'", config.name, filePath.string(), err.what());
+            return;
         }
+
+        config.unsaved = false;
+
+        if(config.filePath.stem().string() == config.name) return;
+        PaperLogger.info("Removing config '{}' from previous path: '{}'", config.name, config.filePath.string());
+        std::filesystem::remove(config.filePath);
+        config.filePath = filePath;
     }
 
     void saveConfigs() {

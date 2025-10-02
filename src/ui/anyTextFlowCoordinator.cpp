@@ -1,6 +1,8 @@
 #include "ui/anyTextFlowCoordinator.hpp"
 #include "main.hpp"
 
+#include "configs.hpp"
+
 #include "ui/configsViewController.hpp"
 
 #include "bsml/shared/Helpers/creation.hpp"
@@ -22,6 +24,13 @@ namespace AnyText::UI {
     }
 
     void AnyTextFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
+        // TODO Check if configs are good to save
+        // |  Run name sanitize
+        // |  Check for duplicates (with current list and saved files)
+        // |  Notify and return if issues
+
+        saveConfigs();
+
         _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 
