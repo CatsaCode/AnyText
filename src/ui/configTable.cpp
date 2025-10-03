@@ -65,6 +65,10 @@ namespace AnyText::UI {
         this->config = config;
 
         nameInput->set_text(config->name);
+
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [config](const Config& x){return &x == config;}));
+        upButton->set_interactable(index > 0);
+        downButton->set_interactable(index < configs.size() - 1);
     }
 
     void ConfigTableCell::HandleMoveDownOnClick() {
