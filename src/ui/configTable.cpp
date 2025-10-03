@@ -55,7 +55,7 @@ namespace AnyText::UI {
         configTableCell->editButton = BSML::Lite::CreateUIButton(configTableCellTransform, "Edit", std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
         configTableCell->editButton->GetComponent<LayoutElement*>()->set_preferredWidth(12);
 
-        configTableCell->deleteButton = BSML::Lite::CreateUIButton(configTableCellTransform, "X");
+        configTableCell->deleteButton = BSML::Lite::CreateUIButton(configTableCellTransform, "X", std::bind(&ConfigTableCell::HandleRemoveButtonOnClick, configTableCell));
         configTableCell->deleteButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
 
         return configTableCell;
@@ -108,6 +108,13 @@ namespace AnyText::UI {
 
     void ConfigTableCell::HandleEditButtonOnClick() {
         PaperLogger.info("HandleEditButtonOnClick");
+    }
+
+    void ConfigTableCell::HandleRemoveButtonOnClick() {
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+
+        removeConfig(*config);
+        configTableView->ReloadConfigOrder();
     }
 
     void ConfigTableCell::WasPreparedForReuse() {

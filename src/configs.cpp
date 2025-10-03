@@ -83,4 +83,13 @@ namespace AnyText {
         saveConfigOrder();
     }
 
+    void removeConfig(const Config& config) {
+        PaperLogger.info("Removing config '{}' at path: '{}'", config.name, config.filePath.string());
+        
+        std::filesystem::remove(config.filePath);
+
+        auto it = std::find_if(configs.begin(), configs.end(), [&config](const Config& x){return &x == &config;});
+        if(it != configs.end()) configs.erase(it);
+    }
+
 }

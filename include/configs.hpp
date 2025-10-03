@@ -60,4 +60,5 @@ namespace AnyText {
     void loadConfigs();
     void saveConfig(const Config& config);
     void saveConfigs();
+    void removeConfig(const Config& config);
 }

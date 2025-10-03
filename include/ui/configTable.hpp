@@ -23,6 +23,7 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
     DECLARE_INSTANCE_METHOD(void, HandleMoveUpOnClick);
     DECLARE_INSTANCE_METHOD(void, HandleNameInputOnChange);
     DECLARE_INSTANCE_METHOD(void, HandleEditButtonOnClick);
+    DECLARE_INSTANCE_METHOD(void, HandleRemoveButtonOnClick);
 
     DECLARE_OVERRIDE_METHOD_MATCH(void, WasPreparedForReuse, &HMUI::TableCell::WasPreparedForReuse);
 
