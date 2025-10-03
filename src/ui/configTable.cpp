@@ -10,7 +10,9 @@
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 
+#include <algorithm>
 #include <functional>
+#include <utility>
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -40,10 +42,10 @@ namespace AnyText::UI {
         ContentSizeFitter* orderButtonsFitter = orderButtonsGO->AddComponent<ContentSizeFitter*>();
         orderButtonsFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
 
-        configTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Up");
+        configTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Up", std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
         configTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(10);
         
-        configTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Down");
+        configTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Down", std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
         configTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(10);
         
         configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell));
@@ -65,6 +67,33 @@ namespace AnyText::UI {
         nameInput->set_text(config->name);
     }
 
+    void ConfigTableCell::HandleMoveDownOnClick() {
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == config;}));
+        if(index == configs.size()) {PaperLogger.error("Config not found in configs vector"); return;}
+        if(index >= configs.size() - 1) {PaperLogger.error("Can't move config down, config is already at bottom"); return;};
+        
+        PaperLogger.info("Config: '{}', Index: {} +1, Idx: {}", config->name, index, idx);
+        std::swap(configs[index], configs[index + 1]);
+        MoveIdx(1);
+
+        configTableView->ReloadConfigOrder();
+    }
+
+    void ConfigTableCell::HandleMoveUpOnClick() {
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == config;}));
+        if(index == configs.size()) {PaperLogger.error("Config not found in configs vector"); return;}
+        if(index <= 0) {PaperLogger.error("Can't move config up, config is already at top"); return;};
+        
+        PaperLogger.info("Config: '{}', Index: {} -1, Idx: {}", config->name, index, idx);
+        std::swap(configs[index], configs[index - 1]);
+        MoveIdx(-1);
+
+        configTableView->ReloadConfigOrder();
+    }
 
     void ConfigTableCell::HandleNameInputOnChange() {
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
@@ -100,10 +129,15 @@ namespace AnyText::UI {
         UnityW<ConfigTableCell> configTableCell = static_cast<UnityW<ConfigTableCell>>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
         if(!configTableCell) {
             configTableCell = ConfigTableCell::create();
+            configTableCell->configTableView = this;
             configTableCell->reuseIdentifier = reuseIdentifier;
         }
         configTableCell->updateData(&configs[idx]);
         return configTableCell;
+    }
+
+    void ConfigTableView::ReloadConfigOrder() {
+        tableView->ReloadDataKeepingPosition();
     }
 
 }

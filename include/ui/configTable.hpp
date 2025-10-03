@@ -10,6 +10,8 @@
 
 #include "UnityEngine/UI/Button.hpp"
 
+namespace AnyText::UI {class ConfigTableView;}
+
 DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, upButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, downButton);
@@ -17,6 +19,8 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, editButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, deleteButton);
     
+    DECLARE_INSTANCE_METHOD(void, HandleMoveDownOnClick);
+    DECLARE_INSTANCE_METHOD(void, HandleMoveUpOnClick);
     DECLARE_INSTANCE_METHOD(void, HandleNameInputOnChange);
     DECLARE_INSTANCE_METHOD(void, HandleEditButtonOnClick);
 
@@ -24,6 +28,7 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
 
     public:
         Config* config;
+        ConfigTableView* configTableView;
 
         void updateData(Config* config);
         
@@ -40,4 +45,6 @@ DECLARE_CLASS_CODEGEN_INTERFACES(AnyText::UI, ConfigTableView, UnityEngine::Mono
     DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
     DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);
     DECLARE_OVERRIDE_METHOD_MATCH(HMUI::TableCell*, CellForIdx, &HMUI::TableView::IDataSource::CellForIdx, HMUI::TableView* tableView, int idx);
+
+    DECLARE_INSTANCE_METHOD(void, ReloadConfigOrder);
 };
