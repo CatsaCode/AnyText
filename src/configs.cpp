@@ -68,9 +68,11 @@ namespace AnyText {
         }
 
         config.unsaved = false;
+        if(config.filePath.empty()) config.filePath = filePath;
 
         if(config.filePath.stem().string() == config.name) return;
         PaperLogger.info("Removing config '{}' from previous path: '{}'", config.name, config.filePath.string());
+        if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}
         std::filesystem::remove(config.filePath);
         config.filePath = filePath;
     }
@@ -86,6 +88,7 @@ namespace AnyText {
     void removeConfig(const Config& config) {
         PaperLogger.info("Removing config '{}' at path: '{}'", config.name, config.filePath.string());
         
+        if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}
         std::filesystem::remove(config.filePath);
 
         auto it = std::find_if(configs.begin(), configs.end(), [&config](const Config& x){return &x == &config;});
