@@ -3,11 +3,13 @@
 #include "custom-types/shared/macros.hpp"
 
 #include "ui/configsViewController.hpp"
+#include "ui/entriesViewController.hpp"
 
 #include "HMUI/FlowCoordinator.hpp"
 
 DECLARE_CLASS_CODEGEN(AnyText::UI, AnyTextFlowCoordinator, HMUI::FlowCoordinator) {
     DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::ConfigsViewController>, configsViewController);
+    DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::EntriesViewController>, entriesViewController);
 
     DECLARE_INSTANCE_METHOD(void, Awake);
 

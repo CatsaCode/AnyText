@@ -13,6 +13,7 @@ namespace AnyText::UI {
 
     void AnyTextFlowCoordinator::Awake() {
         if(!configsViewController) configsViewController = BSML::Helpers::CreateViewController<ConfigsViewController*>();
+        if(!entriesViewController) entriesViewController = BSML::Helpers::CreateViewController<EntriesViewController*>();
     }
 
     void AnyTextFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -20,7 +21,7 @@ namespace AnyText::UI {
 
         SetTitle("AnyText", HMUI::ViewController::AnimationType::In);
         showBackButton = true;
-        ProvideInitialViewControllers(configsViewController, nullptr, nullptr, nullptr, nullptr);
+        ProvideInitialViewControllers(configsViewController, entriesViewController, nullptr, nullptr, nullptr);
     }
 
     void AnyTextFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
@@ -32,6 +33,7 @@ namespace AnyText::UI {
         saveConfigs();
 
         _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
+        
     }
 
 }
