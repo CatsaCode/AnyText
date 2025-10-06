@@ -39,8 +39,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
     il2cpp_functions::Init();
     custom_types::Register::AutoRegister();
     BSML::Init();
-    // BSML::Register::RegisterMainMenuViewControllerMethod("AnyText", "AnyText", "Change any text in the game", AnyText::DidActivate);
-    BSML::Register::RegisterMainMenu<AnyText::UI::AnyTextFlowCoordinator*>("AnyText", "Change any text in the game");
+    BSML::Register::RegisterMenuButton("AnyText", "Change any text in the game", AnyText::UI::AnyTextFlowCoordinator::Present);
 
     PaperLogger.info("Installing hooks...");
 

@@ -37,8 +37,6 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::updateData(FindReplaceEntry* entry) {
-        PaperLogger.info(__func__);
-
         this->entry = entry;
 
         findStringInput->set_text(entry->findString);

@@ -2,6 +2,7 @@
 #include "main.hpp"
 
 #include "configs.hpp"
+#include "ui/anyTextFlowCoordinator.hpp"
 
 #include "HMUI/InputFieldView.hpp"
 
@@ -107,7 +108,9 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleEditButtonOnClick() {
-        PaperLogger.info("HandleEditButtonOnClick");
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+        
+        AnyTextFlowCoordinator::GetInstance()->presentEntries(config);
     }
 
     void ConfigTableCell::HandleRemoveButtonOnClick() {

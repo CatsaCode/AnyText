@@ -46,8 +46,13 @@ namespace AnyText::UI {
         scrollBarTransform->set_offsetMax({8, 0});
         Object::DestroyImmediate(textPageScrollView->get_gameObject());
 
-        entryTableView->config = &configs[0];
         if(entryTableView->tableView) entryTableView->tableView->ReloadData();
+    }
+
+    void EntriesViewController::setConfig(Config* config) {
+        if(!entryTableView) {PaperLogger.info("entryTableView is not assigned"); return;}
+        entryTableView->config = config;
+        entryTableView->tableView->ReloadData();
     }
     
 }
