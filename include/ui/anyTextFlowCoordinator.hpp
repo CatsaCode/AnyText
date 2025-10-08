@@ -4,14 +4,14 @@
 
 #include "custom-types/shared/macros.hpp"
 
-#include "ui/configsViewController.hpp"
-#include "ui/entriesViewController.hpp"
+#include "ui/configListViewController.hpp"
+#include "ui/entryListViewController.hpp"
 
 #include "HMUI/FlowCoordinator.hpp"
 
 DECLARE_CLASS_CODEGEN(AnyText::UI, AnyTextFlowCoordinator, HMUI::FlowCoordinator) {
-    DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::ConfigsViewController>, configsViewController);
-    DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::EntriesViewController>, entriesViewController);
+    DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::ConfigListViewController>, configListViewController);
+    DECLARE_INSTANCE_FIELD(UnityW<AnyText::UI::EntryListViewController>, entryListViewController);
 
     DECLARE_INSTANCE_FIELD_DEFAULT(bool, presentingEntries, false);
 

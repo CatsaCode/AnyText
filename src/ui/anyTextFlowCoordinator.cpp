@@ -3,7 +3,7 @@
 
 #include "configs.hpp"
 
-#include "ui/configsViewController.hpp"
+#include "ui/configListViewController.hpp"
 
 #include "bsml/shared/Helpers/creation.hpp"
 #include "bsml/shared/Helpers/getters.hpp"
@@ -24,8 +24,8 @@ namespace AnyText::UI {
 
 
     void AnyTextFlowCoordinator::Awake() {
-        if(!configsViewController) configsViewController = BSML::Helpers::CreateViewController<ConfigsViewController*>();
-        if(!entriesViewController) entriesViewController = BSML::Helpers::CreateViewController<EntriesViewController*>();
+        if(!configListViewController) configListViewController = BSML::Helpers::CreateViewController<ConfigListViewController*>();
+        if(!entryListViewController) entryListViewController = BSML::Helpers::CreateViewController<EntryListViewController*>();
     }
 
     void AnyTextFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
@@ -33,7 +33,7 @@ namespace AnyText::UI {
 
         SetTitle("AnyText", HMUI::ViewController::AnimationType::In);
         showBackButton = true;
-        ProvideInitialViewControllers(configsViewController, nullptr, nullptr, nullptr, nullptr);
+        ProvideInitialViewControllers(configListViewController, nullptr, nullptr, nullptr, nullptr);
     }
 
     void AnyTextFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
@@ -55,14 +55,14 @@ namespace AnyText::UI {
     void AnyTextFlowCoordinator::presentEntries(Config* config) {
         presentingEntries = true;
         SetTitle(config->name, HMUI::ViewController::AnimationType::In);
-        PresentViewController(entriesViewController, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false);
-        entriesViewController->setConfig(config);
+        PresentViewController(entryListViewController, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false);
+        entryListViewController->setConfig(config);
     }
 
     void AnyTextFlowCoordinator::presentConfigs() {
         presentingEntries = false;
         SetTitle("AnyText", HMUI::ViewController::AnimationType::Out);
-        DismissViewController(entriesViewController, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
+        DismissViewController(entryListViewController, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }
 
 }

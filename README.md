@@ -21,9 +21,9 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Create `TextIdentifier` to add and remove `TextManager` component
 - [x] Load config files in specific order
 - [x] Set up `AnyTextFlowCoordinator`
-- [x] Set up `ConfigsViewController`
+- [x] Set up `ConfigListViewController`
 - [x] Display each config as a row
-- [x] Set up `EntriesViewController`
+- [x] Set up `EntryListViewController`
 - [ ] Display each entry as a row
   - [ ] Add input field for find string
   - [ ] Add input field for replace string
