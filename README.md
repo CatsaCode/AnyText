@@ -40,6 +40,8 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add find with ignore case
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
+- [ ] Add proper icons to buttons
+- [ ] Fix large text being hidden behind ellipsis
 - [ ] Load fonts
 
 
