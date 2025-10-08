@@ -3,10 +3,14 @@
 
 #include "configs.hpp"
 
+#include "HMUI/InputFieldView.hpp"
+
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
+#include "UnityEngine/UI/Button.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -29,9 +33,42 @@ namespace AnyText::UI {
         entryTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         EntryTableCell* entryTableCell = entryTableCellGO->AddComponent<EntryTableCell*>();
 
-        entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(entryTableCellTransform, "Find", "", nullptr);
+        GameObject* orderButtonsGO = GameObject::New_ctor("OrderButtons");
+        RectTransform* orderButtonsTransform = orderButtonsGO->AddComponent<RectTransform*>();
+        orderButtonsTransform->SetParent(entryTableCellTransform, false);
+        HorizontalLayoutGroup* orderButtonsHorizontal = orderButtonsGO->AddComponent<HorizontalLayoutGroup*>();
+        ContentSizeFitter* orderButtonsFitter = orderButtonsGO->AddComponent<ContentSizeFitter*>();
+        orderButtonsFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
+
+        entryTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▲", std::bind(&EntryTableCell::HandleUpButtonOnClick, entryTableCell));
+        entryTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        
+        entryTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▼", std::bind(&EntryTableCell::HandleDownButtonOnClick, entryTableCell));
+        entryTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+
+        GameObject* mainSectionGO = GameObject::New_ctor("MainSection");
+        RectTransform* mainSectionTransform = mainSectionGO->AddComponent<RectTransform*>();
+        mainSectionTransform->SetParent(entryTableCellTransform, false);
+        HorizontalLayoutGroup* mainSectionHorizontal = mainSectionGO->AddComponent<HorizontalLayoutGroup*>();
+        ContentSizeFitter* mainSectionFitter = mainSectionGO->AddComponent<ContentSizeFitter*>();
+        mainSectionFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
+
+        entryTableCell->findSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleFindSettingsButtonOnClick, entryTableCell));
+        entryTableCell->findSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+
+        entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
         entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
-        entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(70);
+        entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+
+        entryTableCell->replaceStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
+        entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        entryTableCell->replaceStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+
+        entryTableCell->replaceSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
+        entryTableCell->replaceSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+
+        entryTableCell->replaceSettingsButton = BSML::Lite::CreateUIButton(entryTableCellTransform, "X", std::bind(&EntryTableCell::HandleRemoveButtonOnClick, entryTableCell));
+        entryTableCell->replaceSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
 
         return entryTableCell;
     }
@@ -40,6 +77,34 @@ namespace AnyText::UI {
         this->entry = entry;
 
         findStringInput->set_text(entry->findString);
+    }
+
+    void EntryTableCell::HandleUpButtonOnClick() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleDownButtonOnClick() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleFindSettingsButtonOnClick() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleFindStringInputOnChange() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleReplaceStringInputOnChange() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleReplaceSettingsButtonOnClick() {
+        PaperLogger.info(__func__);
+    }
+
+    void EntryTableCell::HandleRemoveButtonOnClick() {
+        PaperLogger.info(__func__);
     }
 
     void EntryTableCell::WasPreparedForReuse() {
