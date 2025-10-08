@@ -12,6 +12,37 @@ Change any text in the game through a list of find and replace instructions.
 - Creating many rows will make the buttons lag
 
 
+## v1.1.0 To-Do
+
+- [x] Create `FindReplaceEntry` class
+- [x] Create `Config` class
+- [x] Load config files
+- [x] Create `TextManager` component to handle text state
+- [x] Create `TextIdentifier` to add and remove `TextManager` component
+- [x] Load config files in specific order
+- [x] Set up `AnyTextFlowCoordinator`
+- [x] Set up `ConfigsViewController`
+- [x] Display each config as a row
+- [x] Set up `EntriesViewController`
+- [ ] Display each entry as a row
+  - [ ] Add input field for find string
+  - [ ] Add input field for replace string
+  - [ ] Add button to open find settings
+  - [ ] Add button to open replace settings
+  - [ ] Add buttons to reorder entry
+- [ ] Add modal for find settings
+- [ ] Add dropdown for find algorithm
+- [ ] Add toggle for accumulation
+- [ ] Add modal for replace settings
+- [ ] Add toggles to configs
+- [ ] Add button to create new config
+- [ ] Add button to create new entry
+- [ ] Add find with ignore case
+- [ ] Add replace all or partial
+- [ ] Add replace text style settings
+- [ ] Load fonts
+
+
 ## Build Instructions
 
 Use `qpm s build` to build
