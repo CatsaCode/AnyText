@@ -2,9 +2,7 @@
 #include "modConfig.hpp"
 
 #include "configs.hpp"
-#include "stringReplacer.hpp"
 #include "textIdentifier.hpp"
-#include "ui.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
 
 #include "scotland2/shared/modloader.h"
@@ -27,7 +25,7 @@ MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
 
     Paper::Logger::RegisterFileContextId(PaperLogger.tag);
 
-    getModConfig().Init(modInfo);
+    AnyText::getModConfig().Init(modInfo);
 
     AnyText::loadConfigs();
 
@@ -43,7 +41,6 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     PaperLogger.info("Installing hooks...");
 
-    // AnyText::InstallStringReplacerHooks();
     AnyText::installTextIdentifierHooks();
 
     PaperLogger.info("Installed all hooks!");
