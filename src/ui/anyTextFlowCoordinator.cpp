@@ -14,6 +14,7 @@ namespace AnyText::UI {
 
     AnyTextFlowCoordinator* AnyTextFlowCoordinator::GetInstance() {
         static UnityW<AnyTextFlowCoordinator> instance;
+        if(!instance && instance.unsafePtr()) PaperLogger.warn("Creating another AnyTextFlowCoordinator?");
         if(!instance) instance = BSML::Helpers::CreateFlowCoordinator<AnyTextFlowCoordinator*>();
         return instance;
     }

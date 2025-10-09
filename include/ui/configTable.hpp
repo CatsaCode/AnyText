@@ -13,11 +13,13 @@
 namespace AnyText::UI {class ConfigTableView;}
 
 DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
+    DECLARE_INSTANCE_FIELD(UnityW<ConfigTableView>, configTableView);
+
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, upButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, downButton);
     DECLARE_INSTANCE_FIELD(UnityW<HMUI::InputFieldView>, nameInput);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, editButton);
-    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, deleteButton);
+    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, removeButton);
     
     DECLARE_INSTANCE_METHOD(void, HandleMoveDownOnClick);
     DECLARE_INSTANCE_METHOD(void, HandleMoveUpOnClick);
@@ -29,7 +31,6 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
 
     public:
         Config* config;
-        ConfigTableView* configTableView;
 
         void updateData(Config* config);
         

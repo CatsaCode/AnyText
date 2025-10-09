@@ -43,11 +43,11 @@ namespace AnyText::UI {
         ContentSizeFitter* orderButtonsFitter = orderButtonsGO->AddComponent<ContentSizeFitter*>();
         orderButtonsFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
 
-        configTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Up", std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
-        configTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(10);
+        configTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▲", std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
+        configTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
         
-        configTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "Down", std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
-        configTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(10);
+        configTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▼", std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
+        configTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
         
         configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell));
         configTableCell->nameInput->_clearSearchButton->get_gameObject()->SetActive(false);
@@ -56,46 +56,50 @@ namespace AnyText::UI {
         configTableCell->editButton = BSML::Lite::CreateUIButton(configTableCellTransform, "Edit", std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
         configTableCell->editButton->GetComponent<LayoutElement*>()->set_preferredWidth(12);
 
-        configTableCell->deleteButton = BSML::Lite::CreateUIButton(configTableCellTransform, "X", std::bind(&ConfigTableCell::HandleRemoveButtonOnClick, configTableCell));
-        configTableCell->deleteButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        configTableCell->removeButton = BSML::Lite::CreateUIButton(configTableCellTransform, "X", std::bind(&ConfigTableCell::HandleRemoveButtonOnClick, configTableCell));
+        configTableCell->removeButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
 
         return configTableCell;
     }
     
     void ConfigTableCell::updateData(Config* config) {
+        if(!config) {PaperLogger.error("config is nullptr"); return;}
         this->config = config;
 
-        nameInput->set_text(config->name);
-
-        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [config](const Config& x){return &x == config;}));
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == this->config;}));
+        if(index == configs.size()) {PaperLogger.error("config not found in configs vector"); return;}
         upButton->set_interactable(index > 0);
         downButton->set_interactable(index < configs.size() - 1);
-    }
 
-    void ConfigTableCell::HandleMoveDownOnClick() {
-        if(!config) {PaperLogger.error("Config is not assigned"); return;}
-
-        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == config;}));
-        if(index == configs.size()) {PaperLogger.error("Config not found in configs vector"); return;}
-        if(index >= configs.size() - 1) {PaperLogger.error("Can't move config down, config is already at bottom"); return;};
-        
-        PaperLogger.info("Config: '{}', Index: {} +1, Idx: {}", config->name, index, idx);
-        std::swap(configs[index], configs[index + 1]);
-        MoveIdx(1);
-
-        configTableView->ReloadConfigOrder();
+        nameInput->set_text(config->name);
     }
 
     void ConfigTableCell::HandleMoveUpOnClick() {
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
+        if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
 
-        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == config;}));
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == this->config;}));
         if(index == configs.size()) {PaperLogger.error("Config not found in configs vector"); return;}
         if(index <= 0) {PaperLogger.error("Can't move config up, config is already at top"); return;};
         
         PaperLogger.info("Config: '{}', Index: {} -1, Idx: {}", config->name, index, idx);
         std::swap(configs[index], configs[index - 1]);
         MoveIdx(-1);
+
+        configTableView->ReloadConfigOrder();
+    }
+
+    void ConfigTableCell::HandleMoveDownOnClick() {
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+        if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
+
+        int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == this->config;}));
+        if(index == configs.size()) {PaperLogger.error("Config not found in configs vector"); return;}
+        if(index >= configs.size() - 1) {PaperLogger.error("Can't move config down, config is already at bottom"); return;};
+        
+        PaperLogger.info("Config: '{}', Index: {} +1, Idx: {}", config->name, index, idx);
+        std::swap(configs[index], configs[index + 1]);
+        MoveIdx(1);
 
         configTableView->ReloadConfigOrder();
     }
@@ -115,6 +119,7 @@ namespace AnyText::UI {
 
     void ConfigTableCell::HandleRemoveButtonOnClick() {
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
+        if(!configTableView) {PaperLogger.error("configTableView is not assigned"); return;}
 
         removeConfig(*config);
         configTableView->ReloadConfigOrder();
