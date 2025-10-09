@@ -30,6 +30,7 @@ Change any text in the game through a list of find and replace instructions.
   - [ ] Add button to open find settings
   - [ ] Add button to open replace settings
   - [x] Add buttons to reorder entry
+  - [ ] Add button to remove entry
 - [ ] Add modal for find settings
 - [ ] Add dropdown for find algorithm
 - [ ] Add toggle for accumulation
@@ -42,6 +43,8 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add replace text style settings
 - [ ] Add proper icons to buttons
 - [ ] Fix large text being hidden behind ellipsis
+- [ ] Stop text identification on AnyText-related pieces of text
+- [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Load fonts
 
 
