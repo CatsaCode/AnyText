@@ -32,8 +32,8 @@ namespace AnyText {
         upgradedConfig.name = "UpgradedConfig";
         upgradedConfig.unsaved = true;
         saveConfig(upgradedConfig);
-        jsonValue.RemoveMember(findStrings);
-        jsonValue.RemoveMember(replaceStrings);
+        jsonValue.RemoveMember("findStrings");
+        jsonValue.RemoveMember("replaceStrings");
     }
 
 
