@@ -38,7 +38,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add toggles to configs
 - [ ] Add button to create new config
 - [ ] Add button to create new entry
-- [ ] Add find with ignore case
+- [ ] Add find with match case
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
 - [ ] Add proper icons to buttons
