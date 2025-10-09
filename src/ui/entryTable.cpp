@@ -74,17 +74,53 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::updateData(FindReplaceEntry* entry) {
+        if(!entry) {PaperLogger.error("entry is nullptr"); return;}
         this->entry = entry;
+
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+        std::vector<FindReplaceEntry>& entries = entryTableView->config->entries;
+        int index = std::distance(entries.begin(), std::find_if(entries.begin(), entries.end(), [this](const FindReplaceEntry& x){return &x == this->entry;}));
+        if(index == entries.size()) {PaperLogger.error("entry not found in entries vector"); return;}
+        upButton->set_interactable(index > 0);
+        downButton->set_interactable(index < entries.size() - 1);
 
         findStringInput->set_text(entry->findString);
     }
 
     void EntryTableCell::HandleUpButtonOnClick() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+        std::vector<FindReplaceEntry>& entries = entryTableView->config->entries;
+
+        int index = std::distance(entries.begin(), std::find_if(entries.begin(), entries.end(), [this](const FindReplaceEntry& x){return &x == this->entry;}));
+        if(index == entries.size()) {PaperLogger.error("entry not found in entries vector"); return;}
+        if(index <= 0) {PaperLogger.error("Can't move entry up, entry is already at top"); return;}
+        
+        PaperLogger.info("Entry: '{}', Index: {} -1, Idx: {}", entry->findString, index, idx);
+        std::swap(entries[index], entries[index - 1]);
+        MoveIdx(-1);
+
+        entryTableView->ReloadEntryOrder();
     }
 
     void EntryTableCell::HandleDownButtonOnClick() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+        std::vector<FindReplaceEntry>& entries = entryTableView->config->entries;
+
+        int index = std::distance(entries.begin(), std::find_if(entries.begin(), entries.end(), [this](const FindReplaceEntry& x){return &x == this->entry;}));
+        if(index == entries.size()) {PaperLogger.error("entry not found in entries vector"); return;}
+        if(index >= entries.size() - 1) {PaperLogger.error("Can't move entry down, entry is already at bottom"); return;}
+        
+        PaperLogger.info("Entry: '{}', Index: {} +1, Idx: {}", entry->findString, index, idx);
+        std::swap(entries[index], entries[index + 1]);
+        MoveIdx(1);
+
+        entryTableView->config->unsaved = true;
+        entryTableView->ReloadEntryOrder();
     }
 
     void EntryTableCell::HandleFindSettingsButtonOnClick() {
@@ -127,10 +163,15 @@ namespace AnyText::UI {
         UnityW<EntryTableCell> entryTableCell = static_cast<UnityW<EntryTableCell>>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
         if(!entryTableCell) {
             entryTableCell = EntryTableCell::create();
+            entryTableCell->entryTableView = this;
             entryTableCell->reuseIdentifier = reuseIdentifier;
         }
         entryTableCell->updateData(&config->entries[idx]);
         return entryTableCell;
+    }
+
+    void EntryTableView::ReloadEntryOrder() {
+        tableView->ReloadDataKeepingPosition();
     }
 
 }

@@ -10,7 +10,11 @@
 
 #include "UnityEngine/UI/Button.hpp"
 
+namespace AnyText::UI {class EntryTableView;}
+
 DECLARE_CLASS_CODEGEN(AnyText::UI, EntryTableCell, HMUI::TableCell) {
+    DECLARE_INSTANCE_FIELD(UnityW<EntryTableView>, entryTableView);
+
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, upButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, downButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, findSettingsButton);
@@ -47,6 +51,8 @@ DECLARE_CLASS_CODEGEN_INTERFACES(AnyText::UI, EntryTableView, UnityEngine::MonoB
     DECLARE_OVERRIDE_METHOD_MATCH(float, CellSize, &HMUI::TableView::IDataSource::CellSize);
     DECLARE_OVERRIDE_METHOD_MATCH(int, NumberOfCells, &HMUI::TableView::IDataSource::NumberOfCells);
     DECLARE_OVERRIDE_METHOD_MATCH(HMUI::TableCell*, CellForIdx, &HMUI::TableView::IDataSource::CellForIdx, HMUI::TableView* tableView, int idx);
+
+    DECLARE_INSTANCE_METHOD(void, ReloadEntryOrder);
 
     public:
         Config* config;

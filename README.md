@@ -29,7 +29,7 @@ Change any text in the game through a list of find and replace instructions.
   - [ ] Add input field for replace string
   - [ ] Add button to open find settings
   - [ ] Add button to open replace settings
-  - [ ] Add buttons to reorder entry
+  - [x] Add buttons to reorder entry
 - [ ] Add modal for find settings
 - [ ] Add dropdown for find algorithm
 - [ ] Add toggle for accumulation
