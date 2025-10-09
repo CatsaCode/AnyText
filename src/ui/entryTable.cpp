@@ -86,6 +86,7 @@ namespace AnyText::UI {
         downButton->set_interactable(index < entries.size() - 1);
 
         findStringInput->set_text(entry->findString);
+        replaceStringInput->set_text(entry->replaceString);
     }
 
     void EntryTableCell::HandleUpButtonOnClick() {
@@ -128,11 +129,21 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleFindStringInputOnChange() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+
+        entry->findString = std::string(findStringInput->get_text());
+        entryTableView->config->unsaved = true;
     }
 
     void EntryTableCell::HandleReplaceStringInputOnChange() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+
+        entry->replaceString = std::string(replaceStringInput->get_text());
+        entryTableView->config->unsaved = true;
     }
 
     void EntryTableCell::HandleReplaceSettingsButtonOnClick() {

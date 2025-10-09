@@ -25,8 +25,8 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Display each config as a row
 - [x] Set up `EntryListViewController`
 - [ ] Display each entry as a row
-  - [ ] Add input field for find string
-  - [ ] Add input field for replace string
+  - [x] Add input field for find string
+  - [x] Add input field for replace string
   - [ ] Add button to open find settings
   - [ ] Add button to open replace settings
   - [x] Add buttons to reorder entry
