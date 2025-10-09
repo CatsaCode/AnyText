@@ -151,7 +151,17 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleRemoveButtonOnClick() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+
+        std::vector<FindReplaceEntry>& entries = entryTableView->config->entries;
+        auto it = std::find_if(entries.begin(), entries.end(), [this](const FindReplaceEntry& x){return &x == this->entry;});
+        if(it == entries.end()) {PaperLogger.error("entry not found in entries vector"); return;}
+        
+        entries.erase(it);
+        entryTableView->config->unsaved = true;
+        entryTableView->ReloadEntryOrder();
     }
 
     void EntryTableCell::WasPreparedForReuse() {
