@@ -54,8 +54,8 @@ namespace AnyText {
         loadConfigOrder();
     }
 
-    void saveConfig(Config& config) {
-        if(!config.unsaved) return;
+    bool saveConfig(Config& config) {
+        if(!config.unsaved) return false;
 
         std::filesystem::path filePath (std::string(getAnyTextDir()) + config.name + ".json"); // TODO Sanitize
         PaperLogger.info("Saving config '{}' to path: '{}'", config.name, filePath.string());
@@ -64,17 +64,19 @@ namespace AnyText {
             WriteToFile(filePath.string(), config, true);
         } catch(const std::exception& err) {
             PaperLogger.error("Failed to save config: '{}', Path: '{}', Error: '{}'", config.name, filePath.string(), err.what());
-            return;
+            return false;
         }
 
         config.unsaved = false;
         if(config.filePath.empty()) config.filePath = filePath;
 
-        if(config.filePath.stem().string() == config.name) return;
+        if(config.filePath.stem().string() == config.name) return true;
         PaperLogger.info("Removing config '{}' from previous path: '{}'", config.name, config.filePath.string());
-        if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}
+        if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return true;}
         std::filesystem::remove(config.filePath);
         config.filePath = filePath;
+        
+        return true;
     }
 
     void saveConfigs() {

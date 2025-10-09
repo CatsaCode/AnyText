@@ -58,7 +58,7 @@ namespace AnyText {
     void loadConfigOrder();
     void saveConfigOrder();
     void loadConfigs();
-    void saveConfig(Config& config);
+    bool saveConfig(Config& config);
     void saveConfigs();
     void removeConfig(const Config& config);
 }

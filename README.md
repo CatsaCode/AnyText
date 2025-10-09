@@ -46,6 +46,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
+- [x] Upgrade v1.0.1 configs
 - [ ] Load fonts
 
 
