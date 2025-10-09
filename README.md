@@ -45,6 +45,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Fix large text being hidden behind ellipsis
 - [ ] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
+- [ ] Add hover hints
 - [ ] Load fonts
 
 
