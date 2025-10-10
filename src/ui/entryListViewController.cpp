@@ -3,6 +3,7 @@
 
 #include "configs.hpp"
 #include "ui/entryTable.hpp"
+#include "ui/entryModals.hpp"
 
 #include "bsml/shared/BSML.hpp"
 
@@ -47,6 +48,8 @@ namespace AnyText::UI {
         Object::DestroyImmediate(textPageScrollView->get_gameObject());
 
         if(entryTableView->tableView) entryTableView->tableView->ReloadData();
+        
+        findSettingsModal = FindSettingsModal::create(transform);
     }
 
     void EntryListViewController::setConfig(Config* config) {

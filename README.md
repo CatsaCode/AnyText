@@ -24,16 +24,16 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Set up `ConfigListViewController`
 - [x] Display each config as a row
 - [x] Set up `EntryListViewController`
-- [ ] Display each entry as a row
+- [x] Display each entry as a row
   - [x] Add input field for find string
   - [x] Add input field for replace string
-  - [ ] Add button to open find settings
-  - [ ] Add button to open replace settings
+  - [x] Add button to open find settings
+  - [x] Add button to open replace settings
   - [x] Add buttons to reorder entry
   - [x] Add button to remove entry
-- [ ] Add modal for find settings
+- [x] Add modal for find settings
 - [ ] Add dropdown for find algorithm
-- [ ] Add toggle for accumulation
+- [x] Add toggle for accumulation
 - [ ] Add modal for replace settings
 - [ ] Add toggles to configs
 - [ ] Add button to create new config

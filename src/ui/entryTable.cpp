@@ -2,6 +2,7 @@
 #include "main.hpp"
 
 #include "configs.hpp"
+#include "ui/anyTextFlowCoordinator.hpp"
 
 #include "HMUI/InputFieldView.hpp"
 
@@ -125,7 +126,9 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleFindSettingsButtonOnClick() {
-        PaperLogger.info(__func__);
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        
+        AnyTextFlowCoordinator::GetInstance()->entryListViewController->findSettingsModal->show(entry);
     }
 
     void EntryTableCell::HandleFindStringInputOnChange() {
