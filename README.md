@@ -43,7 +43,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add replace text style settings
 - [ ] Add position offset
 - [ ] Add proper icons to buttons
-- [ ] Fix large text being hidden behind ellipsis
+- [ ] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned)
 - [ ] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
