@@ -48,7 +48,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
-- [ ] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
+- [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
   - [ ] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
 - [ ] Load fonts
 

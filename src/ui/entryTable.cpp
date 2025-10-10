@@ -4,15 +4,23 @@
 #include "configs.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
 
+#include "custom-types/shared/delegate.hpp"
+#include "custom-types/shared/coroutine.hpp"
+
+#include "GlobalNamespace/UIKeyboardManager.hpp"
+
 #include "HMUI/InputFieldView.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/TouchScreenKeyboard.hpp"
+#include "UnityEngine/TouchScreenKeyboardType.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
 #include "UnityEngine/UI/Button.hpp"
 
+using namespace GlobalNamespace;
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
 using namespace HMUI;
@@ -21,6 +29,24 @@ DEFINE_TYPE(AnyText::UI, EntryTableCell);
 DEFINE_TYPE(AnyText::UI, EntryTableView);
 
 namespace AnyText::UI {
+
+    static custom_types::Helpers::Coroutine openSystemKeyboard(InputFieldView* inputFieldView, TouchScreenKeyboardType type = TouchScreenKeyboardType::Default, std::string_view placeholder = "", int charLimit = 0) {
+        static TouchScreenKeyboard* systemKeyboard = nullptr;
+        if(!systemKeyboard) systemKeyboard = TouchScreenKeyboard::Open(inputFieldView->get_text(), type, true, false, false, false, placeholder, charLimit);
+        
+        while(
+            systemKeyboard && 
+            systemKeyboard->status != TouchScreenKeyboard::Status::Done &&
+            systemKeyboard->status != TouchScreenKeyboard::Status::Canceled &&
+            systemKeyboard->status != TouchScreenKeyboard::Status::LostFocus
+        ) {
+            co_yield nullptr;
+        }
+
+        if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) inputFieldView->set_text(systemKeyboard->get_text());
+        systemKeyboard = nullptr;
+        co_return;
+    }
 
     EntryTableCell* EntryTableCell::create() {
         PaperLogger.info("Creating EntryTableCell...");
@@ -58,7 +84,12 @@ namespace AnyText::UI {
         entryTableCell->findSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
 
         entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
-        entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        // entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        entryTableCell->findStringInput->_clearSearchButton->get_onClick()->RemoveAllListeners();
+        entryTableCell->findStringInput->_clearSearchButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
+            auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->findStringInput));
+            entryTableCell->StartCoroutine(coro);
+        })));
         entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
 
         entryTableCell->replaceStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
