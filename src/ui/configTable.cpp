@@ -114,6 +114,7 @@ namespace AnyText::UI {
     void ConfigTableCell::HandleEditButtonOnClick() {
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         
+        config->unsaved = true;
         AnyTextFlowCoordinator::GetInstance()->presentEntries(config);
     }
 

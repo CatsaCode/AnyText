@@ -121,13 +121,12 @@ namespace AnyText::UI {
         std::swap(entries[index], entries[index + 1]);
         MoveIdx(1);
 
-        entryTableView->config->unsaved = true;
         entryTableView->ReloadEntryOrder();
     }
 
     void EntryTableCell::HandleFindSettingsButtonOnClick() {
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
-        
+
         AnyTextFlowCoordinator::GetInstance()->entryListViewController->findSettingsModal->show(entry);
     }
 
@@ -137,7 +136,6 @@ namespace AnyText::UI {
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
 
         entry->findString = std::string(findStringInput->get_text());
-        entryTableView->config->unsaved = true;
     }
 
     void EntryTableCell::HandleReplaceStringInputOnChange() {
@@ -146,7 +144,6 @@ namespace AnyText::UI {
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
 
         entry->replaceString = std::string(replaceStringInput->get_text());
-        entryTableView->config->unsaved = true;
     }
 
     void EntryTableCell::HandleReplaceSettingsButtonOnClick() {
@@ -163,7 +160,6 @@ namespace AnyText::UI {
         if(it == entries.end()) {PaperLogger.error("entry not found in entries vector"); return;}
         
         entries.erase(it);
-        entryTableView->config->unsaved = true;
         entryTableView->ReloadEntryOrder();
     }
 
