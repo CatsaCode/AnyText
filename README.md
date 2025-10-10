@@ -41,12 +41,14 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add find with match case
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
+- [ ] Add position offset
 - [ ] Add proper icons to buttons
 - [ ] Fix large text being hidden behind ellipsis
 - [ ] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
+- [ ] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
 - [ ] Load fonts
 
 
