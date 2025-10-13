@@ -8,10 +8,10 @@ namespace AnyText {
 
     enum class FindAlgorithm {
         ExactMatch,
-        PartialMatch
-        // Regex
+        PartialMatch,
+        Regex
     };
-    static std::array<std::string_view, 2> FindAlgorithm_Strings = {"Exact Match", "Partial Match"}; // Thanks BSML for not letting me safely make this const
+    static std::array<std::string_view, 3> FindAlgorithm_Strings = {"Exact Match", "Partial Match", "Regex"}; // Thanks BSML for not letting me safely make this const
 
     // enum class FindLocation {
     //     MenuScene,

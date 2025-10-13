@@ -6,6 +6,8 @@
 
 #include "TMPro/TMP_Text.hpp"
 
+#include <regex>
+
 using namespace UnityEngine;
 
 namespace AnyText {
@@ -24,8 +26,16 @@ namespace AnyText {
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::ExactMatch && !text->get_text()->Equals(entry.findString)) continue;
-                if(static_cast<FindAlgorithm>(entry.findAlgorithm) == FindAlgorithm::PartialMatch && !text->get_text()->Contains(entry.findString)) continue;
+                // TODO Precalculate entryRegexStr when entry.findString is updated
+                std::string entryRegexStr = entry.findString;
+                if(entry.findAlgorithm != static_cast<int>(FindAlgorithm::Regex)) {
+                    static const std::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
+                    entryRegexStr = std::regex_replace(entryRegexStr, escapeRegex, "\\$&");
+                }
+                if(entry.findAlgorithm == static_cast<int>(FindAlgorithm::ExactMatch))
+                    entryRegexStr = '^' + entryRegexStr + "$";
+                std::regex entryRegex (entryRegexStr);
+                if(!std::regex_match(std::string(text->get_text()), entryRegex)) continue;
 
                 if(!textManager) text->get_gameObject()->AddComponent<TextManager*>();
                 else textManager->OnTextChange();
