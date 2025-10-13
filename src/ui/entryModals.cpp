@@ -50,7 +50,7 @@ namespace AnyText::UI {
         findSettingsModal->modalView = modalView;
 
         findSettingsModal->algorithmDropdown = BSML::Lite::CreateDropdown(containerTransform, "Algorithm", "", FindAlgorithm_Strings, std::bind(&FindSettingsModal::HandleAlgorithmDropdownOnChange, findSettingsModal, std::placeholders::_1));
-        findSettingsModal->accumulateToggle = BSML::Lite::CreateToggle(containerTransform, "Accumulate", false, std::bind(&FindSettingsModal::HandleAccumulateToggleOnToggle, findSettingsModal, std::placeholders::_1));
+        findSettingsModal->accumulateToggle = BSML::Lite::CreateToggle(containerTransform, "Accumulate", false, std::bind(&FindSettingsModal::HandleAccumulateToggleOnChange, findSettingsModal, std::placeholders::_1));
 
         return findSettingsModal;
     }
@@ -62,8 +62,8 @@ namespace AnyText::UI {
         entry->findAlgorithm = index;
     }
 
-    void FindSettingsModal::HandleAccumulateToggleOnToggle(bool value) {
-        if(!entry) {PaperLogger.error("entry is not assined"); return;}
+    void FindSettingsModal::HandleAccumulateToggleOnChange(bool value) {
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         entry->accumulate = value;
     }
     
