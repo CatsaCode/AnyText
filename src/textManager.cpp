@@ -92,4 +92,8 @@ namespace AnyText {
         }
     }
 
+    const TextState& TextManager::getOriginalState() const {
+        return originalState;
+    }
+
 }

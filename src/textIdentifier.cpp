@@ -23,6 +23,7 @@ namespace AnyText {
         }
         
         TextManager* textManager = text->GetComponent<TextManager*>();
+        std::string identifyingText = textManager ? textManager->getOriginalState().text : std::string(text->get_text());
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
@@ -35,7 +36,7 @@ namespace AnyText {
                 if(entry.findAlgorithm == static_cast<int>(FindAlgorithm::ExactMatch))
                     entryRegexStr = '^' + entryRegexStr + "$";
                 std::regex entryRegex (entryRegexStr);
-                if(!std::regex_match(std::string(text->get_text()), entryRegex)) continue;
+                if(!std::regex_match(identifyingText, entryRegex)) continue;
 
                 if(!textManager) text->get_gameObject()->AddComponent<TextManager*>();
                 else textManager->OnTextChange();

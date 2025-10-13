@@ -32,6 +32,9 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
         bool updateOriginalStateWithDifferences();
         void applyState(const AnyText::TextState& state);
         void generateReplacementState();
+    
+    public:
+        const AnyText::TextState& getOriginalState() const;
 
 #ifdef BS_1_37_0
 )
