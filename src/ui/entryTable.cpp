@@ -15,6 +15,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/TouchScreenKeyboard.hpp"
 #include "UnityEngine/TouchScreenKeyboardType.hpp"
+#include "UnityEngine/Time.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
@@ -34,6 +35,7 @@ namespace AnyText::UI {
         static TouchScreenKeyboard* systemKeyboard = nullptr;
         if(!systemKeyboard) systemKeyboard = TouchScreenKeyboard::Open(inputFieldView->get_text(), type, true, false, false, false, placeholder, charLimit);
         
+        float startTimeSeconds = Time::get_realtimeSinceStartup();
         while(
             systemKeyboard && 
             systemKeyboard->status != TouchScreenKeyboard::Status::Done &&
@@ -42,6 +44,9 @@ namespace AnyText::UI {
         ) {
             co_yield nullptr;
         }
+        float endTimeSeconds = Time::get_realtimeSinceStartup();
+        
+        if(endTimeSeconds - startTimeSeconds < 0.1) PaperLogger.debug("TODO User likely does not have the system keyboard permission");
 
         if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) inputFieldView->set_text(systemKeyboard->get_text());
         systemKeyboard = nullptr;
