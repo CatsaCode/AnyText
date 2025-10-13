@@ -49,9 +49,17 @@ namespace AnyText::UI {
         FindSettingsModal* findSettingsModal = findSettingsModalGO->AddComponent<FindSettingsModal*>();
         findSettingsModal->modalView = modalView;
 
+        findSettingsModal->algorithmDropdown = BSML::Lite::CreateDropdown(containerTransform, "Algorithm", "", FindAlgorithm_Strings, std::bind(&FindSettingsModal::HandleAlgorithmDropdownOnChange, findSettingsModal, std::placeholders::_1));
         findSettingsModal->accumulateToggle = BSML::Lite::CreateToggle(containerTransform, "Accumulate", false, std::bind(&FindSettingsModal::HandleAccumulateToggleOnToggle, findSettingsModal, std::placeholders::_1));
 
         return findSettingsModal;
+    }
+
+    void FindSettingsModal::HandleAlgorithmDropdownOnChange(StringW value) {
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        int index = std::distance(FindAlgorithm_Strings.begin(), std::find(FindAlgorithm_Strings.begin(), FindAlgorithm_Strings.end(), value));
+        if(index == FindAlgorithm_Strings.size()) {PaperLogger.error("value not found in array"); return;}
+        entry->findAlgorithm = index;
     }
 
     void FindSettingsModal::HandleAccumulateToggleOnToggle(bool value) {
@@ -64,8 +72,14 @@ namespace AnyText::UI {
         this->entry = entry;
 
         if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
+        
+        if(entry->findAlgorithm < 0 || entry->findAlgorithm >= algorithmDropdown->values.size()) {PaperLogger.warn("findAlgorithm {} is invalid for size {}, resetting to 0...", entry->findAlgorithm, algorithmDropdown->values.size()); 
+            entry->findAlgorithm = 0;}
+        algorithmDropdown->set_Value(algorithmDropdown->values[entry->findAlgorithm]);
+        
         accumulateToggle->set_Value(entry->accumulate);
         skipToggleTransition(accumulateToggle->GetComponentInChildren<AnimatedSwitchView*>());
+        
         modalView->Show();
     }
 

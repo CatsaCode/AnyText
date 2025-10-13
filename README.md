@@ -32,7 +32,7 @@ Change any text in the game through a list of find and replace instructions.
   - [x] Add buttons to reorder entry
   - [x] Add button to remove entry
 - [x] Add modal for find settings
-- [ ] Add dropdown for find algorithm
+- [x] Add dropdown for find algorithm
 - [x] Add toggle for accumulation
 - [ ] Add modal for replace settings
 - [ ] Add toggles to configs
