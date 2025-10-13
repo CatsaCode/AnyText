@@ -53,6 +53,10 @@ Change any text in the game through a list of find and replace instructions.
   - [ ] Also note user if it detects the keyboard. `Android::Permission` does not work, measure time open instead
 - [ ] Load fonts
 
+## Known bugs
+
+- Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
+
 
 ## Build Instructions
 
