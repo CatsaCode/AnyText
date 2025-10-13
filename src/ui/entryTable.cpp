@@ -48,7 +48,10 @@ namespace AnyText::UI {
         
         if(endTimeSeconds - startTimeSeconds < 0.1) PaperLogger.debug("TODO User likely does not have the system keyboard permission");
 
-        if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) inputFieldView->set_text(systemKeyboard->get_text());
+        if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) {
+            inputFieldView->set_text(systemKeyboard->get_text());
+            inputFieldView->get_onValueChanged()->Invoke(inputFieldView);
+        }
         systemKeyboard = nullptr;
         co_return;
     }
@@ -87,19 +90,30 @@ namespace AnyText::UI {
 
         entryTableCell->findSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleFindSettingsButtonOnClick, entryTableCell));
         entryTableCell->findSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
-
+        
         entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
-        // entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
-        entryTableCell->findStringInput->_clearSearchButton->get_onClick()->RemoveAllListeners();
-        entryTableCell->findStringInput->_clearSearchButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
+        entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+        GameObject* findStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->findStringInput->_clearSearchButton->get_gameObject(), entryTableCell->findStringInput->_clearSearchButton->get_transform()->GetParent());
+        entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        Button* findStringSystemKeyboardButton = findStringSystemKeyboardButtonGO->GetComponent<Button*>();
+        findStringSystemKeyboardButton->set_interactable(true);
+        findStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
+        findStringSystemKeyboardButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
             auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->findStringInput));
             entryTableCell->StartCoroutine(coro);
         })));
-        entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
 
         entryTableCell->replaceStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
-        entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
         entryTableCell->replaceStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+        GameObject* replaceStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject(), entryTableCell->replaceStringInput->_clearSearchButton->get_transform()->GetParent());
+        entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        Button* replaceStringSystemKeyboardButton = replaceStringSystemKeyboardButtonGO->GetComponent<Button*>();
+        replaceStringSystemKeyboardButton->set_interactable(true);
+        replaceStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
+        replaceStringSystemKeyboardButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
+            auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->replaceStringInput));
+            entryTableCell->StartCoroutine(coro);
+        })));
 
         entryTableCell->replaceSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
         entryTableCell->replaceSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
