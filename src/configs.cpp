@@ -18,7 +18,7 @@ namespace AnyText {
         std::string findRegexStr = findString;
         if(getFindAlgorithm() != FindAlgorithm::Regex) {
             static const boost::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
-            findRegexStr = boost::regex_replace(findRegexStr, escapeRegex, "\\$&");
+            findRegexStr = boost::regex_replace(findRegexStr, escapeRegex, "\\\\$&");
         }
         if(getFindAlgorithm() == FindAlgorithm::ExactMatch)
             findRegexStr = '^' + findRegexStr + "$";
