@@ -27,7 +27,7 @@ namespace AnyText {
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                if(!std::regex_match(identifyingText, entry.getFindRegex())) continue;
+                if(!std::regex_search(identifyingText, entry.getFindRegex())) continue;
 
                 if(!textManager) {
                     PaperLogger.debug("Adding TextManager to '{}'", identifyingText);

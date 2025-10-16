@@ -67,7 +67,7 @@ namespace AnyText {
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
                 if(hasReplacedText && !entry.accumulate) continue;
-                if(!std::regex_match(replacementState.text, entry.getFindRegex())) continue;
+                if(!std::regex_search(replacementState.text, entry.getFindRegex())) continue;
 
                 // std::regex_constants::format_first_only (argument for regex_match)
                 // std::regex::icase (argument for regex constructor)
