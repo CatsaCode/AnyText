@@ -136,7 +136,7 @@ namespace AnyText::UI {
         upButton->set_interactable(index > 0);
         downButton->set_interactable(index < entries.size() - 1);
 
-        findStringInput->set_text(entry->findString);
+        findStringInput->set_text(entry->getFindString());
         replaceStringInput->set_text(entry->replaceString);
     }
 
@@ -150,7 +150,7 @@ namespace AnyText::UI {
         if(index == entries.size()) {PaperLogger.error("entry not found in entries vector"); return;}
         if(index <= 0) {PaperLogger.error("Can't move entry up, entry is already at top"); return;}
         
-        PaperLogger.info("Entry: '{}', Index: {} -1, Idx: {}", entry->findString, index, idx);
+        PaperLogger.info("Entry: '{}', Index: {} -1, Idx: {}", entry->getFindString(), index, idx);
         std::swap(entries[index], entries[index - 1]);
         MoveIdx(-1);
 
@@ -167,7 +167,7 @@ namespace AnyText::UI {
         if(index == entries.size()) {PaperLogger.error("entry not found in entries vector"); return;}
         if(index >= entries.size() - 1) {PaperLogger.error("Can't move entry down, entry is already at bottom"); return;}
         
-        PaperLogger.info("Entry: '{}', Index: {} +1, Idx: {}", entry->findString, index, idx);
+        PaperLogger.info("Entry: '{}', Index: {} +1, Idx: {}", entry->getFindString(), index, idx);
         std::swap(entries[index], entries[index + 1]);
         MoveIdx(1);
 
@@ -185,7 +185,7 @@ namespace AnyText::UI {
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
 
-        entry->findString = std::string(findStringInput->get_text());
+        entry->setFindString(std::string(findStringInput->get_text()));
     }
 
     void EntryTableCell::HandleReplaceStringInputOnChange() {

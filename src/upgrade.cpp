@@ -24,9 +24,9 @@ namespace AnyText {
         for(int i = 0; i < numEntries; i++) {
             if(!findStrings.GetArray()[i].IsString() || !replaceStrings.GetArray()[i].IsString()) {PaperLogger.error("Unexpected data type"); return;}
             FindReplaceEntry& entry = upgradedConfig.entries.emplace_back();
-            entry.findString = findStrings.GetArray()[i].GetString();
+            entry.setFindString(findStrings.GetArray()[i].GetString());
+            entry.setFindAlgorithm(FindAlgorithm::ExactMatch);
             entry.replaceString = replaceStrings.GetArray()[i].GetString();
-            entry.findAlgorithm = static_cast<int>(FindAlgorithm::ExactMatch);
         }
 
         upgradedConfig.name = "UpgradedConfig";

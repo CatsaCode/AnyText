@@ -3,6 +3,7 @@
 #include "config-utils/shared/config-utils.hpp"
 
 #include <filesystem>
+#include <regex>
 
 namespace AnyText {
 
@@ -19,30 +20,48 @@ namespace AnyText {
     // };
 
     DECLARE_JSON_STRUCT(FindReplaceEntry) {
-        VALUE(std::string, findString);
-        VALUE(std::string, replaceString);
+        private:
+            VALUE(std::string, findString);
+            VALUE_DEFAULT(int, findAlgorithm, static_cast<int>(FindAlgorithm::PartialMatch));
+            // VALUE_DEFAULT(bool, matchCase, false);
+            // VALUE_OPTIONAL(FindLocation, findLocation);
 
-        VALUE_DEFAULT(int, findAlgorithm, (int)FindAlgorithm::PartialMatch);
-        // VALUE_DEFAULT(bool, matchCase, false);
-        VALUE_DEFAULT(bool, accumulate, false);
-        // VALUE_OPTIONAL(FindLocation, findLocation);
+        public:
+            VALUE(std::string, replaceString);
+            VALUE_DEFAULT(bool, accumulate, false);
 
-        // VALUE_OPTIONAL(bool, replaceAll);
-        // VALUE_OPTIONAL(bool, bold);
-        // VALUE_OPTIONAL(bool, italics);
-        // VALUE_OPTIONAL(bool, underline);
-        // VALUE_OPTIONAL(bool, strikethrough);
-        // VALUE_OPTIONAL(bool, lowercase);
-        // VALUE_OPTIONAL(bool, uppercase);
-        // VALUE_OPTIONAL(bool, smallcaps);
-        // VALUE_OPTIONAL(int, fontSize);
-        // VALUE_OPTIONAL(bool, autoSize);
-        // Color
-        // Gradient
-        // Spacing options
-        // Alignment
-        // Wrapping
-        // Overflow
+            // VALUE_OPTIONAL(bool, replaceAll);
+            // VALUE_OPTIONAL(bool, bold);
+            // VALUE_OPTIONAL(bool, italics);
+            // VALUE_OPTIONAL(bool, underline);
+            // VALUE_OPTIONAL(bool, strikethrough);
+            // VALUE_OPTIONAL(bool, lowercase);
+            // VALUE_OPTIONAL(bool, uppercase);
+            // VALUE_OPTIONAL(bool, smallcaps);
+            // VALUE_OPTIONAL(int, fontSize);
+            // VALUE_OPTIONAL(bool, autoSize);
+            // Color
+            // Gradient
+            // Spacing options
+            // Alignment
+            // Wrapping
+            // Overflow
+
+            
+        private:
+            std::regex findRegex;
+
+            void updateFindRegex();
+
+            DESERIALIZE_FUNCTION(initFromJSON) {updateFindRegex();}
+
+        public:
+            void setFindString(std::string_view value) {findString = value; updateFindRegex();}
+            std::string_view getFindString() const {return findString;}
+            const std::regex& getFindRegex() const {return findRegex;}
+
+            void setFindAlgorithm(FindAlgorithm value) {findAlgorithm = std::clamp<int>(static_cast<int>(value), 0, FindAlgorithm_Strings.size() - 1); updateFindRegex();}
+            FindAlgorithm getFindAlgorithm() const {return static_cast<FindAlgorithm>(findAlgorithm);}
     };
 
     DECLARE_JSON_STRUCT(Config) {

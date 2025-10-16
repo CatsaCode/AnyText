@@ -15,37 +15,38 @@ namespace AnyText {
     void identifyText(TMPro::TMP_Text* text) {
         if(!text || !text->get_text() || !text->get_gameObject()) return;
 
-        Transform* menuTransform = text->get_transform();
-        for(int i = 0; i < 4; i++) {
-            if(!menuTransform) break;
-            if(menuTransform->get_name() == "AnyTextMenu") return;
-            menuTransform = menuTransform->get_parent();
-        }
+        // Transform* menuTransform = text->get_transform();
+        // for(int i = 0; i < 4; i++) {
+        //     if(!menuTransform) break;
+        //     if(menuTransform->get_name() == "AnyTextMenu") return;
+        //     menuTransform = menuTransform->get_parent();
+        // }
         
         TextManager* textManager = text->GetComponent<TextManager*>();
         std::string identifyingText = textManager ? textManager->getOriginalState().text : std::string(text->get_text());
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                // TODO Precalculate entryRegexStr when entry.findString is updated
-                std::string entryRegexStr = entry.findString;
-                if(entry.findAlgorithm != static_cast<int>(FindAlgorithm::Regex)) {
-                    static const std::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
-                    entryRegexStr = std::regex_replace(entryRegexStr, escapeRegex, "\\$&");
-                }
-                if(entry.findAlgorithm == static_cast<int>(FindAlgorithm::ExactMatch))
-                    entryRegexStr = '^' + entryRegexStr + "$";
-                std::regex entryRegex (entryRegexStr);
-                if(!std::regex_match(identifyingText, entryRegex)) continue;
+                if(!std::regex_match(identifyingText, entry.getFindRegex())) continue;
 
-                if(!textManager) text->get_gameObject()->AddComponent<TextManager*>();
-                else textManager->OnTextChange();
+                if(!textManager) {
+                    PaperLogger.debug("Adding TextManager to '{}'", identifyingText);
+                    text->get_gameObject()->AddComponent<TextManager*>();
+                }
+                else {
+                    PaperLogger.debug("Updating TextManager for '{}'", identifyingText);
+                    textManager->OnTextChange();
+                }
 
                 return;
             }
         }
 
-        if(textManager) Object::Destroy(textManager);
+        PaperLogger.debug("Could not match '{}'", identifyingText);
+        if(textManager) {
+            PaperLogger.debug("Destroying TextManager");
+            Object::Destroy(textManager);
+        }
     }
 
     MAKE_HOOK_MATCH(ParseInputText_IdentifyText, &TMPro::TMP_Text::ParseInputText, void,

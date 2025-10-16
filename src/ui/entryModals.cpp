@@ -59,7 +59,7 @@ namespace AnyText::UI {
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         int index = std::distance(FindAlgorithm_Strings.begin(), std::find(FindAlgorithm_Strings.begin(), FindAlgorithm_Strings.end(), value));
         if(index == FindAlgorithm_Strings.size()) {PaperLogger.error("value not found in array"); return;}
-        entry->findAlgorithm = index;
+        entry->setFindAlgorithm(static_cast<FindAlgorithm>(index));
     }
 
     void FindSettingsModal::HandleAccumulateToggleOnChange(bool value) {
@@ -73,9 +73,10 @@ namespace AnyText::UI {
 
         if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
         
-        if(entry->findAlgorithm < 0 || entry->findAlgorithm >= algorithmDropdown->values.size()) {PaperLogger.warn("findAlgorithm {} is invalid for size {}, resetting to 0...", entry->findAlgorithm, algorithmDropdown->values.size()); 
-            entry->findAlgorithm = 0;}
-        algorithmDropdown->set_Value(algorithmDropdown->values[entry->findAlgorithm]);
+        int findAlgorithmIndex = static_cast<int>(entry->getFindAlgorithm());
+        if(findAlgorithmIndex < 0 || findAlgorithmIndex >= algorithmDropdown->values.size()) {PaperLogger.warn("findAlgorithmIndex {} is invalid for size {}, resetting to 0...", findAlgorithmIndex, algorithmDropdown->values.size()); 
+            findAlgorithmIndex = 0;}
+        algorithmDropdown->set_Value(algorithmDropdown->values[findAlgorithmIndex]);
         
         accumulateToggle->set_Value(entry->accumulate);
         skipToggleTransition(accumulateToggle->GetComponentInChildren<AnimatedSwitchView*>());

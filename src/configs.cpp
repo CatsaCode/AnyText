@@ -11,6 +11,21 @@ namespace AnyText {
 
     std::vector<Config> configs;
 
+
+    void FindReplaceEntry::updateFindRegex() {
+        std::string findRegexStr = findString;
+        if(getFindAlgorithm() != FindAlgorithm::Regex) {
+            static const std::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
+            findRegexStr = std::regex_replace(findRegexStr, escapeRegex, "\\$&");
+        }
+        if(getFindAlgorithm() == FindAlgorithm::ExactMatch)
+            findRegexStr = '^' + findRegexStr + "$";
+        findRegex = findRegexStr;
+
+        PaperLogger.info("Converting findString: '{}' to regex: '{}'", findString, findRegexStr);
+    }
+
+
     void loadConfigOrder() {
         std::vector<std::string> configOrder = getModConfig().configOrder.GetValue();
         PaperLogger.info("Config order: {}", configOrder);

@@ -67,24 +67,15 @@ namespace AnyText {
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
                 if(hasReplacedText && !entry.accumulate) continue;
-
-                // TODO Precalculate entryRegexStr when entry.findString is updated
-                std::string entryRegexStr = entry.findString;
-                if(entry.findAlgorithm != static_cast<int>(FindAlgorithm::Regex)) {
-                    static const std::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
-                    entryRegexStr = std::regex_replace(entryRegexStr, escapeRegex, "\\$&");
-                }
-                if(entry.findAlgorithm == static_cast<int>(FindAlgorithm::ExactMatch))
-                    entryRegexStr = '^' + entryRegexStr + "$";
-                std::regex entryRegex (entryRegexStr);
-
-                if(!std::regex_match(replacementState.text, entryRegex)) continue;
+                if(!std::regex_match(replacementState.text, entry.getFindRegex())) continue;
 
                 // std::regex_constants::format_first_only (argument for regex_match)
                 // std::regex::icase (argument for regex constructor)
 
                 // TODO Assuming partial replacement
-                replacementState.text = std::regex_replace(replacementState.text, entryRegex, entry.replaceString);
+                std::string newText = std::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);
+                PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
+                replacementState.text = newText;
                 replacementState.richText = true;
 
                 hasReplacedText = true;
