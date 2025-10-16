@@ -13,7 +13,7 @@ namespace AnyText {
         PartialMatch,
         Regex
     };
-    static std::array<std::string_view, 3> FindAlgorithm_Strings = {"Exact Match", "Partial Match", "Regex"}; // Thanks BSML for not letting me safely make this const
+    static std::array<std::string_view, 3> FindAlgorithm_Strings = {"Exact Match", "Partial Match", "RegEx"}; // Thanks BSML for not letting me safely make this const
 
     // enum class FindLocation {
     //     MenuScene,
