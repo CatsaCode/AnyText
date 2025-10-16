@@ -38,6 +38,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add toggles to configs
 - [ ] Add button to create new config
 - [ ] Add button to create new entry
+- [x] Add RegEx (then use it for everything)
 - [ ] Add find with match case
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
@@ -66,6 +67,7 @@ Same goes for `qpm s copy` and `qpm s qmod`
 
 ## Credits
 
-* [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
-* [raftario](https://github.com/raftario)
-* [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
+- [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
+- [raftario](https://github.com/raftario)
+- [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
+- [Fern](https://github.com/Fernthedev) for recommending boost-regex for performance

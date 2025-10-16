@@ -2,8 +2,9 @@
 
 #include "config-utils/shared/config-utils.hpp"
 
+#include "boost-regex/regex/include/boost/regex.hpp"
+
 #include <filesystem>
-#include <regex>
 
 namespace AnyText {
 
@@ -49,7 +50,7 @@ namespace AnyText {
 
             
         private:
-            std::regex findRegex;
+            boost::regex findRegex;
 
             void updateFindRegex();
 
@@ -58,7 +59,7 @@ namespace AnyText {
         public:
             void setFindString(std::string_view value) {findString = value; updateFindRegex();}
             std::string_view getFindString() const {return findString;}
-            const std::regex& getFindRegex() const {return findRegex;}
+            const boost::regex& getFindRegex() const {return findRegex;}
 
             void setFindAlgorithm(FindAlgorithm value) {findAlgorithm = std::clamp<int>(static_cast<int>(value), 0, FindAlgorithm_Strings.size() - 1); updateFindRegex();}
             FindAlgorithm getFindAlgorithm() const {return static_cast<FindAlgorithm>(findAlgorithm);}

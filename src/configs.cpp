@@ -2,6 +2,8 @@
 #include "main.hpp"
 #include "modConfig.hpp"
 
+#include "boost-regex/regex/include/boost/regex.hpp"
+
 #include <algorithm>
 #include <filesystem>
 
@@ -15,12 +17,12 @@ namespace AnyText {
     void FindReplaceEntry::updateFindRegex() {
         std::string findRegexStr = findString;
         if(getFindAlgorithm() != FindAlgorithm::Regex) {
-            static const std::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
-            findRegexStr = std::regex_replace(findRegexStr, escapeRegex, "\\$&");
+            static const boost::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
+            findRegexStr = boost::regex_replace(findRegexStr, escapeRegex, "\\$&");
         }
         if(getFindAlgorithm() == FindAlgorithm::ExactMatch)
             findRegexStr = '^' + findRegexStr + "$";
-        findRegex = findRegexStr;
+        findRegex = boost::regex(findRegexStr, boost::regex::ECMAScript | boost::regex::optimize);
 
         PaperLogger.info("Converting findString: '{}' to regex: '{}'", findString, findRegexStr);
     }

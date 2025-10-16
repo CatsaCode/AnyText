@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
@@ -88,6 +87,11 @@
     {
       "id": "config-utils",
       "versionRange": "^2.0.3",
+      "additionalData": {}
+    },
+    {
+      "id": "boost-regex",
+      "versionRange": "^1.80.0",
       "additionalData": {}
     }
   ]

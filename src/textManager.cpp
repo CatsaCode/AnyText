@@ -3,7 +3,7 @@
 
 #include "configs.hpp"
 
-#include <regex>
+#include "boost-regex/regex/include/boost/regex.hpp"
 
 using namespace UnityEngine;
 
@@ -67,13 +67,13 @@ namespace AnyText {
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
                 if(hasReplacedText && !entry.accumulate) continue;
-                if(!std::regex_search(replacementState.text, entry.getFindRegex())) continue;
+                if(!boost::regex_search(replacementState.text, entry.getFindRegex())) continue;
 
-                // std::regex_constants::format_first_only (argument for regex_match)
-                // std::regex::icase (argument for regex constructor)
+                // boost::regex_constants::format_first_only (argument for regex_match)
+                // boost::regex::icase (argument for regex constructor)
 
                 // TODO Assuming partial replacement
-                std::string newText = std::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);
+                std::string newText = boost::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);
                 PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
                 replacementState.text = newText;
                 replacementState.richText = true;

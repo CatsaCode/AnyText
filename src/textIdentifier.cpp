@@ -4,9 +4,9 @@
 #include "configs.hpp"
 #include "textManager.hpp"
 
-#include "TMPro/TMP_Text.hpp"
+#include "boost-regex/regex/include/boost/regex.hpp"
 
-#include <regex>
+#include "TMPro/TMP_Text.hpp"
 
 using namespace UnityEngine;
 
@@ -28,7 +28,7 @@ namespace AnyText {
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
                 if(entry.getFindString().size() == 0) continue;
-                if(!std::regex_search(identifyingText, entry.getFindRegex())) continue;
+                if(!boost::regex_search(identifyingText, entry.getFindRegex())) continue;
 
                 if(!textManager) {
                     PaperLogger.debug("Adding TextManager to '{}'", identifyingText);
