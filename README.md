@@ -57,6 +57,7 @@ Change any text in the game through a list of find and replace instructions.
 ## Known bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
+- Crash upon RegEx replacing `[a`
 
 
 ## Build Instructions
