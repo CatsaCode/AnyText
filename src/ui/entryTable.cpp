@@ -1,6 +1,7 @@
 #include "ui/entryTable.hpp"
 #include "main.hpp"
 
+#include "findReplaceEntry.hpp"
 #include "configs.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
 

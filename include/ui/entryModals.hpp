@@ -1,6 +1,6 @@
 #pragma once
 
-#include "configs.hpp"
+#include "findReplaceEntry.hpp"
 
 #include "config-utils/shared/config-utils.hpp"
 

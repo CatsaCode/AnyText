@@ -1,6 +1,7 @@
 #include "modConfig.hpp"
 #include "main.hpp"
 
+#include "findReplaceEntry.hpp"
 #include "configs.hpp"
 
 #include <algorithm>

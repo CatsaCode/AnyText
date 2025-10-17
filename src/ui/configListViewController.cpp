@@ -1,7 +1,6 @@
 #include "ui/configListViewController.hpp"
 #include "main.hpp"
 
-#include "configs.hpp"
 #include "ui/configTable.hpp"
 
 #include "bsml/shared/BSML.hpp"

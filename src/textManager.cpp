@@ -1,6 +1,7 @@
 #include "textManager.hpp"
 #include "main.hpp"
 
+#include "findReplaceEntry.hpp"
 #include "configs.hpp"
 
 #include "boost-regex/regex/include/boost/regex.hpp"

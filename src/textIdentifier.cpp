@@ -1,6 +1,7 @@
 #include "textIdentifier.hpp"
 #include "main.hpp"
 
+#include "findReplaceEntry.hpp"
 #include "configs.hpp"
 #include "textManager.hpp"
 

@@ -1,7 +1,7 @@
 #include "ui/entryModals.hpp"
 #include "main.hpp"
 
-#include "configs.hpp"
+#include "findReplaceEntry.hpp"
 
 #include "bsml/shared/BSML/Components/ExternalComponents.hpp"
 
