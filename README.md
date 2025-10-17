@@ -54,11 +54,22 @@ Change any text in the game through a list of find and replace instructions.
   - [ ] Also note user if it detects the keyboard. `Android::Permission` does not work, measure time open instead
 - [ ] Load fonts
 
-## Known bugs
+
+## Known Bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon RegEx replacing `[a`
 - Seems to crash after messing around too much (creating, deleting, and changing replace text of entries) in the `EntryListViewController`. Refer to local folders `unresolvedCrash1` and `unresolvedCrash2` for more details. Nullptr dereference at `if(!boost::regex_search(replacementState.text, entry.getFindRegex())) continue;` in `textManager.cpp`.
+
+
+## Needs Testing
+
+The current action builds will log every piece of text that is viewed. **Disable CrashReporter logs** and **do not share the log** if you believe it may contain sensitive data.
+
+- Upgrading config from v1.0.1 needs stress testing
+- Manually editing config shouldn't cause any crashes
+- Editing configs should restore any text that no longer needs replacing
+- General software testing (Throw in stupid configs and try to break it. Attempt what I haven't planned for)
 
 
 ## Build Instructions
