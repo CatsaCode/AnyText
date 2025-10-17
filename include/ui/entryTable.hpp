@@ -1,5 +1,6 @@
 #pragma once
 
+#include "findReplaceEntry.hpp"
 #include "configs.hpp"
 
 #include "config-utils/shared/config-utils.hpp"
@@ -41,10 +42,22 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, EntryTableCell, HMUI::TableCell) {
         static EntryTableCell* create();
 };
 
+DECLARE_CLASS_CODEGEN(AnyText::UI, EntryCreatorTableCell, HMUI::TableCell) {
+    DECLARE_INSTANCE_FIELD(UnityW<EntryTableView>, entryTableView);
+
+    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, createEntryButton);
+
+    DECLARE_INSTANCE_METHOD(void, HandleCreateEntryButtonOnClick);
+
+    public:
+        static EntryCreatorTableCell* create();
+};
+
 DECLARE_CLASS_CODEGEN_INTERFACES(AnyText::UI, EntryTableView, UnityEngine::MonoBehaviour, HMUI::TableView::IDataSource*) {
     DECLARE_INSTANCE_FIELD(UnityW<HMUI::TableView>, tableView);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, cellSize, 8);
-    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, reuseIdentifier, "AnyTextEntryTableCell");
+    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, entryTableCellReuseIdentifier, "AnyTextEntryTableCell");
+    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, entryCreatorTableCellReuseIdentifier, "AnyTextEntryCreatorTableCell");
 
     DECLARE_DEFAULT_CTOR();
 

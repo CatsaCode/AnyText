@@ -28,6 +28,7 @@ using namespace UnityEngine::UI;
 using namespace HMUI;
 
 DEFINE_TYPE(AnyText::UI, EntryTableCell);
+DEFINE_TYPE(AnyText::UI, EntryCreatorTableCell);
 DEFINE_TYPE(AnyText::UI, EntryTableView);
 
 namespace AnyText::UI {
@@ -56,6 +57,8 @@ namespace AnyText::UI {
         systemKeyboard = nullptr;
         co_return;
     }
+
+
 
     EntryTableCell* EntryTableCell::create() {
         PaperLogger.info("Creating EntryTableCell...");
@@ -220,25 +223,66 @@ namespace AnyText::UI {
 
 
 
+    EntryCreatorTableCell* EntryCreatorTableCell::create() {
+        PaperLogger.info("Creating EntryCreatorTableCell...");
+
+        GameObject* entryCreatorTableCellGO = GameObject::New_ctor("EntryCreatorTableCell");
+        RectTransform* entryCreatorTableCellTransform = entryCreatorTableCellGO->AddComponent<RectTransform*>();
+        HorizontalLayoutGroup* entryCreatorTableCellHorizontal = entryCreatorTableCellGO->AddComponent<HorizontalLayoutGroup*>();
+        entryCreatorTableCellHorizontal->set_spacing(2);
+        ContentSizeFitter* entryCreatorTableCellFitter = entryCreatorTableCellGO->AddComponent<ContentSizeFitter*>();
+        entryCreatorTableCellFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
+        entryCreatorTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
+        EntryCreatorTableCell* entryCreatorTableCell = entryCreatorTableCellGO->AddComponent<EntryCreatorTableCell*>();
+
+        entryCreatorTableCell->createEntryButton = BSML::Lite::CreateUIButton(entryCreatorTableCellTransform, "+", std::bind(&EntryCreatorTableCell::HandleCreateEntryButtonOnClick, entryCreatorTableCell));
+        entryCreatorTableCell->createEntryButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+
+        return entryCreatorTableCell;
+    }
+
+    void EntryCreatorTableCell::HandleCreateEntryButtonOnClick() {
+        if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
+        if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
+
+        entryTableView->config->entries.emplace_back();
+        entryTableView->ReloadEntryOrder();
+    }
+
+
+
     float EntryTableView::CellSize() {
         return cellSize;
     }
 
     int EntryTableView::NumberOfCells() {
-        if(!config) return 0;
-        return config->entries.size();
+        if(!config) {PaperLogger.error("config is not assigned"); return 0;}
+        return config->entries.size() + 1; // Plus one to make room for EntryCreatorTableCell
     }
 
     HMUI::TableCell* EntryTableView::CellForIdx(HMUI::TableView* tableView, int idx) {
+        if(!config) {PaperLogger.error("config is not assigned"); return nullptr;}
+        
         this->tableView = tableView;
-        UnityW<EntryTableCell> entryTableCell = static_cast<UnityW<EntryTableCell>>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
-        if(!entryTableCell) {
-            entryTableCell = EntryTableCell::create();
-            entryTableCell->entryTableView = this;
-            entryTableCell->reuseIdentifier = reuseIdentifier;
+
+        if(idx < config->entries.size()) {
+            UnityW<EntryTableCell> entryTableCell = static_cast<UnityW<EntryTableCell>>(tableView->DequeueReusableCellForIdentifier(entryTableCellReuseIdentifier));
+            if(!entryTableCell) {
+                entryTableCell = EntryTableCell::create();
+                entryTableCell->entryTableView = this;
+                entryTableCell->reuseIdentifier = entryTableCellReuseIdentifier;
+            }
+            entryTableCell->updateData(&config->entries[idx]);
+            return entryTableCell;
         }
-        entryTableCell->updateData(&config->entries[idx]);
-        return entryTableCell;
+        
+        UnityW<EntryCreatorTableCell> entryCreatorTableCell = static_cast<UnityW<EntryCreatorTableCell>>(tableView->DequeueReusableCellForIdentifier(entryCreatorTableCellReuseIdentifier));
+        if(!entryCreatorTableCell) {
+            entryCreatorTableCell = EntryCreatorTableCell::create();
+            entryCreatorTableCell->entryTableView = this;
+            entryCreatorTableCell->reuseIdentifier = entryCreatorTableCellReuseIdentifier;
+        }
+        return entryCreatorTableCell;
     }
 
     void EntryTableView::ReloadEntryOrder() {
