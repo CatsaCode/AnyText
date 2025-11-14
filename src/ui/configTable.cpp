@@ -20,6 +20,7 @@ using namespace UnityEngine::UI;
 using namespace HMUI;
 
 DEFINE_TYPE(AnyText::UI, ConfigTableCell);
+DEFINE_TYPE(AnyText::UI, ConfigCreatorTableCell);
 DEFINE_TYPE(AnyText::UI, ConfigTableView);
 
 namespace AnyText::UI {
@@ -139,6 +140,34 @@ namespace AnyText::UI {
 
 
 
+    ConfigCreatorTableCell* ConfigCreatorTableCell::create() {
+        PaperLogger.debug("ConfigCreatorTableCell");
+
+        GameObject* configCreatorTableCellGO = GameObject::New_ctor("ConfigCreatorTableCell");
+        RectTransform* configCreatorTableCellTransform = configCreatorTableCellGO->AddComponent<RectTransform*>();
+        HorizontalLayoutGroup* configCreatorTableCellHorizontal = configCreatorTableCellGO->AddComponent<HorizontalLayoutGroup*>();
+        configCreatorTableCellHorizontal->set_spacing(2);
+        ContentSizeFitter* configCreatorTableCellFitter = configCreatorTableCellGO->AddComponent<ContentSizeFitter*>();
+        configCreatorTableCellFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
+        configCreatorTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
+        ConfigCreatorTableCell* configCreatorTableCell = configCreatorTableCellGO->AddComponent<ConfigCreatorTableCell*>();
+
+        configCreatorTableCell->createConfigButton = BSML::Lite::CreateUIButton(configCreatorTableCellTransform, "+", std::bind(&ConfigCreatorTableCell::HandleCreateConfigButtonOnClick, configCreatorTableCell));
+        configCreatorTableCell->createConfigButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+
+        return configCreatorTableCell;
+    }
+
+    void ConfigCreatorTableCell::HandleCreateConfigButtonOnClick() {
+        PaperLogger.debug("&ConfigCreatorTableCell: {}", static_cast<void*>(this));
+        if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
+
+        configs.emplace_back();
+        configTableView->ReloadConfigOrder();
+    }
+
+
+
     void ConfigTableView::ctor() {
         INVOKE_CTOR();
     }
@@ -148,19 +177,30 @@ namespace AnyText::UI {
     }
 
     int ConfigTableView::NumberOfCells() {
-        return configs.size();
+        return configs.size() + 1; // Plus one to make room for ConfigCreatorTableCell
     }
 
     HMUI::TableCell* ConfigTableView::CellForIdx(HMUI::TableView* tableView, int idx) {
         this->tableView = tableView;
-        UnityW<ConfigTableCell> configTableCell = static_cast<UnityW<ConfigTableCell>>(tableView->DequeueReusableCellForIdentifier(reuseIdentifier));
-        if(!configTableCell) {
-            configTableCell = ConfigTableCell::create();
-            configTableCell->configTableView = this;
-            configTableCell->reuseIdentifier = reuseIdentifier;
+        
+        if(idx < configs.size()) {
+            UnityW<ConfigTableCell> configTableCell = static_cast<UnityW<ConfigTableCell>>(tableView->DequeueReusableCellForIdentifier(configTableCellReuseIdentifier));
+            if(!configTableCell) {
+                configTableCell = ConfigTableCell::create();
+                configTableCell->configTableView = this;
+                configTableCell->reuseIdentifier = configTableCellReuseIdentifier;
+            }
+            configTableCell->updateData(&configs[idx]);
+            return configTableCell;
         }
-        configTableCell->updateData(&configs[idx]);
-        return configTableCell;
+
+        UnityW<ConfigCreatorTableCell> configCreatorTableCell = static_cast<UnityW<ConfigCreatorTableCell>>(tableView->DequeueReusableCellForIdentifier(configCreatorTableCellReuseIdentifier));
+        if(!configCreatorTableCell) {
+            configCreatorTableCell = ConfigCreatorTableCell::create();
+            configCreatorTableCell->configTableView = this;
+            configCreatorTableCell->reuseIdentifier = configCreatorTableCellReuseIdentifier;
+        }
+        return configCreatorTableCell;
     }
 
     void ConfigTableView::ReloadConfigOrder() {

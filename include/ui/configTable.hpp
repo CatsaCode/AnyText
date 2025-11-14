@@ -37,10 +37,22 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
         static ConfigTableCell* create();
 };
 
+DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigCreatorTableCell, HMUI::TableCell) {
+    DECLARE_INSTANCE_FIELD(UnityW<ConfigTableView>, configTableView);
+
+    DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, createConfigButton);
+
+    DECLARE_INSTANCE_METHOD(void, HandleCreateConfigButtonOnClick);
+
+    public:
+        static ConfigCreatorTableCell* create();
+};
+
 DECLARE_CLASS_CODEGEN_INTERFACES(AnyText::UI, ConfigTableView, UnityEngine::MonoBehaviour, HMUI::TableView::IDataSource*) {
     DECLARE_INSTANCE_FIELD(UnityW<HMUI::TableView>, tableView);
     DECLARE_INSTANCE_FIELD_DEFAULT(float, cellSize, 8);
-    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, reuseIdentifier, "AnyTextConfigTableCell");
+    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, configTableCellReuseIdentifier, "AnyTextConfigTableCell");
+    DECLARE_INSTANCE_FIELD_DEFAULT(StringW, configCreatorTableCellReuseIdentifier, "AnyTextConfigCreatorTableCell");
     
     DECLARE_CTOR(ctor);
 
