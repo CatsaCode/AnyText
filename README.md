@@ -59,7 +59,6 @@ Change any text in the game through a list of find and replace instructions.
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon RegEx replacing `[a`
-- Seems to crash after messing around too much (creating, deleting, and changing replace text of entries) in the `EntryListViewController`. Refer to local folders `unresolvedCrash1` and `unresolvedCrash2` for more details. Nullptr dereference at `if(!boost::regex_search(replacementState.text, entry.getFindRegex())) continue;` in `textManager.cpp`.
 
 
 ## Needs Testing

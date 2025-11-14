@@ -12,7 +12,7 @@ DEFINE_TYPE(AnyText, TextManager);
 
 namespace AnyText {
 
-    void TextManager::OnEnable() {
+    void TextManager::Awake() {
         PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
         text = GetComponent<TMPro::TMP_Text*>();
         if(!text) {
@@ -26,7 +26,7 @@ namespace AnyText {
         applyState(replacementState);
     }
 
-    void TextManager::OnDisable() {
+    void TextManager::OnDestroy() {
         PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
         if(!text || !text->get_text()) return;
 
@@ -78,7 +78,7 @@ namespace AnyText {
 
                 // TODO Assuming partial replacement
                 std::string newText = boost::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);
-                PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
+                // PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
                 replacementState.text = newText;
                 replacementState.richText = true;
 

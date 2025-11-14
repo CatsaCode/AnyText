@@ -21,8 +21,8 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
 
     DECLARE_INSTANCE_FIELD(UnityW<TMPro::TMP_Text>, text);
 
-    DECLARE_INSTANCE_METHOD(void, OnEnable);
-    DECLARE_INSTANCE_METHOD(void, OnDisable);
+    DECLARE_INSTANCE_METHOD(void, Awake);
+    DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, OnTextChange);
 
     private:
