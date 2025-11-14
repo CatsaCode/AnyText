@@ -1,5 +1,7 @@
 #pragma once
 
+#include "main.hpp"
+
 #include "config-utils/shared/config-utils.hpp"
 
 #include "boost-regex/regex/include/boost/regex.hpp"
@@ -60,7 +62,7 @@ namespace AnyText {
                     findRegexStr = '^' + findRegexStr + "$";
                 findRegex = boost::regex(findRegexStr, boost::regex::ECMAScript | boost::regex::optimize);
 
-                // PaperLogger.info("Converting findString: '{}' to regex: '{}'", findString, findRegexStr);
+                PaperLogger.info("Converting findString: '{}' to regex: '{}'", findString, findRegexStr);
             }
 
             DESERIALIZE_FUNCTION(initFromJSON) {updateFindRegex();}

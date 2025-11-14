@@ -88,6 +88,7 @@ namespace AnyText {
     }
 
     void removeConfig(const Config& config) {
+        PaperLogger.debug("&config: {}", static_cast<const void*>(&config));
         PaperLogger.info("Removing config '{}' at path: '{}'", config.name, config.filePath.string());
         
         if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}

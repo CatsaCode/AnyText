@@ -61,7 +61,7 @@ namespace AnyText::UI {
 
 
     EntryTableCell* EntryTableCell::create() {
-        PaperLogger.info("Creating EntryTableCell...");
+        PaperLogger.debug("EntryTableCell");
 
         GameObject* entryTableCellGO = GameObject::New_ctor("EntryTableCell");
         RectTransform* entryTableCellTransform = entryTableCellGO->AddComponent<RectTransform*>();
@@ -129,7 +129,9 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::updateData(FindReplaceEntry* entry) {
+        PaperLogger.debug("&EntryTableCell: {}, &entry: {}", static_cast<void*>(this), static_cast<void*>(entry));
         if(!entry) {PaperLogger.error("entry is nullptr"); return;}
+        
         this->entry = entry;
 
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
@@ -145,6 +147,7 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleUpButtonOnClick() {
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
@@ -162,6 +165,7 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleDownButtonOnClick() {
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
@@ -179,12 +183,14 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleFindSettingsButtonOnClick() {
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
 
         AnyTextFlowCoordinator::GetInstance()->entryListViewController->findSettingsModal->show(entry);
     }
 
     void EntryTableCell::HandleFindStringInputOnChange() {
+        PaperLogger.debug("&EntryTableCell: {}, findStringInput text: '{}'", static_cast<void*>(this), findStringInput->get_text());
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
@@ -193,6 +199,7 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleReplaceStringInputOnChange() {
+        PaperLogger.debug("&EntryTableCell: {}, replaceStringInput text: '{}'", static_cast<void*>(this), replaceStringInput->get_text());
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
@@ -201,10 +208,11 @@ namespace AnyText::UI {
     }
 
     void EntryTableCell::HandleReplaceSettingsButtonOnClick() {
-        PaperLogger.info(__func__);
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
     }
 
     void EntryTableCell::HandleRemoveButtonOnClick() {
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
@@ -213,18 +221,20 @@ namespace AnyText::UI {
         auto it = std::find_if(entries.begin(), entries.end(), [this](const FindReplaceEntry& x){return &x == this->entry;});
         if(it == entries.end()) {PaperLogger.error("entry not found in entries vector"); return;}
         
+        PaperLogger.debug("Removing &entry: {}", static_cast<void*>(entry));
         entries.erase(it);
         entryTableView->ReloadEntryOrder();
     }
 
     void EntryTableCell::WasPreparedForReuse() {
+        PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         entry = nullptr;
     }
 
 
 
     EntryCreatorTableCell* EntryCreatorTableCell::create() {
-        PaperLogger.info("Creating EntryCreatorTableCell...");
+        PaperLogger.debug("EntryCreatorTableCell");
 
         GameObject* entryCreatorTableCellGO = GameObject::New_ctor("EntryCreatorTableCell");
         RectTransform* entryCreatorTableCellTransform = entryCreatorTableCellGO->AddComponent<RectTransform*>();
@@ -242,6 +252,7 @@ namespace AnyText::UI {
     }
 
     void EntryCreatorTableCell::HandleCreateEntryButtonOnClick() {
+        PaperLogger.debug("&EntryCreatorTableCell: {}", static_cast<void*>(this));
         if(!entryTableView) {PaperLogger.error("entryTableView is not valid"); return;}
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
 

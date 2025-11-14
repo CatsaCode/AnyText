@@ -13,6 +13,7 @@ DEFINE_TYPE(AnyText, TextManager);
 namespace AnyText {
 
     void TextManager::OnEnable() {
+        PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
         text = GetComponent<TMPro::TMP_Text*>();
         if(!text) {
             PaperLogger.error("Couldn't find TMP_Text component");
@@ -26,6 +27,7 @@ namespace AnyText {
     }
 
     void TextManager::OnDisable() {
+        PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
         if(!text || !text->get_text()) return;
 
         updateOriginalStateWithDifferences();
@@ -33,6 +35,7 @@ namespace AnyText {
     }
 
     void TextManager::OnTextChange() {
+        PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
         if(!text || !text->get_text()) return;
 
         if(updateOriginalStateWithDifferences()) {

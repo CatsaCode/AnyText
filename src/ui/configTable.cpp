@@ -25,7 +25,7 @@ DEFINE_TYPE(AnyText::UI, ConfigTableView);
 namespace AnyText::UI {
 
     ConfigTableCell* ConfigTableCell::create() {
-        PaperLogger.info("Creating ConfigTableCell...");
+        PaperLogger.debug("ConfigTableCell");
 
         GameObject* configTableCellGO = GameObject::New_ctor("ConfigTableCell");
         RectTransform* configTableCellTransform = configTableCellGO->AddComponent<RectTransform*>();
@@ -63,6 +63,7 @@ namespace AnyText::UI {
     }
     
     void ConfigTableCell::updateData(Config* config) {
+        PaperLogger.debug("&ConfigTableCell: {}, &config: {}", static_cast<void*>(this), static_cast<void*>(config));
         if(!config) {PaperLogger.error("config is nullptr"); return;}
         this->config = config;
 
@@ -75,6 +76,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleMoveUpOnClick() {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
 
@@ -90,6 +92,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleMoveDownOnClick() {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
 
@@ -105,6 +108,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleNameInputOnChange() {
+        PaperLogger.debug("&ConfigTableCell: {}, nameInput text: '{}'", static_cast<void*>(this), nameInput->get_text());
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
 
         config->name = std::string(nameInput->get_text());
@@ -112,6 +116,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleEditButtonOnClick() {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         
         config->unsaved = true;
@@ -119,6 +124,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::HandleRemoveButtonOnClick() {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         if(!configTableView) {PaperLogger.error("configTableView is not assigned"); return;}
 
@@ -127,6 +133,7 @@ namespace AnyText::UI {
     }
 
     void ConfigTableCell::WasPreparedForReuse() {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
         config = nullptr;
     }
 

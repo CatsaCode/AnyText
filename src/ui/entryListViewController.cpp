@@ -53,6 +53,7 @@ namespace AnyText::UI {
     }
 
     void EntryListViewController::setConfig(Config* config) {
+        PaperLogger.debug("&EntryListViewController: {}, &config: {}", static_cast<void*>(this), static_cast<void*>(config));
         if(!entryTableView) {PaperLogger.info("entryTableView is not assigned"); return;}
         entryTableView->config = config;
         entryTableView->tableView->ReloadData();

@@ -38,6 +38,8 @@ namespace AnyText::UI {
     }
 
     void AnyTextFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController) {
+        PaperLogger.debug("&AnyTextFlowCoordinator: {}", static_cast<void*>(this));
+        
         if(presentingEntries) {
             presentConfigs();
             return;
@@ -54,6 +56,7 @@ namespace AnyText::UI {
     }
 
     void AnyTextFlowCoordinator::presentEntries(Config* config) {
+        PaperLogger.debug("&AnyTextFlowCoordinator: {}, &config: {}", static_cast<void*>(this), static_cast<void*>(config));
         presentingEntries = true;
         SetTitle(config->name, HMUI::ViewController::AnimationType::In);
         PresentViewController(entryListViewController, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false);
@@ -61,6 +64,7 @@ namespace AnyText::UI {
     }
 
     void AnyTextFlowCoordinator::presentConfigs() {
+        PaperLogger.debug("&AnyTextFlowCoordinator: {}", static_cast<void*>(this));
         presentingEntries = false;
         SetTitle("AnyText", HMUI::ViewController::AnimationType::Out);
         DismissViewController(entryListViewController, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);

@@ -38,7 +38,7 @@ namespace AnyText::UI {
 
     
     FindSettingsModal* FindSettingsModal::create(Transform* parent) {
-        PaperLogger.info("Creating FindSettingsModal...");
+        PaperLogger.debug("FindSettingsModal");
 
         BSML::ModalView* modalView = BSML::Lite::CreateModal(parent, {0, 0}, {70, 40}, nullptr);
         RectTransform* containerTransform = BSML::Lite::CreateScrollableModalContainer(modalView)->get_transform().cast<RectTransform>();
@@ -56,6 +56,7 @@ namespace AnyText::UI {
     }
 
     void FindSettingsModal::HandleAlgorithmDropdownOnChange(StringW value) {
+        PaperLogger.debug("&FindSettingsModal: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         int index = std::distance(FindAlgorithm_Strings.begin(), std::find(FindAlgorithm_Strings.begin(), FindAlgorithm_Strings.end(), value));
         if(index == FindAlgorithm_Strings.size()) {PaperLogger.error("value not found in array"); return;}
@@ -63,11 +64,13 @@ namespace AnyText::UI {
     }
 
     void FindSettingsModal::HandleAccumulateToggleOnChange(bool value) {
+        PaperLogger.debug("&FindSettingsModal: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         entry->accumulate = value;
     }
     
     void FindSettingsModal::show(FindReplaceEntry* entry) {
+        PaperLogger.debug("&FindSettingsModal: {}, &entry: {}", static_cast<void*>(this), static_cast<void*>(entry));
         if(!entry) {PaperLogger.error("entry is nullptr"); return;}
         this->entry = entry;
 
@@ -85,6 +88,7 @@ namespace AnyText::UI {
     }
 
     void FindSettingsModal::hide() {
+        PaperLogger.debug("&FindSettingsModal: {}", static_cast<void*>(this));
         if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
         modalView->Hide();
     }
