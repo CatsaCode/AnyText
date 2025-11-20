@@ -15,9 +15,11 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, FindSettingsModal, UnityEngine::MonoBehaviour
 
     DECLARE_INSTANCE_FIELD(UnityW<BSML::DropdownListSetting>, algorithmDropdown);
     DECLARE_INSTANCE_FIELD(UnityW<BSML::ToggleSetting>, accumulateToggle);
+    DECLARE_INSTANCE_FIELD(UnityW<BSML::ToggleSetting>, matchCaseToggle);
 
     DECLARE_INSTANCE_METHOD(void, HandleAlgorithmDropdownOnChange, StringW value);
     DECLARE_INSTANCE_METHOD(void, HandleAccumulateToggleOnChange, bool value);
+    DECLARE_INSTANCE_METHOD(void, HandleMatchCaseToggleOnChange, bool value);
 
     public:
         FindReplaceEntry* entry;

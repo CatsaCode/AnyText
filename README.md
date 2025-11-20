@@ -39,7 +39,7 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Add button to create new config
 - [x] Add button to create new entry
 - [x] Add RegEx (then use it for everything)
-- [ ] Add find with match case
+- [x] Add find with match case
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
 - [ ] Add position offset

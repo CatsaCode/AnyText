@@ -27,6 +27,7 @@ namespace AnyText {
             FindReplaceEntry& entry = upgradedConfig.entries.emplace_back();
             entry.setFindString(findStrings.GetArray()[i].GetString());
             entry.setFindAlgorithm(FindAlgorithm::ExactMatch);
+            entry.setMatchCase(true);
             entry.replaceString = replaceStrings.GetArray()[i].GetString();
         }
 

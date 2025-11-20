@@ -51,6 +51,7 @@ namespace AnyText::UI {
 
         findSettingsModal->algorithmDropdown = BSML::Lite::CreateDropdown(containerTransform, "Algorithm", "", FindAlgorithm_Strings, std::bind(&FindSettingsModal::HandleAlgorithmDropdownOnChange, findSettingsModal, std::placeholders::_1));
         findSettingsModal->accumulateToggle = BSML::Lite::CreateToggle(containerTransform, "Accumulate", false, std::bind(&FindSettingsModal::HandleAccumulateToggleOnChange, findSettingsModal, std::placeholders::_1));
+        findSettingsModal->matchCaseToggle = BSML::Lite::CreateToggle(containerTransform, "Match Case", false, std::bind(&FindSettingsModal::HandleMatchCaseToggleOnChange, findSettingsModal, std::placeholders::_1));
 
         return findSettingsModal;
     }
@@ -68,6 +69,12 @@ namespace AnyText::UI {
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
         entry->accumulate = value;
     }
+
+    void FindSettingsModal::HandleMatchCaseToggleOnChange(bool value) {
+        PaperLogger.debug("&FindSettingsModal: {}", static_cast<void*>(this));
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        entry->setMatchCase(value);
+    }
     
     void FindSettingsModal::show(FindReplaceEntry* entry) {
         PaperLogger.debug("&FindSettingsModal: {}, &entry: {}", static_cast<void*>(this), static_cast<void*>(entry));
@@ -83,6 +90,9 @@ namespace AnyText::UI {
         
         accumulateToggle->set_Value(entry->accumulate);
         skipToggleTransition(accumulateToggle->GetComponentInChildren<AnimatedSwitchView*>());
+
+        matchCaseToggle->set_Value(entry->getMatchCase());
+        skipToggleTransition(matchCaseToggle->GetComponentInChildren<AnimatedSwitchView*>());
         
         modalView->Show();
     }

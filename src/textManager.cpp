@@ -74,7 +74,6 @@ namespace AnyText {
                 if(!boost::regex_search(replacementState.text, entry.getFindRegex())) continue;
 
                 // boost::regex_constants::format_first_only (argument for regex_match)
-                // boost::regex::icase (argument for regex constructor)
 
                 // TODO Assuming partial replacement
                 std::string newText = boost::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);

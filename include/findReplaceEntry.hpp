@@ -24,7 +24,7 @@ namespace AnyText {
         private:
             VALUE(std::string, findString);
             VALUE_DEFAULT(int, findAlgorithm, static_cast<int>(FindAlgorithm::PartialMatch));
-            // VALUE_DEFAULT(bool, matchCase, false);
+            VALUE_DEFAULT(bool, matchCase, false);
             // VALUE_OPTIONAL(FindLocation, findLocation);
 
         public:
@@ -60,9 +60,13 @@ namespace AnyText {
                 }
                 if(getFindAlgorithm() == FindAlgorithm::ExactMatch)
                     findRegexStr = '^' + findRegexStr + "$";
-                findRegex = boost::regex(findRegexStr, boost::regex::ECMAScript | boost::regex::optimize);
 
-                PaperLogger.info("Converting findString: '{}' to regex: '{}'", findString, findRegexStr);
+                boost::regex::flag_type flags = boost::regex::ECMAScript | boost::regex::optimize;
+                if(!getMatchCase()) flags |= boost::regex::icase;
+
+                findRegex = boost::regex(findRegexStr, flags);
+
+                PaperLogger.info("Converting findString: '{}' to regex: '{}', flags: {}", findString, findRegexStr, static_cast<int>(flags));
             }
 
             DESERIALIZE_FUNCTION(initFromJSON) {updateFindRegex();}
@@ -70,10 +74,14 @@ namespace AnyText {
         public:
             void setFindString(std::string_view value) {findString = value; updateFindRegex();}
             std::string_view getFindString() const {return findString;}
-            const boost::regex& getFindRegex() const {return findRegex;}
-
+            
             void setFindAlgorithm(FindAlgorithm value) {findAlgorithm = std::clamp<int>(static_cast<int>(value), 0, FindAlgorithm_Strings.size() - 1); updateFindRegex();}
             FindAlgorithm getFindAlgorithm() const {return static_cast<FindAlgorithm>(findAlgorithm);}
+            
+            void setMatchCase(bool value) {matchCase = value; updateFindRegex();}
+            bool getMatchCase() const {return matchCase;}
+
+            const boost::regex& getFindRegex() const {return findRegex;}
     };
 
 }
