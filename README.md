@@ -59,6 +59,7 @@ Change any text in the game through a list of find and replace instructions.
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon RegEx replacing `[a`
+- Open the game, open AnyText menu, delete a config, close AnyText menu, close game. Reopen game to find config reappears
 
 
 ## Needs Testing
