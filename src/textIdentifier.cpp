@@ -5,7 +5,7 @@
 #include "configs.hpp"
 #include "textManager.hpp"
 
-#include "boost-regex/regex/include/boost/regex.hpp"
+#include "boost/regex.hpp"
 
 #include "TMPro/TMP_Text.hpp"
 

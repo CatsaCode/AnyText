@@ -4,7 +4,7 @@
 #include "findReplaceEntry.hpp"
 #include "configs.hpp"
 
-#include "boost-regex/regex/include/boost/regex.hpp"
+#include "boost/regex.hpp"
 
 using namespace UnityEngine;
 

@@ -4,7 +4,7 @@
 
 #include "config-utils/shared/config-utils.hpp"
 
-#include "boost-regex/regex/include/boost/regex.hpp"
+#include "boost/regex.hpp"
 
 namespace AnyText {
 
