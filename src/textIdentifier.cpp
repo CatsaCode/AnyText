@@ -28,7 +28,7 @@ namespace AnyText {
 
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
-                if(entry.getFindString().size() == 0) continue;
+                if(!entry.getFindRegexIsValid()) continue;
                 if(!boost::regex_search(identifyingText, entry.getFindRegex())) continue;
 
                 if(!textManager) {

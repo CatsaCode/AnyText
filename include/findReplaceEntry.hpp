@@ -1,7 +1,5 @@
 #pragma once
 
-#include "main.hpp"
-
 #include "config-utils/shared/config-utils.hpp"
 
 #include "boost/regex.hpp"
@@ -51,27 +49,15 @@ namespace AnyText {
             
         private:
             boost::regex findRegex;
+            bool findRegexIsValid = false;
 
-            void updateFindRegex() {
-                std::string findRegexStr = findString;
-                if(getFindAlgorithm() != FindAlgorithm::Regex) {
-                    static const boost::regex escapeRegex ("[\\+\\*\\?\\^\\$\\\\\\.\\[\\]\\{\\}\\(\\)\\|\\/]");
-                    findRegexStr = boost::regex_replace(findRegexStr, escapeRegex, "\\\\$&");
-                }
-                if(getFindAlgorithm() == FindAlgorithm::ExactMatch)
-                    findRegexStr = '^' + findRegexStr + "$";
-
-                boost::regex::flag_type flags = boost::regex::ECMAScript | boost::regex::optimize;
-                if(!getMatchCase()) flags |= boost::regex::icase;
-
-                findRegex = boost::regex(findRegexStr, flags);
-
-                PaperLogger.info("Converting findString: '{}' to regex: '{}', flags: {}", findString, findRegexStr, static_cast<int>(flags));
-            }
+            void updateFindRegex();
 
             DESERIALIZE_FUNCTION(initFromJSON) {updateFindRegex();}
 
         public:
+            FindReplaceEntry() : findRegex ("") {}
+
             void setFindString(std::string_view value) {findString = value; updateFindRegex();}
             std::string_view getFindString() const {return findString;}
             
@@ -82,6 +68,7 @@ namespace AnyText {
             bool getMatchCase() const {return matchCase;}
 
             const boost::regex& getFindRegex() const {return findRegex;}
+            bool getFindRegexIsValid() const {return findRegexIsValid;}
     };
 
 }

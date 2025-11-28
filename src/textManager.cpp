@@ -70,9 +70,10 @@ namespace AnyText {
         bool hasReplacedText = false;
         for(Config& config : configs) {
             for(FindReplaceEntry& entry : config.entries) {
+                if(!entry.getFindRegexIsValid()) continue;
                 if(hasReplacedText && !entry.accumulate) continue;
                 if(!boost::regex_search(replacementState.text, entry.getFindRegex())) continue;
-
+                
                 // boost::regex_constants::format_first_only (argument for regex_match)
 
                 // TODO Assuming partial replacement
