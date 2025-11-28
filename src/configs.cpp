@@ -93,11 +93,13 @@ namespace AnyText {
         auto it = std::find_if(configs.begin(), configs.end(), [&config](const Config& x){return &x == &config;});
         if(it == configs.end()) {PaperLogger.error("config not found in configs vector"); return;}
         PaperLogger.info("Removing config '{}', Index: {}, filePath: '{}'", config.name, std::distance(configs.begin(), it), config.filePath.string());
-        configs.erase(it);
         
-        if(config.filePath.empty()) return;
-        if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}
-        std::filesystem::remove(config.filePath);
+        if(!config.filePath.empty()) {
+            if(!std::filesystem::equivalent(config.filePath.parent_path(), getAnyTextDir())) {PaperLogger.error("Config not in AnyText directory"); return;}
+            std::filesystem::remove(config.filePath);
+        }
+
+        configs.erase(it);
     }
 
 }
