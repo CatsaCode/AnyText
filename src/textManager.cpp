@@ -78,7 +78,7 @@ namespace AnyText {
 
                 // TODO Assuming partial replacement
                 std::string newText = boost::regex_replace(replacementState.text, entry.getFindRegex(), entry.replaceString);
-                // PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
+                PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
                 replacementState.text = newText;
                 replacementState.richText = true;
 

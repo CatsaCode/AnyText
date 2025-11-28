@@ -257,6 +257,7 @@ namespace AnyText::UI {
         if(!entryTableView->config) {PaperLogger.error("config is not assigned"); return;}
 
         entryTableView->config->entries.emplace_back();
+        PaperLogger.debug("Created &entry: {}", static_cast<void*>(&entryTableView->config->entries.back()));
         entryTableView->ReloadEntryOrder();
     }
 

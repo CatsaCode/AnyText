@@ -163,6 +163,7 @@ namespace AnyText::UI {
         if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
 
         configs.emplace_back();
+        PaperLogger.debug("Created &config: {}", static_cast<void*>(&configs.back()));
         configTableView->ReloadConfigOrder();
     }
 
