@@ -93,6 +93,11 @@
       "id": "boost-regex",
       "versionRange": "^1.80.0",
       "additionalData": {}
+    },
+    {
+      "id": "metacore",
+      "versionRange": "^1.6.2",
+      "additionalData": {}
     }
   ]
 }
