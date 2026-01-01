@@ -44,7 +44,7 @@ namespace AnyText {
             }
         }
 
-        PaperLogger.debug("Could not match '{}'", identifyingText);
+        // PaperLogger.debug("Could not match '{}'", identifyingText);
         if(textManager) {
             PaperLogger.debug("Destroying TextManager");
             Object::Destroy(textManager);

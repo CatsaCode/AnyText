@@ -58,6 +58,7 @@ Change any text in the game through a list of find and replace instructions.
 ## Known Bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
+- Icon buttons will trigger haptics when hovering over both the button and the icon
 
 
 ## Needs Testing
@@ -82,3 +83,11 @@ Same goes for `qpm s copy` and `qpm s qmod`
 - [raftario](https://github.com/raftario)
 - [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
 - [Fern](https://github.com/Fernthedev) for recommending boost-regex for performance
+- [Icons8](https://icons8.com)
+  - [Settings](https://icons8.com/icon/83214/settings)
+  - [Edit Pencil](https://icons8.com/icon/86372/edit-pencil)
+  - [Keyboard](https://icons8.com/icon/rgf2JV5jJg3Q/keyboard)
+  - [Trash Can](https://icons8.com/icon/82708/trash-can)
+  - [Plus Math](https://icons8.com/icon/3VGu7LGKM46W/plus-math)
+  - [Sort Up](https://icons8.com/icon/86870/sort-up)
+  - [Sort Down](https://icons8.com/icon/85502/sort-down)

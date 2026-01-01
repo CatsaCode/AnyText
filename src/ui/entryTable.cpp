@@ -1,9 +1,11 @@
 #include "ui/entryTable.hpp"
 #include "main.hpp"
+#include "assets.hpp"
 
 #include "findReplaceEntry.hpp"
 #include "configs.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
+#include "ui/utils.hpp"
 
 #include "custom-types/shared/delegate.hpp"
 #include "custom-types/shared/coroutine.hpp"
@@ -79,11 +81,10 @@ namespace AnyText::UI {
         ContentSizeFitter* orderButtonsFitter = orderButtonsGO->AddComponent<ContentSizeFitter*>();
         orderButtonsFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
 
-        entryTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▲", std::bind(&EntryTableCell::HandleUpButtonOnClick, entryTableCell));
-        entryTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryTableCell->upButton = createIconButton(orderButtonsTransform, PNG_SPRITE(up), std::bind(&EntryTableCell::HandleUpButtonOnClick, entryTableCell));
         
-        entryTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▼", std::bind(&EntryTableCell::HandleDownButtonOnClick, entryTableCell));
-        entryTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryTableCell->downButton = createIconButton(orderButtonsTransform, PNG_SPRITE(down), std::bind(&EntryTableCell::HandleDownButtonOnClick, entryTableCell));
+        
 
         GameObject* mainSectionGO = GameObject::New_ctor("MainSection");
         RectTransform* mainSectionTransform = mainSectionGO->AddComponent<RectTransform*>();
@@ -92,13 +93,13 @@ namespace AnyText::UI {
         ContentSizeFitter* mainSectionFitter = mainSectionGO->AddComponent<ContentSizeFitter*>();
         mainSectionFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
 
-        entryTableCell->findSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleFindSettingsButtonOnClick, entryTableCell));
-        entryTableCell->findSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryTableCell->findSettingsButton = createIconButton(mainSectionTransform, PNG_SPRITE(settings), std::bind(&EntryTableCell::HandleFindSettingsButtonOnClick, entryTableCell));
         
         entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
         entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
         GameObject* findStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->findStringInput->_clearSearchButton->get_gameObject(), entryTableCell->findStringInput->_clearSearchButton->get_transform()->GetParent());
         entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        findStringSystemKeyboardButtonGO->set_name("SystemKeyboardButton");
         Button* findStringSystemKeyboardButton = findStringSystemKeyboardButtonGO->GetComponent<Button*>();
         findStringSystemKeyboardButton->set_interactable(true);
         findStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
@@ -106,11 +107,18 @@ namespace AnyText::UI {
             auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->findStringInput));
             entryTableCell->StartCoroutine(coro);
         })));
+        RectTransform* findStringSystemKeyboardButtonBackgroundTransform = findStringSystemKeyboardButton->get_transform()->Find("BG")->GetComponent<RectTransform*>();
+        findStringSystemKeyboardButtonBackgroundTransform->set_sizeDelta({5, 5});
+        RectTransform* findStringSystemKeyboardButtonIconTransform = findStringSystemKeyboardButton->get_transform()->Find("Icon")->GetComponent<RectTransform*>();
+        findStringSystemKeyboardButtonIconTransform->set_sizeDelta({5, 5});
+        ImageView* findStringSystemKeyboardButtonIcon = findStringSystemKeyboardButtonIconTransform->GetComponent<ImageView*>();
+        findStringSystemKeyboardButtonIcon->set_sprite(PNG_SPRITE(keyboard));
 
         entryTableCell->replaceStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
         entryTableCell->replaceStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
         GameObject* replaceStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject(), entryTableCell->replaceStringInput->_clearSearchButton->get_transform()->GetParent());
         entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
+        replaceStringSystemKeyboardButtonGO->set_name("SystemKeyboardButton");
         Button* replaceStringSystemKeyboardButton = replaceStringSystemKeyboardButtonGO->GetComponent<Button*>();
         replaceStringSystemKeyboardButton->set_interactable(true);
         replaceStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
@@ -118,12 +126,16 @@ namespace AnyText::UI {
             auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->replaceStringInput));
             entryTableCell->StartCoroutine(coro);
         })));
+        RectTransform* replaceStringSystemKeyboardButtonBackgroundTransform = replaceStringSystemKeyboardButton->get_transform()->Find("BG")->GetComponent<RectTransform*>();
+        replaceStringSystemKeyboardButtonBackgroundTransform->set_sizeDelta({5, 5});
+        RectTransform* replaceStringSystemKeyboardButtonIconTransform = replaceStringSystemKeyboardButton->get_transform()->Find("Icon")->GetComponent<RectTransform*>();
+        replaceStringSystemKeyboardButtonIconTransform->set_sizeDelta({5, 5});
+        ImageView* replaceStringSystemKeyboardButtonIcon = replaceStringSystemKeyboardButtonIconTransform->GetComponent<ImageView*>();
+        replaceStringSystemKeyboardButtonIcon->set_sprite(PNG_SPRITE(keyboard));
 
-        entryTableCell->replaceSettingsButton = BSML::Lite::CreateUIButton(mainSectionTransform, "⛭", std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
-        entryTableCell->replaceSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryTableCell->replaceSettingsButton = createIconButton(mainSectionTransform, PNG_SPRITE(settings), std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
 
-        entryTableCell->replaceSettingsButton = BSML::Lite::CreateUIButton(entryTableCellTransform, "X", std::bind(&EntryTableCell::HandleRemoveButtonOnClick, entryTableCell));
-        entryTableCell->replaceSettingsButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryTableCell->replaceSettingsButton = createIconButton(entryTableCellTransform, PNG_SPRITE(delete), std::bind(&EntryTableCell::HandleRemoveButtonOnClick, entryTableCell));
 
         return entryTableCell;
     }
@@ -245,8 +257,7 @@ namespace AnyText::UI {
         entryCreatorTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         EntryCreatorTableCell* entryCreatorTableCell = entryCreatorTableCellGO->AddComponent<EntryCreatorTableCell*>();
 
-        entryCreatorTableCell->createEntryButton = BSML::Lite::CreateUIButton(entryCreatorTableCellTransform, "+", std::bind(&EntryCreatorTableCell::HandleCreateEntryButtonOnClick, entryCreatorTableCell));
-        entryCreatorTableCell->createEntryButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        entryCreatorTableCell->createEntryButton = createIconButton(entryCreatorTableCellTransform, PNG_SPRITE(add), std::bind(&EntryCreatorTableCell::HandleCreateEntryButtonOnClick, entryCreatorTableCell));
 
         return entryCreatorTableCell;
     }

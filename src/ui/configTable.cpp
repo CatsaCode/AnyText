@@ -1,8 +1,10 @@
 #include "ui/configTable.hpp"
 #include "main.hpp"
+#include "assets.hpp"
 
 #include "configs.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
+#include "ui/utils.hpp"
 
 #include "HMUI/InputFieldView.hpp"
 
@@ -44,21 +46,16 @@ namespace AnyText::UI {
         ContentSizeFitter* orderButtonsFitter = orderButtonsGO->AddComponent<ContentSizeFitter*>();
         orderButtonsFitter->set_horizontalFit(ContentSizeFitter::FitMode::PreferredSize);
 
-        configTableCell->upButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▲", std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
-        configTableCell->upButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
-        
-        configTableCell->downButton = BSML::Lite::CreateUIButton(orderButtonsTransform, "▼", std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
-        configTableCell->downButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        configTableCell->upButton = createIconButton(orderButtonsTransform, PNG_SPRITE(up), std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
+        configTableCell->downButton = createIconButton(orderButtonsTransform, PNG_SPRITE(down), std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
         
         configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell));
         configTableCell->nameInput->_clearSearchButton->get_gameObject()->SetActive(false);
         configTableCell->nameInput->GetComponent<LayoutElement*>()->set_preferredWidth(70);
         
-        configTableCell->editButton = BSML::Lite::CreateUIButton(configTableCellTransform, "Edit", std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
-        configTableCell->editButton->GetComponent<LayoutElement*>()->set_preferredWidth(12);
+        configTableCell->editButton = createIconButton(configTableCellTransform, PNG_SPRITE(edit), std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
 
-        configTableCell->removeButton = BSML::Lite::CreateUIButton(configTableCellTransform, "X", std::bind(&ConfigTableCell::HandleRemoveButtonOnClick, configTableCell));
-        configTableCell->removeButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        configTableCell->removeButton = createIconButton(configTableCellTransform, PNG_SPRITE(delete), std::bind(&ConfigTableCell::HandleRemoveButtonOnClick, configTableCell));
 
         return configTableCell;
     }
@@ -152,8 +149,7 @@ namespace AnyText::UI {
         configCreatorTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         ConfigCreatorTableCell* configCreatorTableCell = configCreatorTableCellGO->AddComponent<ConfigCreatorTableCell*>();
 
-        configCreatorTableCell->createConfigButton = BSML::Lite::CreateUIButton(configCreatorTableCellTransform, "+", std::bind(&ConfigCreatorTableCell::HandleCreateConfigButtonOnClick, configCreatorTableCell));
-        configCreatorTableCell->createConfigButton->GetComponent<LayoutElement*>()->set_preferredWidth(6);
+        configCreatorTableCell->createConfigButton = createIconButton(configCreatorTableCellTransform, PNG_SPRITE(add), std::bind(&ConfigCreatorTableCell::HandleCreateConfigButtonOnClick, configCreatorTableCell));
 
         return configCreatorTableCell;
     }
