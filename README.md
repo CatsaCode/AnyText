@@ -44,7 +44,7 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add replace text style settings
 - [ ] Add position offset
 - [ ] Add proper icons to buttons
-- [ ] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned) (Technically not an issue with the system keyboard)
+- [x] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned) (Technically not an issue with the system keyboard)
 - [ ] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
@@ -58,7 +58,6 @@ Change any text in the game through a list of find and replace instructions.
 ## Known Bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
-- Icon buttons will trigger haptics when hovering over both the button and the icon
 
 
 ## Needs Testing

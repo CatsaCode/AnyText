@@ -27,6 +27,7 @@ namespace AnyText::UI {
         ImageView* icon = BSML::Lite::CreateImage(button->get_transform(), sprite);
         icon->set_preserveAspect(true);
         icon->get_transform()->set_localScale({0.8, 0.8, 1});
+        icon->set_raycastTarget(false);
         icon->set_color(Color(1, 1, 1, 0.75));
         icon->_skew = 0.18;
 
