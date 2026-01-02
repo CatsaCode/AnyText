@@ -2,11 +2,11 @@
 #include "main.hpp"
 
 #include "findReplaceEntry.hpp"
+#include "ui/utils.hpp"
 
 #include "bsml/shared/BSML/Components/ExternalComponents.hpp"
 
 #include "HMUI/ModalView.hpp"
-#include "HMUI/AnimatedSwitchView.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -22,21 +22,6 @@ DEFINE_TYPE(AnyText::UI, FindSettingsModal);
 
 namespace AnyText::UI {
 
-    static void skipToggleTransition(AnimatedSwitchView* animatedSwitchView) {
-        if(!animatedSwitchView || !animatedSwitchView->_toggle) {PaperLogger.warn("Failed to skip transition, couldn't find components"); return;}
-        animatedSwitchView->_toggle->PlayEffect(true);
-        bool isOn = animatedSwitchView->_toggle->get_isOn();
-        animatedSwitchView->_switchAmount = isOn;
-        animatedSwitchView->_highlightAmount = isOn;
-        animatedSwitchView->_disabledAmount = !isOn;
-        animatedSwitchView->_animationState = AnimatedSwitchView::AnimationState::Idle;
-        animatedSwitchView->LerpPosition(isOn);
-        animatedSwitchView->LerpColors(isOn, isOn, !isOn);
-        animatedSwitchView->LerpStretch(isOn);
-    }
-
-
-    
     FindSettingsModal* FindSettingsModal::create(Transform* parent) {
         PaperLogger.debug("FindSettingsModal");
 

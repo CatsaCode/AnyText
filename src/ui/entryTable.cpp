@@ -7,18 +7,12 @@
 #include "ui/anyTextFlowCoordinator.hpp"
 #include "ui/utils.hpp"
 
-#include "custom-types/shared/delegate.hpp"
-#include "custom-types/shared/coroutine.hpp"
-
 #include "GlobalNamespace/UIKeyboardManager.hpp"
 
 #include "HMUI/InputFieldView.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
-#include "UnityEngine/TouchScreenKeyboard.hpp"
-#include "UnityEngine/TouchScreenKeyboardType.hpp"
-#include "UnityEngine/Time.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/UI/ContentSizeFitter.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
@@ -34,33 +28,6 @@ DEFINE_TYPE(AnyText::UI, EntryCreatorTableCell);
 DEFINE_TYPE(AnyText::UI, EntryTableView);
 
 namespace AnyText::UI {
-
-    static custom_types::Helpers::Coroutine openSystemKeyboard(InputFieldView* inputFieldView, TouchScreenKeyboardType type = TouchScreenKeyboardType::Default, std::string_view placeholder = "", int charLimit = 0) {
-        static TouchScreenKeyboard* systemKeyboard = nullptr;
-        if(!systemKeyboard) systemKeyboard = TouchScreenKeyboard::Open(inputFieldView->get_text(), type, true, false, false, false, placeholder, charLimit);
-        
-        float startTimeSeconds = Time::get_realtimeSinceStartup();
-        while(
-            systemKeyboard && 
-            systemKeyboard->status != TouchScreenKeyboard::Status::Done &&
-            systemKeyboard->status != TouchScreenKeyboard::Status::Canceled &&
-            systemKeyboard->status != TouchScreenKeyboard::Status::LostFocus
-        ) {
-            co_yield nullptr;
-        }
-        float endTimeSeconds = Time::get_realtimeSinceStartup();
-        
-        if(endTimeSeconds - startTimeSeconds < 0.1) PaperLogger.debug("TODO User likely does not have the system keyboard permission");
-
-        if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) {
-            inputFieldView->set_text(systemKeyboard->get_text());
-            inputFieldView->get_onValueChanged()->Invoke(inputFieldView);
-        }
-        systemKeyboard = nullptr;
-        co_return;
-    }
-
-
 
     EntryTableCell* EntryTableCell::create() {
         PaperLogger.debug("EntryTableCell");
@@ -95,43 +62,11 @@ namespace AnyText::UI {
 
         entryTableCell->findSettingsButton = createIconButton(mainSectionTransform, PNG_SPRITE(settings), std::bind(&EntryTableCell::HandleFindSettingsButtonOnClick, entryTableCell));
         
-        entryTableCell->findStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
+        entryTableCell->findStringInput = createStringSettingWithSystemKeyboard(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
         entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
-        GameObject* findStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->findStringInput->_clearSearchButton->get_gameObject(), entryTableCell->findStringInput->_clearSearchButton->get_transform()->GetParent());
-        entryTableCell->findStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
-        findStringSystemKeyboardButtonGO->set_name("SystemKeyboardButton");
-        Button* findStringSystemKeyboardButton = findStringSystemKeyboardButtonGO->GetComponent<Button*>();
-        findStringSystemKeyboardButton->set_interactable(true);
-        findStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
-        findStringSystemKeyboardButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
-            auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->findStringInput));
-            entryTableCell->StartCoroutine(coro);
-        })));
-        RectTransform* findStringSystemKeyboardButtonBackgroundTransform = findStringSystemKeyboardButton->get_transform()->Find("BG")->GetComponent<RectTransform*>();
-        findStringSystemKeyboardButtonBackgroundTransform->set_sizeDelta({5, 5});
-        RectTransform* findStringSystemKeyboardButtonIconTransform = findStringSystemKeyboardButton->get_transform()->Find("Icon")->GetComponent<RectTransform*>();
-        findStringSystemKeyboardButtonIconTransform->set_sizeDelta({5, 5});
-        ImageView* findStringSystemKeyboardButtonIcon = findStringSystemKeyboardButtonIconTransform->GetComponent<ImageView*>();
-        findStringSystemKeyboardButtonIcon->set_sprite(PNG_SPRITE(keyboard));
 
-        entryTableCell->replaceStringInput = BSML::Lite::CreateStringSetting(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
+        entryTableCell->replaceStringInput = createStringSettingWithSystemKeyboard(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
         entryTableCell->replaceStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
-        GameObject* replaceStringSystemKeyboardButtonGO = GameObject::Instantiate(entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject(), entryTableCell->replaceStringInput->_clearSearchButton->get_transform()->GetParent());
-        entryTableCell->replaceStringInput->_clearSearchButton->get_gameObject()->SetActive(false);
-        replaceStringSystemKeyboardButtonGO->set_name("SystemKeyboardButton");
-        Button* replaceStringSystemKeyboardButton = replaceStringSystemKeyboardButtonGO->GetComponent<Button*>();
-        replaceStringSystemKeyboardButton->set_interactable(true);
-        replaceStringSystemKeyboardButton->get_onClick()->RemoveAllListeners();
-        replaceStringSystemKeyboardButton->get_onClick()->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([entryTableCell](){
-            auto coro = custom_types::Helpers::CoroutineHelper::New(openSystemKeyboard(entryTableCell->replaceStringInput));
-            entryTableCell->StartCoroutine(coro);
-        })));
-        RectTransform* replaceStringSystemKeyboardButtonBackgroundTransform = replaceStringSystemKeyboardButton->get_transform()->Find("BG")->GetComponent<RectTransform*>();
-        replaceStringSystemKeyboardButtonBackgroundTransform->set_sizeDelta({5, 5});
-        RectTransform* replaceStringSystemKeyboardButtonIconTransform = replaceStringSystemKeyboardButton->get_transform()->Find("Icon")->GetComponent<RectTransform*>();
-        replaceStringSystemKeyboardButtonIconTransform->set_sizeDelta({5, 5});
-        ImageView* replaceStringSystemKeyboardButtonIcon = replaceStringSystemKeyboardButtonIconTransform->GetComponent<ImageView*>();
-        replaceStringSystemKeyboardButtonIcon->set_sprite(PNG_SPRITE(keyboard));
 
         entryTableCell->replaceSettingsButton = createIconButton(mainSectionTransform, PNG_SPRITE(settings), std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
 
