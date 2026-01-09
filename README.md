@@ -86,7 +86,7 @@ Same goes for `qpm s copy` and `qpm s qmod`
   - [Settings](https://icons8.com/icon/83214/settings)
   - [Edit Pencil](https://icons8.com/icon/86372/edit-pencil)
   - [Keyboard](https://icons8.com/icon/rgf2JV5jJg3Q/keyboard)
-  - [Trash Can](https://icons8.com/icon/82708/trash-can)
+  - [Trash](https://icons8.com/icon/85081/trash)
   - [Plus Math](https://icons8.com/icon/3VGu7LGKM46W/plus-math)
   - [Sort Up](https://icons8.com/icon/86870/sort-up)
   - [Sort Down](https://icons8.com/icon/85502/sort-down)
