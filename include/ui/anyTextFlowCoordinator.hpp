@@ -20,10 +20,11 @@ DECLARE_CLASS_CODEGEN(AnyText::UI, AnyTextFlowCoordinator, HMUI::FlowCoordinator
     DECLARE_OVERRIDE_METHOD_MATCH(void, DidActivate, &HMUI::FlowCoordinator::DidActivate, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD_MATCH(void, BackButtonWasPressed, &HMUI::FlowCoordinator::BackButtonWasPressed, HMUI::ViewController* topViewController);
 
-    DECLARE_STATIC_METHOD(AnyTextFlowCoordinator*, GetInstance);
     DECLARE_STATIC_METHOD(void, Present);
 
     public:
+        static UnityW<AnyTextFlowCoordinator> instance;
+
         void presentEntries(Config* config);
         void presentConfigs();
 };

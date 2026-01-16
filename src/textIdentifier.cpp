@@ -4,6 +4,7 @@
 #include "findReplaceEntry.hpp"
 #include "configs.hpp"
 #include "textManager.hpp"
+#include "ui/anyTextFlowCoordinator.hpp"
 
 #include "boost/regex.hpp"
 
@@ -16,12 +17,14 @@ namespace AnyText {
     void identifyText(TMPro::TMP_Text* text) {
         if(!text || !text->get_text() || !text->get_gameObject()) return;
 
-        // Transform* menuTransform = text->get_transform();
-        // for(int i = 0; i < 4; i++) {
-        //     if(!menuTransform) break;
-        //     if(menuTransform->get_name() == "AnyTextMenu") return;
-        //     menuTransform = menuTransform->get_parent();
-        // }
+        if( UI::AnyTextFlowCoordinator::instance &&
+            ((UI::AnyTextFlowCoordinator::instance->configListViewController && 
+            text->get_transform()->IsChildOf(UI::AnyTextFlowCoordinator::instance->configListViewController->get_transform())) ||
+            (UI::AnyTextFlowCoordinator::instance->entryListViewController && 
+            text->get_transform()->IsChildOf(UI::AnyTextFlowCoordinator::instance->entryListViewController->get_transform())))
+        ) {
+            return;
+        }
         
         TextManager* textManager = text->GetComponent<TextManager*>();
         std::string identifyingText = textManager ? textManager->getOriginalState().text : std::string(text->get_text());

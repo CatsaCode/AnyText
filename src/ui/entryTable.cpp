@@ -133,7 +133,8 @@ namespace AnyText::UI {
         PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
 
-        AnyTextFlowCoordinator::GetInstance()->entryListViewController->findSettingsModal->show(entry);
+        if(!AnyTextFlowCoordinator::instance) {PaperLogger.error("AnyTextFlowCoordinator::instance is not valid"); return;}
+        AnyTextFlowCoordinator::instance->entryListViewController->findSettingsModal->show(entry);
     }
 
     void EntryTableCell::HandleFindStringInputOnChange() {

@@ -12,15 +12,11 @@ DEFINE_TYPE(AnyText::UI, AnyTextFlowCoordinator);
 
 namespace AnyText::UI {
 
-    AnyTextFlowCoordinator* AnyTextFlowCoordinator::GetInstance() {
-        static UnityW<AnyTextFlowCoordinator> instance;
-        if(!instance && instance.unsafePtr()) PaperLogger.warn("Creating another AnyTextFlowCoordinator?");
-        if(!instance) instance = BSML::Helpers::CreateFlowCoordinator<AnyTextFlowCoordinator*>();
-        return instance;
-    }
+    UnityW<AnyTextFlowCoordinator> AnyTextFlowCoordinator::instance;
 
     void AnyTextFlowCoordinator::Present() {
-        BSML::Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf()->PresentFlowCoordinator(GetInstance(), nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, false);
+        if(!AnyTextFlowCoordinator::instance) AnyTextFlowCoordinator::instance = BSML::Helpers::CreateFlowCoordinator<AnyTextFlowCoordinator*>();
+        BSML::Helpers::GetMainFlowCoordinator()->YoungestChildFlowCoordinatorOrSelf()->PresentFlowCoordinator(AnyTextFlowCoordinator::instance, nullptr, HMUI::ViewController::AnimationDirection::Horizontal, false, false);
     }
 
 

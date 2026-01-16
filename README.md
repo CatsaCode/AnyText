@@ -43,21 +43,22 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add replace all or partial
 - [ ] Add replace text style settings
 - [ ] Add position offset
-- [ ] Add proper icons to buttons
+- [x] Add proper icons to buttons
 - [x] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned) (Technically not an issue with the system keyboard)
-- [ ] Stop text identification on AnyText-related pieces of text
+- [x] Stop text identification on AnyText-related pieces of text
 - [ ] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
 - [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
   - [ ] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
   - [ ] Also note user if it detects the keyboard. `Android::Permission` does not work, measure time open instead
-- [ ] Load fonts
+- [x] Load fonts
 
 
 ## Known Bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
+- Crash upon opening the menu after a soft restart
 
 
 ## Needs Testing

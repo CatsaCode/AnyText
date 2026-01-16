@@ -118,7 +118,8 @@ namespace AnyText::UI {
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
         
         config->unsaved = true;
-        AnyTextFlowCoordinator::GetInstance()->presentEntries(config);
+        if(!AnyTextFlowCoordinator::instance) {PaperLogger.error("AnyTextFlowCoordinator::instance is not valid"); return;}
+        AnyTextFlowCoordinator::instance->presentEntries(config);
     }
 
     void ConfigTableCell::HandleRemoveButtonOnClick() {
