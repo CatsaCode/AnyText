@@ -2,12 +2,15 @@
 #include "modConfig.hpp"
 
 #include "configs.hpp"
+#include "fontLoader.hpp"
 #include "textIdentifier.hpp"
 #include "ui/anyTextFlowCoordinator.hpp"
 
 #include "scotland2/shared/modloader.h"
 #include "custom-types/shared/register.hpp"
 #include "bsml/shared/BSML.hpp"
+
+#include "GlobalNamespace/MainFlowCoordinator.hpp"
 
 #include <filesystem>
 
@@ -18,6 +21,18 @@ std::string_view getAnyTextDir() {
     if(!std::filesystem::exists(anyTextDir)) std::filesystem::create_directory(anyTextDir);
     return anyTextDir;
 };
+
+
+MAKE_HOOK_MATCH(MainFlowCoordinator_DidActivate, &GlobalNamespace::MainFlowCoordinator::DidActivate, 
+    void, GlobalNamespace::MainFlowCoordinator* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling
+) {
+    MainFlowCoordinator_DidActivate(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+    if(!firstActivation) return;
+
+    AnyText::loadFonts();
+    // Identify all text
+}
+
 
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
@@ -41,6 +56,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     PaperLogger.info("Installing hooks...");
 
+    INSTALL_HOOK(PaperLogger, MainFlowCoordinator_DidActivate);
     AnyText::installTextIdentifierHooks();
 
     PaperLogger.info("Installed all hooks!");

@@ -51,15 +51,15 @@ namespace AnyText {
         }
     }
 
-    MAKE_HOOK_MATCH(ParseInputText_IdentifyText, &TMPro::TMP_Text::ParseInputText, void,
-        TMPro::TMP_Text* self
+    MAKE_HOOK_MATCH(TMP_Text_ParseInputText, &TMPro::TMP_Text::ParseInputText, 
+        void, TMPro::TMP_Text* self
     ) {
         identifyText(self);
-        ParseInputText_IdentifyText(self);
+        TMP_Text_ParseInputText(self);
     }
 
     void installTextIdentifierHooks() {
-        INSTALL_HOOK(PaperLogger, ParseInputText_IdentifyText);
+        INSTALL_HOOK(PaperLogger, TMP_Text_ParseInputText);
     }
 
 }
