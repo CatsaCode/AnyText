@@ -28,6 +28,21 @@ using namespace UnityEngine::TextCore::LowLevel;
 namespace AnyText {
 
     std::map<std::string, SafePtrUnity<TMPro::TMP_FontAsset>> fontAssets = {};
+
+    Material* getFontAssetMaterial() {
+        // Shader::Find("TextMeshPro/Mobile/Distance Field Zero Alpha Write") does not work for some reason
+        static UnityW<Material> material = nullptr;
+        if(!material) material = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == "Teko-Medium SDF";})->material;
+        if(!material) PaperLogger.error("Failed to get font asset material");
+        return material;
+    }
+
+    Material* getTextMaterial() {
+        static UnityW<Material> material = nullptr;
+        if(!material) material = Resources::FindObjectsOfTypeAll<Material*>()->First([](Material* material){return material->get_name() == "Teko-Medium SDF Curved";});
+        if(!material) PaperLogger.error("Failed to get text material");
+        return material;
+    }
     
     // Transpile and fix TMPro::TMP_FontAsset::CreateFontAsset
     // Beat Saber uses padding 5, 1024x512, Static, false
@@ -56,12 +71,8 @@ namespace AnyText {
 		tMP_FontAsset->atlasTextures = {texture2D};
 		tMP_FontAsset->isMultiAtlasTexturesEnabled = enableMultiAtlasSupport;
 
-        // Shader::Find("TextMeshPro/Mobile/Distance Field Zero Alpha Write") does not work for some reason
-        // The FontAsset "Teko-Medium SDF" used on curved canvases stops curving when I use it. Not sure where "Teko-Medium SDF Numbers Monospaced Curved" is supposed to be used but it fixes my issue
-        static UnityW<Material> originalMaterial = nullptr;
-        // TODO If text is identified before everything loads (ie matching /.+/) then this won't find the First and crash
-        if(!originalMaterial) originalMaterial = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == "Teko-Medium SDF Numbers Monospaced Curved";})->material;
-        Material* material = Material::New_ctor(originalMaterial);;
+        // Fix the shader retrieval
+        Material* material = Material::New_ctor(getFontAssetMaterial());
 		
         // Some renderMode logic is trimmed out
         int num = 1;
@@ -82,7 +93,7 @@ namespace AnyText {
 
     void loadFonts() {
         TMPro::TMP_FontAsset* defaultFontAsset = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == "Teko-Medium SDF";});
-        fontAssets[""] = defaultFontAsset;
+        fontAssets["Teko-Medium SDF"] = defaultFontAsset;
 
         for(auto& file : std::filesystem::recursive_directory_iterator(getAnyTextDir())) {
             if(file.path().extension() != ".ttf") continue;

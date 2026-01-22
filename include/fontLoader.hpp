@@ -8,6 +8,9 @@ namespace AnyText {
 
     extern std::map<std::string, SafePtrUnity<TMPro::TMP_FontAsset>> fontAssets;
 
+    UnityEngine::Material* getFontAssetMaterial();
+    UnityEngine::Material* getTextMaterial();
+    
     void loadFonts();
 
 }
