@@ -8,8 +8,9 @@
 namespace AnyText {
     struct TextState {
         std::string text;
-        TMPro::FontStyles fontStyle;
         bool richText;
+        TMPro::FontStyles fontStyle;
+        std::string fontName;
     };
 }
 

@@ -51,14 +51,17 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Upgrade v1.0.1 configs
 - [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
   - [ ] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
-  - [ ] Also note user if it detects the keyboard. `Android::Permission` does not work, measure time open instead
+  - [ ] If user doesn't have the permission, open a webpage on how to add it
 - [x] Load fonts
+- [ ] Add font dropdown
+- [ ] Add info board
 
 
 ## Known Bugs
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon opening the menu after a soft restart
+- If the play button font is replaced, BSML will adopt the font in its template. Perhaps ask BSML to generate the template before loading the fonts
 
 
 ## Needs Testing

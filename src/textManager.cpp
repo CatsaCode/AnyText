@@ -3,6 +3,7 @@
 
 #include "findReplaceEntry.hpp"
 #include "configs.hpp"
+#include "fontLoader.hpp"
 
 #include "boost/regex.hpp"
 
@@ -49,8 +50,9 @@ namespace AnyText {
 
         bool didChange = false;
         if(text->get_text() != replacementState.text) { originalState.text = std::string(text->get_text()); didChange = true; }
-        if(text->get_fontStyle() != replacementState.fontStyle) { originalState.fontStyle = text->get_fontStyle(); didChange = true; }
         if(text->get_richText() != replacementState.richText) { originalState.richText = text->get_richText(); didChange = true; }
+        if(text->get_fontStyle() != replacementState.fontStyle) { originalState.fontStyle = text->get_fontStyle(); didChange = true; }
+        if(text->get_font()->get_name() != replacementState.fontName) { originalState.fontName = std::string(text->get_font()->get_name()); didChange = true; }
         return didChange;
     }
 
@@ -58,8 +60,12 @@ namespace AnyText {
         if(!text || !text->get_text()) return;
 
         text->set_text(state.text);
-        text->set_fontStyle(state.fontStyle);
         text->set_richText(state.richText);
+        text->set_fontStyle(state.fontStyle);
+        if(fontAssets.contains(state.fontName) && fontAssets[state.fontName]) {
+            text->set_font(fontAssets[state.fontName].ptr());
+            text->set_fontSharedMaterial(getTextMaterial());
+        }
     }
 
     void TextManager::generateReplacementState() {
@@ -81,6 +87,8 @@ namespace AnyText {
                 PaperLogger.info("Replacing '{}' -> ({}) -> '{}'", replacementState.text, entry.getFindString(), newText);
                 replacementState.text = newText;
                 replacementState.richText = true;
+                
+                if(entry.fontName) replacementState.fontName = entry.fontName.value();
 
                 hasReplacedText = true;
             }

@@ -37,6 +37,7 @@ namespace AnyText {
             // VALUE_OPTIONAL(bool, lowercase);
             // VALUE_OPTIONAL(bool, uppercase);
             // VALUE_OPTIONAL(bool, smallcaps);
+            VALUE_OPTIONAL(std::string, fontName);
             // VALUE_OPTIONAL(int, fontSize);
             // VALUE_OPTIONAL(bool, autoSize);
             // Color
