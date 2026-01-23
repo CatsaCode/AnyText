@@ -2,6 +2,7 @@
 #include "main.hpp"
 
 #include "findReplaceEntry.hpp"
+#include "fontLoader.hpp"
 #include "ui/utils.hpp"
 
 #include "bsml/shared/BSML/Components/ExternalComponents.hpp"
@@ -19,8 +20,12 @@ using namespace UnityEngine::UI;
 using namespace HMUI;
 
 DEFINE_TYPE(AnyText::UI, FindSettingsModal);
+DEFINE_TYPE(AnyText::UI, ReplaceSettingsModal);
 
 namespace AnyText::UI {
+
+    static constexpr std::string baseFontLabel = "Default (Teko)";
+    static constexpr std::string retainLabel = "Retain"; // TODO Retain / keep / same, find a better name
 
     FindSettingsModal* FindSettingsModal::create(Transform* parent) {
         PaperLogger.debug("FindSettingsModal");
@@ -84,6 +89,64 @@ namespace AnyText::UI {
 
     void FindSettingsModal::hide() {
         PaperLogger.debug("&FindSettingsModal: {}", static_cast<void*>(this));
+        if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
+        modalView->Hide();
+    }
+
+
+
+    ReplaceSettingsModal* ReplaceSettingsModal::create(Transform* parent) {
+        PaperLogger.debug("ReplaceSettingsModal");
+
+        BSML::ModalView* modalView = BSML::Lite::CreateModal(parent, {0, 0}, {70, 40}, nullptr);
+        RectTransform* containerTransform = BSML::Lite::CreateScrollableModalContainer(modalView)->get_transform().cast<RectTransform>();
+        containerTransform->GetComponent<BSML::ExternalComponents*>()->Get<RectTransform*>()->set_anchoredPosition({4, 0}); // The stupid centering™
+
+        GameObject* replaceSettingsModalGO = modalView->get_gameObject();
+        RectTransform* replaceSettingsModalTransform = replaceSettingsModalGO->get_transform().cast<RectTransform>();
+        ReplaceSettingsModal* replaceSettingsModal = replaceSettingsModalGO->AddComponent<ReplaceSettingsModal*>();
+        replaceSettingsModal->modalView = modalView;
+
+        replaceSettingsModal->fontDropdown = BSML::Lite::CreateDropdown(containerTransform, "Font", "", {}, std::bind(&ReplaceSettingsModal::HandleFontDropdownOnChange, replaceSettingsModal, std::placeholders::_1));
+
+        return replaceSettingsModal;
+    }
+
+    void ReplaceSettingsModal::HandleFontDropdownOnChange(StringW value) {
+        PaperLogger.debug("&ReplaceSettingsModal: {}", static_cast<void*>(this));
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+        if(value == retainLabel) {
+            entry->fontName = std::nullopt;
+            return;
+        }
+        if(value == baseFontLabel) value = baseFontName;
+        if(!fontAssets.contains(value)) {PaperLogger.error("fontAssets does not contain '{}'", value); return;}
+        entry->fontName = value;
+    }
+
+    void ReplaceSettingsModal::show(FindReplaceEntry* entry) {
+        PaperLogger.debug("&ReplaceSettingsModal: {}, &entry: {}", static_cast<void*>(this), static_cast<void*>(entry));
+        if(!entry) {PaperLogger.error("entry is nullptr"); return;}
+        this->entry = entry;
+
+        if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
+
+        std::vector<std::string_view> fontLabels = {retainLabel, baseFontLabel};
+        fontLabels.reserve(fontAssets.size() + 1);
+        for(auto& fontAsset : fontAssets) if(fontAsset.first != baseFontName) fontLabels.push_back(fontAsset.first);
+        fontDropdown->values->Clear();
+        fontDropdown->values->EnsureCapacity(fontLabels.size());
+        for(auto fontLabel : fontLabels) fontDropdown->values->Add(static_cast<System::Object*>(StringW(fontLabel).convert()));
+        fontDropdown->UpdateChoices();
+        std::string fontLabel = !entry->fontName ? retainLabel : (entry->fontName == baseFontName ? baseFontLabel : entry->fontName.value());
+        int fontLabelIndex = std::distance(fontLabels.begin(), std::find(fontLabels.begin(), fontLabels.end(), fontLabel));
+        fontDropdown->set_Value(fontDropdown->values[fontLabelIndex]);
+
+        modalView->Show();
+    }
+
+    void ReplaceSettingsModal::hide() {
+        PaperLogger.debug("&ReplaceSettingsModal: {}", static_cast<void*>(this));
         if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
         modalView->Hide();
     }

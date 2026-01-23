@@ -157,6 +157,10 @@ namespace AnyText::UI {
 
     void EntryTableCell::HandleReplaceSettingsButtonOnClick() {
         PaperLogger.debug("&EntryTableCell: {}", static_cast<void*>(this));
+        if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+
+        if(!AnyTextFlowCoordinator::instance) {PaperLogger.error("AnyTextFlowCoordinator::instance is not valid"); return;}
+        AnyTextFlowCoordinator::instance->entryListViewController->replaceSettingsModal->show(entry);
     }
 
     void EntryTableCell::HandleRemoveButtonOnClick() {

@@ -52,6 +52,7 @@ namespace AnyText {
         if(text->get_text() != replacementState.text) { originalState.text = std::string(text->get_text()); didChange = true; }
         if(text->get_richText() != replacementState.richText) { originalState.richText = text->get_richText(); didChange = true; }
         if(text->get_fontStyle() != replacementState.fontStyle) { originalState.fontStyle = text->get_fontStyle(); didChange = true; }
+        // TODO Is this crashing when exiting the game because font is null?
         if(text->get_font()->get_name() != replacementState.fontName) { originalState.fontName = std::string(text->get_font()->get_name()); didChange = true; }
         return didChange;
     }

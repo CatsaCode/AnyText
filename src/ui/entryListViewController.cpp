@@ -50,6 +50,7 @@ namespace AnyText::UI {
         if(entryTableView->tableView) entryTableView->tableView->ReloadData();
         
         findSettingsModal = FindSettingsModal::create(transform);
+        replaceSettingsModal = ReplaceSettingsModal::create(transform);
     }
 
     void EntryListViewController::setConfig(Config* config) {

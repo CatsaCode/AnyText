@@ -32,14 +32,14 @@ namespace AnyText {
     Material* getFontAssetMaterial() {
         // Shader::Find("TextMeshPro/Mobile/Distance Field Zero Alpha Write") does not work for some reason
         static UnityW<Material> material = nullptr;
-        if(!material) material = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == "Teko-Medium SDF";})->material;
+        if(!material) material = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == baseFontName;})->material;
         if(!material) PaperLogger.error("Failed to get font asset material");
         return material;
     }
 
     Material* getTextMaterial() {
         static UnityW<Material> material = nullptr;
-        if(!material) material = Resources::FindObjectsOfTypeAll<Material*>()->First([](Material* material){return material->get_name() == "Teko-Medium SDF Curved";});
+        if(!material) material = Resources::FindObjectsOfTypeAll<Material*>()->First([](Material* material){return material->get_name() == baseFontName + " Curved";});
         if(!material) PaperLogger.error("Failed to get text material");
         return material;
     }
@@ -92,8 +92,8 @@ namespace AnyText {
     }
 
     void loadFonts() {
-        TMPro::TMP_FontAsset* defaultFontAsset = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == "Teko-Medium SDF";});
-        fontAssets["Teko-Medium SDF"] = defaultFontAsset;
+        TMPro::TMP_FontAsset* baseFontAsset = Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>()->First([](TMPro::TMP_FontAsset* fontAsset){return fontAsset->get_name() == baseFontName;});
+        fontAssets[baseFontName] = baseFontAsset;
 
         for(auto& file : std::filesystem::recursive_directory_iterator(getAnyTextDir())) {
             if(file.path().extension() != ".ttf") continue;

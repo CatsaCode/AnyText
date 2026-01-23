@@ -34,7 +34,7 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Add modal for find settings
 - [x] Add dropdown for find algorithm
 - [x] Add toggle for accumulation
-- [ ] Add modal for replace settings
+- [x] Add modal for replace settings
 - [ ] Add toggles to configs
 - [x] Add button to create new config
 - [x] Add button to create new entry
@@ -53,7 +53,7 @@ Change any text in the game through a list of find and replace instructions.
   - [ ] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
   - [ ] If user doesn't have the permission, open a webpage on how to add it
 - [x] Load fonts
-- [ ] Add font dropdown
+- [x] Add font dropdown
 - [ ] Add info board
 
 
@@ -61,7 +61,7 @@ Change any text in the game through a list of find and replace instructions.
 
 - Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon opening the menu after a soft restart
-- If the play button font is replaced, BSML will adopt the font in its template. Perhaps ask BSML to generate the template before loading the fonts
+- If the play button font is replaced, BSML will adopt the font in its template. Perhaps ask BSML to generate the template before loading the fonts. Or if the `TextManager` is being cloned with the template, figure out why it's not being removed and restoring the text
 
 
 ## Needs Testing
