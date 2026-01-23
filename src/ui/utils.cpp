@@ -15,6 +15,7 @@
 #include "UnityEngine/TouchScreenKeyboard.hpp"
 #include "UnityEngine/TouchScreenKeyboardType.hpp"
 #include "UnityEngine/Time.hpp"
+#include "UnityEngine/CanvasGroup.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -113,6 +114,27 @@ namespace AnyText::UI {
         animatedSwitchView->LerpPosition(isOn);
         animatedSwitchView->LerpColors(isOn, isOn, !isOn);
         animatedSwitchView->LerpStretch(isOn);
+    }
+
+    // Modified version of MetaCore::UI::AddModalAnimations that adjusts alpha instead of mostly color
+    void addModalAnimations(SimpleTextDropdown* dropdown, ModalView* modal) {
+        std::function<void(bool)> animateModal = [modal](bool out){
+            CanvasGroup* canvasGroup = modal->GetComponent<CanvasGroup*>();
+            canvasGroup->set_alpha(out ? 0.6 : 1);
+        };
+
+        dropdown->_button->onClick->AddListener(custom_types::MakeDelegate<Events::UnityAction*>(std::function<void()>([animateModal](){
+            animateModal(true);
+        })));
+        dropdown->add_didSelectCellWithIdxEvent(custom_types::MakeDelegate<System::Action_2<UnityW<DropdownWithTableView>, int>*>(std::function<void(UnityW<DropdownWithTableView>, int)>([animateModal](UnityW<DropdownWithTableView>, int){
+            animateModal(false);
+        })));
+        dropdown->_modalView->add_blockerClickedEvent(custom_types::MakeDelegate<System::Action*>(std::function<void()>([animateModal](){
+            animateModal(false);
+        })));
+
+        if(auto modal = il2cpp_utils::try_cast<HMUI::ModalView>(dropdown->_modalView.unsafePtr()).value_or(nullptr))
+            modal->_animateParentCanvas = false;
     }
 
 }

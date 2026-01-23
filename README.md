@@ -59,7 +59,6 @@ Change any text in the game through a list of find and replace instructions.
 
 ## Known Bugs
 
-- Open a modal, open a dropdown, close the dropdown. The dimmer behind the modal disappears. I think I saw MetaCore had a dropdown function with some weird extra code that just may have been the fix for this?
 - Crash upon opening the menu after a soft restart
 - If the play button font is replaced, BSML will adopt the font in its template. Perhaps ask BSML to generate the template before loading the fonts. Or if the `TextManager` is being cloned with the template, figure out why it's not being removed and restoring the text
 

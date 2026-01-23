@@ -41,6 +41,7 @@ namespace AnyText::UI {
         findSettingsModal->modalView = modalView;
 
         findSettingsModal->algorithmDropdown = BSML::Lite::CreateDropdown(containerTransform, "Algorithm", "", FindAlgorithm_Strings, std::bind(&FindSettingsModal::HandleAlgorithmDropdownOnChange, findSettingsModal, std::placeholders::_1));
+        addModalAnimations(findSettingsModal->algorithmDropdown->dropdown, modalView);
         findSettingsModal->accumulateToggle = BSML::Lite::CreateToggle(containerTransform, "Accumulate", false, std::bind(&FindSettingsModal::HandleAccumulateToggleOnChange, findSettingsModal, std::placeholders::_1));
         findSettingsModal->matchCaseToggle = BSML::Lite::CreateToggle(containerTransform, "Match Case", false, std::bind(&FindSettingsModal::HandleMatchCaseToggleOnChange, findSettingsModal, std::placeholders::_1));
 
@@ -119,6 +120,7 @@ namespace AnyText::UI {
         replaceSettingsModal->modalView = modalView;
 
         replaceSettingsModal->fontDropdown = BSML::Lite::CreateDropdown(containerTransform, "Font", "", getFontLabels(), std::bind(&ReplaceSettingsModal::HandleFontDropdownOnChange, replaceSettingsModal, std::placeholders::_1));
+        addModalAnimations(replaceSettingsModal->fontDropdown->dropdown, modalView);
 
         return replaceSettingsModal;
     }

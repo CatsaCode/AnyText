@@ -4,6 +4,8 @@
 
 #include "HMUI/InputFieldView.hpp"
 #include "HMUI/AnimatedSwitchView.hpp"
+#include "HMUI/SimpleTextDropdown.hpp"
+#include "HMUI/ModalView.hpp"
 
 #include "UnityEngine/Transform.hpp"
 #include "UnityEngine/Sprite.hpp"
@@ -17,5 +19,6 @@ namespace AnyText::UI {
 
     custom_types::Helpers::Coroutine openSystemKeyboard(HMUI::InputFieldView* inputFieldView, UnityEngine::TouchScreenKeyboardType type = UnityEngine::TouchScreenKeyboardType::Default, std::string_view placeholder = "", int charLimit = 0);
     void skipToggleTransition(HMUI::AnimatedSwitchView* animatedSwitchView);
+    void addModalAnimations(HMUI::SimpleTextDropdown* dropdown, HMUI::ModalView* modal);
 
 }
