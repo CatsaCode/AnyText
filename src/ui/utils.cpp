@@ -16,6 +16,7 @@
 #include "UnityEngine/TouchScreenKeyboardType.hpp"
 #include "UnityEngine/Time.hpp"
 #include "UnityEngine/CanvasGroup.hpp"
+#include "UnityEngine/Application.hpp"
 
 using namespace UnityEngine;
 using namespace UnityEngine::UI;
@@ -93,7 +94,7 @@ namespace AnyText::UI {
         }
         float endTimeSeconds = Time::get_realtimeSinceStartup();
         
-        if(endTimeSeconds - startTimeSeconds < 0.1) PaperLogger.debug("TODO User likely does not have the system keyboard permission");
+        if(endTimeSeconds - startTimeSeconds < 0.1) openURL("https://github.com/CatsaCode/AnyText/blob/main/docs/repatchInstructions/README.md");
 
         if(systemKeyboard->status == TouchScreenKeyboard::Status::Done) {
             inputFieldView->set_text(systemKeyboard->get_text());
@@ -135,6 +136,15 @@ namespace AnyText::UI {
 
         if(auto modal = il2cpp_utils::try_cast<HMUI::ModalView>(dropdown->_modalView.unsafePtr()).value_or(nullptr))
             modal->_animateParentCanvas = false;
+    }
+
+    void openURL(std::string_view url) {
+        #ifdef BS_1_37_0
+        static auto OpenURL = il2cpp_utils::resolve_icall<void, StringW>("UnityEngine.Application::OpenURL");
+        OpenURL(url);
+        #else
+        UnityEngine::Application::OpenURL(url);
+        #endif
     }
 
 }

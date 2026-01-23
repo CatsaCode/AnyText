@@ -50,8 +50,8 @@ Change any text in the game through a list of find and replace instructions.
 - [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
 - [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
-  - [ ] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
-  - [ ] If user doesn't have the permission, open a webpage on how to add it
+  - [x] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
+  - [x] If user doesn't have the permission, open a webpage on how to add it
 - [x] Load fonts
 - [x] Add font dropdown
 - [ ] Add info board
