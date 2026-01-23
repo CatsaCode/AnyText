@@ -24,10 +24,10 @@ To use the Oculus keyboard, Beat Saber needs to be repatched with the `oculus.so
 4. Click on the **plus** button to **add a feature**<br>
     <img src="4.png" width=300><br>
 
-5. Type or copy/paste in **`oculus.software.overlay_keyboard`**
-    > [!IMPORTANT]
-    > It must be copied exactly or it will not work.
+> [!IMPORTANT]
+> This must be copied exactly or it will not work.
 
+5. Type or copy/paste in **`oculus.software.overlay_keyboard`**<br>
     <img src="5.png" width=300><br>
 
 6. Click on **Repatch Game**<br>
