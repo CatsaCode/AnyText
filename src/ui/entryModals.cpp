@@ -8,6 +8,7 @@
 #include "bsml/shared/BSML/Components/ExternalComponents.hpp"
 
 #include "HMUI/ModalView.hpp"
+#include "HMUI/SimpleTextDropdown.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -95,6 +96,16 @@ namespace AnyText::UI {
 
 
 
+    std::vector<std::string_view>& getFontLabels() {
+        static std::vector<std::string_view> fontLabels = {};
+        if(fontLabels.empty()) {
+            fontLabels = {retainLabel, baseFontLabel};
+            fontLabels.reserve(fontAssets.size() + 1);
+            for(auto& fontAsset : fontAssets) if(fontAsset.first != baseFontName) fontLabels.push_back(fontAsset.first);
+        }
+        return fontLabels;
+    }
+
     ReplaceSettingsModal* ReplaceSettingsModal::create(Transform* parent) {
         PaperLogger.debug("ReplaceSettingsModal");
 
@@ -107,7 +118,7 @@ namespace AnyText::UI {
         ReplaceSettingsModal* replaceSettingsModal = replaceSettingsModalGO->AddComponent<ReplaceSettingsModal*>();
         replaceSettingsModal->modalView = modalView;
 
-        replaceSettingsModal->fontDropdown = BSML::Lite::CreateDropdown(containerTransform, "Font", "", {}, std::bind(&ReplaceSettingsModal::HandleFontDropdownOnChange, replaceSettingsModal, std::placeholders::_1));
+        replaceSettingsModal->fontDropdown = BSML::Lite::CreateDropdown(containerTransform, "Font", "", getFontLabels(), std::bind(&ReplaceSettingsModal::HandleFontDropdownOnChange, replaceSettingsModal, std::placeholders::_1));
 
         return replaceSettingsModal;
     }
@@ -115,6 +126,8 @@ namespace AnyText::UI {
     void ReplaceSettingsModal::HandleFontDropdownOnChange(StringW value) {
         PaperLogger.debug("&ReplaceSettingsModal: {}", static_cast<void*>(this));
         if(!entry) {PaperLogger.error("entry is not assigned"); return;}
+
+        fontDropdown->dropdown->_text->set_color({1, 1, 1, 1});
         if(value == retainLabel) {
             entry->fontName = std::nullopt;
             return;
@@ -131,16 +144,16 @@ namespace AnyText::UI {
 
         if(!modalView) {PaperLogger.error("modalView is not assigned"); return;}
 
-        std::vector<std::string_view> fontLabels = {retainLabel, baseFontLabel};
-        fontLabels.reserve(fontAssets.size() + 1);
-        for(auto& fontAsset : fontAssets) if(fontAsset.first != baseFontName) fontLabels.push_back(fontAsset.first);
-        fontDropdown->values->Clear();
-        fontDropdown->values->EnsureCapacity(fontLabels.size());
-        for(auto fontLabel : fontLabels) fontDropdown->values->Add(static_cast<System::Object*>(StringW(fontLabel).convert()));
-        fontDropdown->UpdateChoices();
+        std::vector<std::string_view>& fontLabels = getFontLabels();
         std::string fontLabel = !entry->fontName ? retainLabel : (entry->fontName == baseFontName ? baseFontLabel : entry->fontName.value());
         int fontLabelIndex = std::distance(fontLabels.begin(), std::find(fontLabels.begin(), fontLabels.end(), fontLabel));
-        fontDropdown->set_Value(fontDropdown->values[fontLabelIndex]);
+        if(fontLabelIndex < fontLabels.size()) {
+            fontDropdown->set_Value(fontDropdown->values[fontLabelIndex]);
+            fontDropdown->dropdown->_text->set_color({1, 1, 1, 1});
+        } else {
+            fontDropdown->dropdown->_text->set_text(fontLabel);
+            fontDropdown->dropdown->_text->set_color({1, 0.2, 0.2, 1});
+        }
 
         modalView->Show();
     }

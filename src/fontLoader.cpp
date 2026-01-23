@@ -111,8 +111,6 @@ namespace AnyText {
             
             fontAssets[fontName] = fontAsset;
         }
-
-        // TODO Load font names that are requested from configs
     }
 
 }
