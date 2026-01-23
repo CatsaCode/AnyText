@@ -21,6 +21,8 @@
 
 #include <map>
 #include <filesystem>
+#include <string>
+#include <unordered_set>
 
 using namespace UnityEngine;
 using namespace UnityEngine::TextCore::LowLevel;
@@ -96,7 +98,8 @@ namespace AnyText {
         fontAssets[baseFontName] = baseFontAsset;
 
         for(auto& file : std::filesystem::recursive_directory_iterator(getAnyTextDir())) {
-            if(file.path().extension() != ".ttf") continue;
+            static const std::unordered_set<std::string> supportedFileTypes = {".ttf", ".otf", ".ttc"};
+            if(!supportedFileTypes.contains(file.path().extension())) continue;
             PaperLogger.info("Loading font from path: '{}'", file.path().string());
             
             std::string fontName = file.path().stem();
