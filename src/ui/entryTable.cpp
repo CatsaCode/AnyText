@@ -10,6 +10,7 @@
 #include "GlobalNamespace/UIKeyboardManager.hpp"
 
 #include "HMUI/InputFieldView.hpp"
+#include "HMUI/CurvedTextMeshPro.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -64,9 +65,11 @@ namespace AnyText::UI {
         
         entryTableCell->findStringInput = createStringSettingWithSystemKeyboard(mainSectionTransform, "Find", "", std::bind(&EntryTableCell::HandleFindStringInputOnChange, entryTableCell));
         entryTableCell->findStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+        entryTableCell->findStringInput->get_transform()->Find("Text")->GetComponent<CurvedTextMeshPro*>()->set_richText(false);
 
         entryTableCell->replaceStringInput = createStringSettingWithSystemKeyboard(mainSectionTransform, "Replace", "", std::bind(&EntryTableCell::HandleReplaceStringInputOnChange, entryTableCell));
         entryTableCell->replaceStringInput->GetComponent<LayoutElement*>()->set_preferredWidth(40);
+        entryTableCell->replaceStringInput->get_transform()->Find("Text")->GetComponent<CurvedTextMeshPro*>()->set_richText(false);
 
         entryTableCell->replaceSettingsButton = createIconButton(mainSectionTransform, PNG_SPRITE(settings), std::bind(&EntryTableCell::HandleReplaceSettingsButtonOnClick, entryTableCell));
 
