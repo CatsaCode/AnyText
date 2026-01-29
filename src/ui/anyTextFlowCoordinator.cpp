@@ -2,6 +2,7 @@
 #include "main.hpp"
 
 #include "configs.hpp"
+#include "textIdentifier.hpp"
 
 #include "ui/configListViewController.hpp"
 
@@ -47,6 +48,7 @@ namespace AnyText::UI {
         // |  Notify and return if issues
 
         saveConfigs();
+        updateAllReplacements();
 
         _parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
     }

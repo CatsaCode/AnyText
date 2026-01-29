@@ -25,6 +25,7 @@ DECLARE_CLASS_CODEGEN(AnyText, TextManager, UnityEngine::MonoBehaviour) {
     DECLARE_INSTANCE_METHOD(void, Awake);
     DECLARE_INSTANCE_METHOD(void, OnDestroy);
     DECLARE_INSTANCE_METHOD(void, OnTextChange);
+    DECLARE_INSTANCE_METHOD(void, UpdateReplacement);
 
     private:
         AnyText::TextState originalState;

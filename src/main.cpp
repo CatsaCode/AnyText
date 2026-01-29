@@ -30,7 +30,7 @@ MAKE_HOOK_MATCH(MainFlowCoordinator_DidActivate, &GlobalNamespace::MainFlowCoord
     if(!firstActivation) return;
 
     AnyText::loadFonts();
-    // Identify all text
+    AnyText::identifyAllText();
 }
 
 

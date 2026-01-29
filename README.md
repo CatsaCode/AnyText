@@ -46,7 +46,7 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Add proper icons to buttons
 - [x] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned) (Technically not an issue with the system keyboard)
 - [x] Stop text identification on AnyText-related pieces of text
-- [ ] Trigger text updates upon exiting AnyText menu
+- [x] Trigger text updates upon exiting AnyText menu
 - [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
 - [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`

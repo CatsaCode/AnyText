@@ -10,6 +10,10 @@
 
 #include "TMPro/TMP_Text.hpp"
 
+#include "UnityEngine/Object.hpp"
+#include "UnityEngine/FindObjectsSortMode.hpp"
+#include "UnityEngine/FindObjectsInactive.hpp"
+
 using namespace UnityEngine;
 
 namespace AnyText {
@@ -51,6 +55,18 @@ namespace AnyText {
         if(textManager) {
             PaperLogger.debug("Destroying TextManager");
             Object::Destroy(textManager);
+        }
+    }
+
+    void identifyAllText() {
+        for(auto text : Object::FindObjectsByType<TMPro::TMP_Text*>(FindObjectsInactive::Include, FindObjectsSortMode::None)) {
+            identifyText(text);
+        }
+    }
+
+    void updateAllReplacements() {
+        for(auto textManager : Object::FindObjectsByType<TextManager*>(FindObjectsInactive::Include, FindObjectsSortMode::None)) {
+            textManager->UpdateReplacement();
         }
     }
 

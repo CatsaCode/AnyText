@@ -45,6 +45,14 @@ namespace AnyText {
         }
     }
 
+    void TextManager::UpdateReplacement() {
+        PaperLogger.debug("&TextManager: {}", static_cast<void*>(this));
+        if(!text || !text->get_text()) return;
+
+        generateReplacementState();
+        applyState(replacementState);
+    }
+
     bool TextManager::updateOriginalStateWithDifferences() {
         if(!text || !text->get_text()) return false;
 
