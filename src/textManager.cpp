@@ -83,6 +83,7 @@ namespace AnyText {
 
         bool hasReplacedText = false;
         for(Config& config : configs) {
+            if(!config.enabled) continue;
             for(FindReplaceEntry& entry : config.entries) {
                 if(!entry.getFindRegexIsValid()) continue;
                 if(hasReplacedText && !entry.accumulate) continue;

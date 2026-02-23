@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <vector>
 
 using namespace AnyText;
 
@@ -29,6 +30,21 @@ namespace AnyText {
         for(Config& config : configs) configOrder.push_back(config.name);
         getModConfig().configOrder.SetValue(configOrder);
     }
+
+    void loadDisabledConfigs() {
+        std::vector<std::string> disabledConfigs = getModConfig().disabledConfigs.GetValue();
+        for(Config& config : configs) {
+            config.enabled = std::find(disabledConfigs.begin(), disabledConfigs.end(), config.name) == disabledConfigs.end();
+        }
+    }
+
+    void saveDisabledConfigs() {
+        std::vector<std::string> disabledConfigs;
+        for(Config& config : configs) {
+            if(!config.enabled) disabledConfigs.push_back(config.name);
+        }
+        getModConfig().disabledConfigs.SetValue(disabledConfigs);
+    }
     
     void loadConfigs() {
         configs.clear();
@@ -52,6 +68,7 @@ namespace AnyText {
         }
 
         loadConfigOrder();
+        loadDisabledConfigs();
     }
 
     bool saveConfig(Config& config) {
@@ -85,6 +102,7 @@ namespace AnyText {
         }
 
         saveConfigOrder();
+        saveDisabledConfigs();
     }
 
     void removeConfig(const Config& config) {

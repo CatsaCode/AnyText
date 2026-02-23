@@ -4,6 +4,8 @@
 
 #include "custom-types/shared/macros.hpp"
 
+#include "bsml/shared/BSML/Components/Settings/ToggleSetting.hpp"
+
 #include "HMUI/TableCell.hpp"
 #include "HMUI/TableView.hpp"
 #include "HMUI/InputFieldView.hpp"
@@ -15,15 +17,17 @@ namespace AnyText::UI {class ConfigTableView;}
 DECLARE_CLASS_CODEGEN(AnyText::UI, ConfigTableCell, HMUI::TableCell) {
     DECLARE_INSTANCE_FIELD(UnityW<ConfigTableView>, configTableView);
 
+    DECLARE_INSTANCE_FIELD(UnityW<BSML::ToggleSetting>, enabledToggle);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, upButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, downButton);
     DECLARE_INSTANCE_FIELD(UnityW<HMUI::InputFieldView>, nameInput);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, editButton);
     DECLARE_INSTANCE_FIELD(UnityW<UnityEngine::UI::Button>, removeButton);
     
+    DECLARE_INSTANCE_METHOD(void, HandleEnabledOnChange, bool value);
     DECLARE_INSTANCE_METHOD(void, HandleMoveDownOnClick);
     DECLARE_INSTANCE_METHOD(void, HandleMoveUpOnClick);
-    DECLARE_INSTANCE_METHOD(void, HandleNameInputOnChange);
+    DECLARE_INSTANCE_METHOD(void, HandleNameInputOnChange, StringW value);
     DECLARE_INSTANCE_METHOD(void, HandleEditButtonOnClick);
     DECLARE_INSTANCE_METHOD(void, HandleRemoveButtonOnClick);
 

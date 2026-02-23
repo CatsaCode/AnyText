@@ -80,11 +80,8 @@ namespace AnyText::UI {
             findAlgorithmIndex = 0;}
         algorithmDropdown->set_Value(algorithmDropdown->values[findAlgorithmIndex]);
         
-        accumulateToggle->set_Value(entry->accumulate);
-        skipToggleTransition(accumulateToggle->GetComponentInChildren<AnimatedSwitchView*>());
-
-        matchCaseToggle->set_Value(entry->getMatchCase());
-        skipToggleTransition(matchCaseToggle->GetComponentInChildren<AnimatedSwitchView*>());
+        setToggleWithoutTransition(accumulateToggle, entry->accumulate);
+        setToggleWithoutTransition(matchCaseToggle, entry->getMatchCase());
         
         modalView->Show();
     }

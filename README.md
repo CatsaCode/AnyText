@@ -35,7 +35,7 @@ Change any text in the game through a list of find and replace instructions.
 - [x] Add dropdown for find algorithm
 - [x] Add toggle for accumulation
 - [x] Add modal for replace settings
-- [ ] Add toggles to configs
+- [x] Add toggles to configs
 - [x] Add button to create new config
 - [x] Add button to create new entry
 - [x] Add RegEx (then use it for everything)
@@ -47,13 +47,15 @@ Change any text in the game through a list of find and replace instructions.
 - [x] ~~Fix large text being hidden behind ellipsis~~ (Tried a bunch of text options, TMPro doesn't seem to account for text overflow when right aligned) (Technically not an issue with the system keyboard)
 - [x] Stop text identification on AnyText-related pieces of text
 - [x] Trigger text updates upon exiting AnyText menu
-- [ ] Add hover hints
 - [x] Upgrade v1.0.1 configs
 - [x] Investigate `private System.Collections.IEnumerator global::UIKeyboardManager.SummonSystemKeyboardAndWaitForResponse(HMUI.InputFieldView input)`
   - [x] Note that the game needs to be repatched with `oculus.software.overlay_keyboard` but IT DOES WORK HECK YEAAAHHH
   - [x] If user doesn't have the permission, open a webpage on how to add it
 - [x] Load fonts
-- [x] Add font dropdown
+- [x] Add font setting
+- [ ] Rework logging
+- [ ] Sanitize inputs
+- [ ] Add hover hints
 - [ ] Add info board
 
 
@@ -61,7 +63,7 @@ Change any text in the game through a list of find and replace instructions.
 
 - Crash upon opening the menu after a soft restart
 - If the play button font is replaced, BSML will adopt the font in its template. Perhaps ask BSML to generate the template before loading the fonts. Or if the `TextManager` is being cloned with the template, figure out why it's not being removed and restoring the text
-
+- Opening a config with an empty name will make the title and back button disappear
 
 ## Needs Testing
 
@@ -71,6 +73,14 @@ The current action builds will log every piece of text that is viewed. **Disable
 - Manually editing config shouldn't cause any crashes
 - Editing configs should restore any text that no longer needs replacing
 - General software testing (Throw in stupid configs and try to break it. Attempt what I haven't planned for)
+
+
+## v1.2.0 To-Do
+
+- [ ] Random replacements
+- [ ] Search location (e.g. game scene, menu scene, song selection, pause menu)
+- [ ] Avoid replacing rich text tags
+- [ ] Holiday configs
 
 
 ## Build Instructions

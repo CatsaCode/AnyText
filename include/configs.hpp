@@ -16,6 +16,7 @@ namespace AnyText {
         std::string name;
 
         bool unsaved = false;
+        bool enabled = true;
     };
 
     extern std::vector<Config> configs;

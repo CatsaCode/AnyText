@@ -34,6 +34,7 @@ namespace AnyText {
         std::string identifyingText = textManager ? textManager->getOriginalState().text : std::string(text->get_text());
 
         for(Config& config : configs) {
+            if(!config.enabled) continue;
             for(FindReplaceEntry& entry : config.entries) {
                 if(!entry.getFindRegexIsValid()) continue;
                 if(!boost::regex_search(identifyingText, entry.getFindRegex())) continue;

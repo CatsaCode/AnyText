@@ -39,6 +39,10 @@ namespace AnyText::UI {
         configTableCellFitter->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
         ConfigTableCell* configTableCell = configTableCellGO->AddComponent<ConfigTableCell*>();
 
+        configTableCell->enabledToggle = BSML::Lite::CreateToggle(configTableCellTransform, "", false, std::bind(&ConfigTableCell::HandleEnabledOnChange, configTableCell, std::placeholders::_1));
+        GameObject::Destroy(configTableCell->enabledToggle->get_transform()->Find("NameText")->get_gameObject());
+        configTableCell->enabledToggle->GetComponent<LayoutElement*>()->set_preferredWidth(20);
+
         GameObject* orderButtonsGO = GameObject::New_ctor("OrderButtons");
         RectTransform* orderButtonsTransform = orderButtonsGO->AddComponent<RectTransform*>();
         orderButtonsTransform->SetParent(configTableCellTransform, false);
@@ -49,9 +53,9 @@ namespace AnyText::UI {
         configTableCell->upButton = createIconButton(orderButtonsTransform, PNG_SPRITE(up), std::bind(&ConfigTableCell::HandleMoveUpOnClick, configTableCell));
         configTableCell->downButton = createIconButton(orderButtonsTransform, PNG_SPRITE(down), std::bind(&ConfigTableCell::HandleMoveDownOnClick, configTableCell));
         
-        configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell));
+        configTableCell->nameInput = BSML::Lite::CreateStringSetting(configTableCellTransform, "Config name", "", std::bind(&ConfigTableCell::HandleNameInputOnChange, configTableCell, std::placeholders::_1));
         configTableCell->nameInput->_clearSearchButton->get_gameObject()->SetActive(false);
-        configTableCell->nameInput->GetComponent<LayoutElement*>()->set_preferredWidth(70);
+        configTableCell->nameInput->GetComponent<LayoutElement*>()->set_preferredWidth(65);
         
         configTableCell->editButton = createIconButton(configTableCellTransform, PNG_SPRITE(edit), std::bind(&ConfigTableCell::HandleEditButtonOnClick, configTableCell));
 
@@ -65,12 +69,22 @@ namespace AnyText::UI {
         if(!config) {PaperLogger.error("config is nullptr"); return;}
         this->config = config;
 
+        setToggleWithoutTransition(enabledToggle, config->enabled);
+
         int index = std::distance(configs.begin(), std::find_if(configs.begin(), configs.end(), [this](const Config& x){return &x == this->config;}));
         if(index == configs.size()) {PaperLogger.error("config not found in configs vector"); return;}
         upButton->set_interactable(index > 0);
         downButton->set_interactable(index < configs.size() - 1);
 
         nameInput->set_text(config->name);
+    }
+
+    void ConfigTableCell::HandleEnabledOnChange(bool value) {
+        PaperLogger.debug("&ConfigTableCell: {}", static_cast<void*>(this));
+        if(!config) {PaperLogger.error("Config is not assigned"); return;}
+        if(!configTableView) {PaperLogger.error("configTableView is not valid"); return;}
+
+        config->enabled = value;
     }
 
     void ConfigTableCell::HandleMoveUpOnClick() {
@@ -105,11 +119,11 @@ namespace AnyText::UI {
         configTableView->ReloadConfigOrder();
     }
 
-    void ConfigTableCell::HandleNameInputOnChange() {
+    void ConfigTableCell::HandleNameInputOnChange(StringW value) {
         PaperLogger.debug("&ConfigTableCell: {}, nameInput text: '{}'", static_cast<void*>(this), nameInput->get_text());
         if(!config) {PaperLogger.error("Config is not assigned"); return;}
 
-        config->name = std::string(nameInput->get_text());
+        config->name = std::string(value);
         config->unsaved = true;
     }
 

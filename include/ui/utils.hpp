@@ -2,8 +2,9 @@
 
 #include "custom-types/shared/coroutine.hpp"
 
+#include "bsml/shared/BSML/Components/Settings/ToggleSetting.hpp"
+
 #include "HMUI/InputFieldView.hpp"
-#include "HMUI/AnimatedSwitchView.hpp"
 #include "HMUI/SimpleTextDropdown.hpp"
 #include "HMUI/ModalView.hpp"
 
@@ -18,7 +19,7 @@ namespace AnyText::UI {
     HMUI::InputFieldView* createStringSettingWithSystemKeyboard(UnityEngine::Transform* parent, std::string_view placeholder = "", std::string_view value = "", std::function<void(std::string)> onChange = nullptr);
 
     custom_types::Helpers::Coroutine openSystemKeyboard(HMUI::InputFieldView* inputFieldView, UnityEngine::TouchScreenKeyboardType type = UnityEngine::TouchScreenKeyboardType::Default, std::string_view placeholder = "", int charLimit = 0);
-    void skipToggleTransition(HMUI::AnimatedSwitchView* animatedSwitchView);
+    void setToggleWithoutTransition(BSML::ToggleSetting* toggleSetting, bool value);
     void addModalAnimations(HMUI::SimpleTextDropdown* dropdown, HMUI::ModalView* modal);
     void openURL(std::string_view url);
 
